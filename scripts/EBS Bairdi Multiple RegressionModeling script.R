@@ -13,6 +13,7 @@ library(ncdf4)
 library(chron)
 library(lattice)
 library(nlstools)
+library(MuMIN)
 #?nlstools
 
 ########## Import data and define variables####
@@ -559,13 +560,16 @@ S<-Spawners_SC3$EBS_SC3[4:n]
 R
 S
 recYear<-rec_30to50$Year[4:n]
+
+
 spYear<-Spawners_SC3$Year[4:n]
-release.year<-c(1978:2005)
+release.year<-c(1978:2016)
 
 R<-R[-5]
 S<-S[-5]
 recYear<-recYear[-5]
 spYear<-spYear[-5]
+
 
 
 xi<-S
@@ -585,7 +589,7 @@ yyear.k
 plot(yi.k~xi.k,xlab="Reproductive female abundance", ylab="Lag 3 juvenile recruitment", main= "EBS lag 3 S/R comparison",pch=16,col=4,cex=1.25)
 
 plot(yi.k~xi.k,xlab="X", ylab="Y", main= "EBS lag 3",pch=16,col=4,cex=1.25)
-
+recYear_lag3<-yyear.k
 cor(R,S)
 ##############################################EDA.norm analyses of log(R/S)#############################
 eda.norm(R)
@@ -646,43 +650,13 @@ Lm.Fit<-lm(log(R/S)~S, na.action=na.omit)
 dwtest(Lm.Fit)
 
 
-#########################################################################################################################
-############################################### Drop data point #5  #####################################################
-par(mfrow=c(1,1),cex.main=1.25, cex.lab=1.25,cex.axis=1.25,cex=1.25)
-R2<-R[-5]
-R2
-R
-S2<-S[-5]
-
-plot(R2~S2,xlab= "Reproductive female abundance", ylab="Juvenile abundance",main= "EBS juveniles vs reproductive female abundance",pch=16)
-Fit3<-gls(log(R2/S2)~S2,correlation=corAR1(), na.action=na.omit)
-summary(Fit3)
-plot(log(R2/S2)~S2, xlab="Reproductive female abundance",ylab="LN(Recruits/Repfem)",main="EBS log-survival vs. abundance of reproductive females",pch=16)
-abline(Fit3)
-#plot(Fit3)
-
-
-par(mfrow=c(1,1))
-r6<-resid(Fit3)
-xyear<-xyear.k[-5]
-#plot(r6,pch=16)
-r.fit3<-loess(r6~xyear,span=0.45)
-plot(r.fit3,pch=16,xlab="Hatch year", ylab=" S/R residuals", main=" EBS lag 3 S/R residuals vs. hatch year")
-lines(xyear,fitted(r.fit3),col=4)
-
-plot(r.fit3,pch=16,xlab="Year", ylab=" Y")
-lines(xyear,fitted(r.fit3),col=4)
-
-
-cor(R2,S2)
-
 ##################################################################################################################################
 ################################################## Plot above for MEPS #########################################################
 #,mai=c(1,1.25,1,1)#add to below to format margins if necessary--in inches, for in lines, use mar()
 
 par(mfrow=c(1,1),cex.lab=1.55,cex.axis=1.25,cex=1.25) #configure axis labels
 y.range<-range(0,9e+08)
-plot(R2~S2,ylim=y.range, pch=16,col=1,axes=FALSE,ann=FALSE)
+plot(R~S,ylim=y.range, pch=16,col=1,axes=FALSE,ann=FALSE)
 
 
 axis(1, at=1e+07*c(0,5,10,15,20),labels=c("0","50","100","150","200"),tck=0.02)
@@ -694,7 +668,7 @@ title(ylab="EBS juvenile abundance (Millions)")
 #title(main=" Juvenile abundance by year")
 
 
-plot(log(R2/S2)~S2,pch=16,col=1,axes=FALSE,ann=FALSE)
+plot(log(R/S)~S2,pch=16,col=1,axes=FALSE,ann=FALSE)
 abline(Fit3)
 axis(1, at=1e+07*c(0,5,10,15,20),labels=c("0","50","100","150","200"),tck=0.02)
 axis(2, las=1, at=c(-1,0,1,2,3,4,5),labels=c("-1","0","1","2","3","4","5"),tck=0.02)
@@ -702,17 +676,11 @@ box()
 title(xlab="Female abundance (Millions)")
 title(ylab="EBS log-survival")
 
-r6<-resid(Fit3)
-xyear<-xyear.k[-5]
-#plot(r6,pch=16)
-r.fit3<-loess(r6~xyear,span=0.45)
-plot(r.fit3,pch=16,xlab="Hatch year", ylab=" S-R residuals")
-lines(xyear,fitted(r.fit3),col=1)
 
 r.fit3<-loess(r6~xyear,span=0.5)
 plot(r.fit3,pch=16,col=1,axes=FALSE,ann=FALSE)
 lines(xyear,fitted(r.fit3),col=1)
-axis(1, at=c(1980,1985,1990,1995,2000,2005),labels=c("1980","1985","1990","1995","2000","2005"),tck=0.02)
+axis(1, at=c(1980,1985,1990,1995,2000,2005,2010,2015),labels=c("1980","1985","1990","1995","2000","2005","2010","2015"),tck=0.02)
 axis(2, las=1,at=c(-3,-2,-1,0,1,2,3),labels=c("-3","-2","-1","0","1","2","3"),tck=0.02)
 box()
 
@@ -724,7 +692,7 @@ title(ylab="EBS S-R residuals")
 par(mfrow=c(1,1))
 R<-Juv_abun
 S<-Repfem_abun
-release.year<-c(1978:2004)
+release.year<-c(1978:2016)
 
 xi<-S
 xyear<-Spawners$Year
@@ -796,546 +764,402 @@ r<-r3
 #########################################################################################################################################
 ########################################## Analyze S/R residuals against environmental variables ######################################################
 #########################################################################################################################################
-
-Year<-c(1981:2019)
+n0<-length(r)
+Year<-recYear_lag3
 resid.series<-cbind(Year,r)  #pairs year of recruitment to index with S/R residual of that pseudocohort
 resid.series
 plot(resid.series,ylab="Lag 3 S/R residual",xlab="Year",pch=16)
 
+r<-r[5:n0]
+RecruitmentYear<-Year[5:n0]
+RecruitmentYear
+plot(r~RecruitmentYear)
 
-
+resid.series<-cbind(RecruitmentYear,r)
+resid.series
 ###############################################################################################################################
 ################################################# NCAR NCEP wind data ########################################################
 ###############################################################################################################################
 wind_dat<-read.csv("data/wind_vector_data.csv")
 
 wind_dat
+
+################################################# Remove 1982 ##############################################################################
+
+D.90.May.ed<-wind_dat$D.90.May[-5]
+D.90.June.ed<-wind_dat$D.90.June[-5]
+D.90.July.ed<-wind_dat$D.90.July[-5]
+D.90.May.June.ed<-wind_dat$.90.May.June[-5]
+D.90.JJ.ed<-wind_dat$D.90.JJ[-5]
+D.90.MJ.ed<-wind_dat$D.90.MJ[-5]
+
+D.75.May.ed<-wind_dat$D.75.May[-5]
+D.75.June.ed<-wind_dat$D.75.June[-5]
+D.75.July.ed<-wind_dat$D.75.July[-5]
+D.75.May.June.ed<-wind_dat$D.75.May.June[-5]
+D.75.JJ.ed<-wind_dat$D.75.JJ[-5]
+D.75.MJ.ed<-wind_dat$D.75.MJ[-5]
+
+D.60.May.ed<-wind_dat$D.60.May[-5]
+D.60.June.ed<-wind_dat$D.60.June[-5]
+D.60.July.ed<-wind_dat$D.60.July[-5]
+D.60.May.June.ed<-wind_dat$D.60.May.June[-5]
+D.60.JJ.ed<-wind_dat$D.60.JJ[-5]
+D.60.MJ.ed<-wind_dat$D.60.MJ[-5]
+
+D.45.May.ed<-wind_dat$D.45.May[-5]
+D.45.June.ed<-wind_dat$D.45.June[-5]
+D.45.July.ed<-wind_dat$D.45.July[-5]
+D.45.May.June.ed<-wind_dat$D.45.May.June[-5]
+D.45.JJ.ed<-wind_dat$D.45.JJ[-5]
+D.45.MJ.ed<-wind_dat$D.45.MJ[-5]
+
+D.30.May.ed<-wind_dat$D.30.May[-5]
+D.30.June.ed<-wind_dat$D.30.June[-5]
+D.30.July.ed<-wind_dat$D.30.July[-5]
+D.30.May.June.ed<-wind_dat$D.30.May.June[-5]
+D.30.JJ.ed<-wind_dat$D.30.JJ[-5]
+D.30.MJ.ed<-wind_dat$D.30.MJ[-5]
+
+D.15.May.ed<-wind_dat$D.15.May[-5]
+D.15.June.ed<-wind_dat$D.15.June[-5]
+D.15.July.ed<-wind_dat$D.15.July[-5]
+D.15.May.June.ed<-wind_dat$D.15.May.June[-5]
+D.15.JJ.ed<-wind_dat$D.15.JJ[-5]
+D.15.MJ.ed<-wind_dat$D.15.MJ[-5]
+
+D.0.May.ed<-wind_dat$D.0.May[-5]
+D.0.June.ed<-wind_dat$D.0.June[-5]
+D.0.July.ed<-wind_dat$D.0.July[-5]
+D.0.May.June.ed<-wind_dat$D.0.May.June[-5]
+D.0.JJ.ed<-wind_dat$D.0.JJ[-5]
+D.0.MJ.ed<-wind_dat$D.0.MJ[-5]
+
+D.neg.15.May.ed<-wind_dat$D.neg.15.May[-5]
+D.neg.15.June.ed<-wind_dat$D.neg.15.June[-5]
+D.neg.15.July.ed<-wind_dat$D.neg.15.July[-5]
+D.neg.15.May.June.ed<-wind_dat$D.neg.15.May.June[-5]
+D.neg.15.JJ.ed<-wind_dat$D.neg.15.JJ[-5]
+D.neg.15.MJ.ed<-wind_dat$D.neg.15.MJ[-5]
+
+D.neg.30.May.ed<-wind_dat$D.neg.30.May[-5]
+D.neg.30.June.ed<-wind_dat$D.neg.30.June[-5]
+D.neg.30.July.ed<-wind_dat$D.neg.30.July[-5]
+D.neg.30.May.June.ed<-wind_dat$D.neg.30.May.June[-5]
+D.neg.30.JJ.ed<-wind_dat$D.neg.30.JJ[-5]
+D.neg.30.MJ.ed<-wind_dat$D.neg.30.MJ[-5]
+
+
+D.neg.45.May.ed<-wind_dat$D.neg.45.May[-5]
+D.neg.45.June.ed<-wind_dat$D.neg.45.June[-5]
+D.neg.45.July.ed<-wind_dat$D.neg.45.July[-5]
+D.neg.45.May.June.ed<-wind_dat$D.neg.45.May.June[-5]
+D.neg.45.JJ.ed<-wind_dat$D.neg.45.JJ[-5]
+D.neg.45.MJ.ed<-wind_dat$D.neg.45.MJ[-5]
+
+D.neg.60.May.ed<-wind_dat$D.neg.60.May[-5]
+D.neg.60.June.ed<-wind_dat$D.neg.60.June[-5]
+D.neg.60.July.ed<-wind_dat$D.neg.60.July[-5]
+D.neg.60.May.June.ed<-wind_dat$D.neg.60.May.June[-5]
+D.neg.60.JJ.ed<-wind_dat$D.neg.60.JJ[-5]
+D.neg.60.MJ.ed<-wind_dat$D.neg.60.MJ[-5]
+
+
+D.neg.75.May.ed<-wind_dat$D.neg.75.May[-5]
+D.neg.75.June.ed<-wind_dat$D.neg.75.June[-5]
+D.neg.75.July.ed<-wind_dat$D.neg.75.July[-5]
+D.neg.75.May.June.ed<-wind_dat$D.neg.75.May.June[-5]
+D.neg.75.JJ.ed<-wind_dat$D.neg.75.JJ[-5]
+D.neg.75.MJ.ed<-wind_dat$D.neg.75.MJ[-5]
+
+D.neg.90.May.ed<-wind_dat$D.neg.90.May[-5]
+D.neg.90.June.ed<-wind_dat$D.neg.90.June[-5]
+D.neg.90.July.ed<-wind_dat$D.neg.90.July[-5]
+D.neg.90.May.June.ed<-wind_dat$D.neg.90.May.June[-5]
+D.neg.90.JJ.ed<-wind_dat$D.neg.90.JJ[-5]
+D.neg.90.MJ.ed<-wind_dat$D.neg.90.MJ[-5]
+
+#################################################################################################################################################################
+################################################# Limit to same years as FHS data--only for release years 1983-2016  ##############################################################################
+nw<-length(wind_dat$year)
+wind_dat$year
+D.90.May<-D.90.May.ed[6:nw]
+D.90.June<-D.90.June.ed[6:nw]
+D.90.July<-D.90.July.ed[6:nw]
+D.90.May.June<-D.90.May.June.ed[6:nw]
+D.90.JJ<-D.90.JJ.ed[6:nw]
+D.90.MJ<-D.90.MJ.ed[6:nw]
+
+D.75.May<-D.75.May.ed[6:nw]
+D.75.June<-D.75.June.ed[6:nw]
+D.75.July<-D.75.July.ed[6:nw]
+D.75.May.June<-D.75.May.June.ed[6:nw]
+D.75.JJ<-D.75.JJ.ed[6:nw]
+D.75.MJ<-D.75.MJ.ed[6:nw]
+
+D.60.May<-D.60.May.ed[6:nw]
+D.60.June<-D.60.June.ed[6:nw]
+D.60.July<-D.60.July.ed[6:nw]
+D.60.May.June<-D.60.May.June.ed[6:nw]
+D.60.JJ<-D.60.JJ.ed[6:nw]
+D.60.MJ<-D.60.MJ.ed[6:nw]
+
+D.45.May<-D.45.May.ed[6:nw]
+D.45.June<-D.45.June.ed[6:nw]
+D.45.July<-D.45.July.ed[6:nw]
+D.45.May.June<-D.45.May.June.ed[6:nw]
+D.45.JJ<-D.45.JJ.ed[6:nw]
+D.45.MJ<-D.45.MJ.ed[6:nw]
+
+D.30.May<-D.30.May.ed[6:nw]
+D.30.June<-D.30.June.ed[6:nw]
+D.30.July<-D.30.July.ed[6:nw]
+D.30.May.June<-D.30.May.June.ed[6:nw]
+D.30.JJ.<-D.30.JJ.ed[6:nw]
+D.30.MJ<-D.30.MJ.ed[6:nw]
+
+D.15.May<-D.15.May.ed[6:nw]
+D.15.June<-D.15.June.ed[6:nw]
+D.15.July<-D.15.July.ed[6:nw]
+D.15.May.June<-D.15.May.June.ed[6:nw]
+D.15.JJ<-D.15.JJ.ed[6:nw]
+D.15.MJ<-D.15.MJ.ed[6:nw]
+
+D.0.May<-D.0.May.ed[6:nw]
+D.0.June<-D.0.June.ed[6:nw]
+D.0.July<-D.0.July.ed[6:nw]
+D.0.May.June<-D.0.May.June.ed[6:nw]
+D.0.JJ<-D.0.JJ.ed[6:nw]
+D.0.MJ<-D.0.MJ.ed[6:nw]
+
+D.neg.15.May<-D.neg.15.May.ed[6:nw]
+D.neg.15.June<-D.neg.15.June.ed[6:nw]
+D.neg.15.July<-D.neg.15.July.ed[6:nw]
+D.neg.15.May.June<-D.neg.15.May.June.ed[6:nw]
+D.neg.15.JJ<-D.neg.15.JJ.ed[6:nw]
+D.neg.15.MJ<-D.neg.15.MJ.ed[6:nw]
+
+D.neg.30.May<-D.neg.30.May.ed[6:nw]
+D.neg.30.June<-D.neg.30.June.ed[6:nw]
+D.neg.30.July<-D.neg.30.July.ed[6:nw]
+D.neg.30.May.June<-D.neg.30.May.June.ed[6:nw]
+D.neg.30.JJ<-D.neg.30.JJ.ed[6:nw]
+D.neg.30.MJ<-D.neg.30.MJ.ed[6:nw]
+
+
+D.neg.45.May<-D.neg.45.May.ed[6:nw]
+D.neg.45.June<-D.neg.45.June.ed[6:nw]
+D.neg.45.July<-D.neg.45.July.ed[6:nw]
+D.neg.45.May.June<-D.neg.45.May.June.ed[6:nw]
+D.neg.45.JJ<-D.neg.45.JJ.ed[6:nw]
+D.neg.45.MJ<-D.neg.45.MJ.ed[6:nw]
+
+
+D.neg.60.May<-D.neg.60.May.ed[6:nw]
+D.neg.60.June<-D.neg.60.June.ed[6:nw]
+D.neg.60.July<-D.neg.60.July.ed[6:nw]
+D.neg.60.May.June<-D.neg.60.May.June.ed[6:nw]
+D.neg.60.JJ<-D.neg.60.JJ.ed[6:nw]
+D.neg.60.MJ<-D.neg.60.MJ.ed[6:nw]
+
+
+D.neg.75.May<-D.neg.75.May.ed[6:nw]
+D.neg.75.June.<-D.neg.75.June.ed[6:nw]
+D.neg.75.July<-D.neg.75.July.ed[6:nw]
+D.neg.75.May.June<-D.neg.75.May.June.ed[6:nw]
+D.neg.75.JJ<-D.neg.75.JJ.ed[6:nw]
+D.neg.75.MJ<-D.neg.75.MJ.ed[6:nw]
+
+D.neg.90.May<-D.neg.90.May.ed[6:nw]
+D.neg.90.June<-D.neg.90.June.ed[6:nw]
+D.neg.90.July<-D.neg.90.July.ed[6:nw]
+D.neg.90.May.June<-D.neg.90.May.June.ed[6:nw]
+D.neg.90.JJ<-D.neg.90.JJ.ed[6:nw]
+D.neg.90.MJ<-D.neg.90.MJ.ed[6:nw]
+
+
 #####################################################################################################################
 #################################################     ERSST     #####################################################
 #################################################import data set#####################################################
-ersst<-read.csv("data/ERSST_SST_avgs_anoms.csv")
-#####################################################################################################################
-#################################################     Survey SST     ################################################
-#################################################import data set#####################################################
-par(mfrow=c(2,2))
-SST<-read.csv("EBS_SST.csv")
-attach(SST)
-
-###############################################define variables#####################################################
-
-names(SST)
-#Year<-SST$Year
-SST.avg<-Avg.SST
-SST.Anom<-SST.Anom
-SST$Year
-plot(SST.Anom~SST$Year,pch=16,ylab="SST anomoly",xlab="Year")
-abline(h=0)
+ersst0<-read.csv("data/ERSST_SST_avgs_anoms.csv")
+ersst<-ersst0[6:nrow(ersst0),]
+#########################################################################################################################################################
+######################################## Edit Series for analyses using editted residual series and to match extent of FHS data set######################
+May.anom<-ersst$May.anom
+June.anom<-ersst$June.anom
+July.anom<-ersst$July.anom
+April.May.anom<-ersst$April.May.anom
+May.June.anom<-ersst$May.June.anom
+June.July.anom<-ersst$June.July.anom
+April.July.anom<-ersst$April.July.anom
+May.July.anom<-ersst$May.July.anom
+ersst.year<-ersst$Year
+ersst.year
 
 
 
-#######################################  Lag=3 for effects in first summer######################################
-######################################## Note: below only works for lag=3#######################################
-xi<-SST.Anom
-xyear<-SST$Year
-yi<-r
-yyear<-Year
+##############################################################################################################################################
+################################################# Add ENVAR database with non-custom ERSST and NCAR-NCEP and other additional datasets #######
+################################################# Flathead sole data start with 1982, recruitmrnt series starts with 1983 due to previous and 1982 female outlier so need to standardize data inputs for start with 1982 cohort
 
-n <- length(yi)
-xi.t<-xi[1:n]
-xyear.t<-xyear[1:n]
-yi
-Year
-xi.t
-xyear.t
-
-
+envar<-read.csv("data/envars.csv")
+envar
+names(envar)
 ##############################################################################################################################################
 #################################################     NBT        #############################################################################
 #################################################import data set##############################################################################
 par(mfrow=c(2,2))
-NBT<-read.csv("NBT_Anomoly.csv")
+NBT<-envar$EBS_mean_NBT
 attach(NBT)
 
 yi<-r
 n <- length(yi)
+n
+
+n2<-length(envar$Year)
 ##############################################3#define variables#####################################################
 
-names(NBT)
-#Year<-NBT$Year
-NBT.mean<-Mean_NBT
-NBT.Anom<-NBT_Anom
-NBT$Year
-plot(NBT.Anom~NBT$Year,pch=16,ylab="NBT anomoly",xlab="Year")
+
+ts_mean_NBT<-mean(NBT)
+NBT.Anom<-NBT-ts_mean_NBT
+plot(NBT.Anom~envar$Year,pch=16,ylab="NBT anomoly",xlab="Year")
 abline(h=0)
 
 
 
 ###################################Lag=4 for effects during embryonic stage##########################################
-
+envar$Year
 xi<-NBT.Anom
-xyear<-NBT$Year
 
-lag.4.juvs<-yi[2:n]
-yyear.t4<-Year[2:n]
+xyear<-envar$Year
 
+xyear
 
-NBT.lag.4<-xi[1:(n-1)]
-xyear.lag.4<-xyear[1:(n-1)]
+NBT.lag.4<-xi[8:(n2-4)]
+xyear.lag.4<-xyear[8:(n2-4)]
 
 NBT.lag.4
 xyear.lag.4
-lag.4.juvs
-yyear.t4
 
 #######################################  Lag=3 for effects in first summer######################################
 ######################################## Note: below only works for lag=3#######################################
 xi<-NBT.Anom
-xyear<-NBT$Year
+xyear<-envar$Year
 
-NBT.lag.3<-xi[1:n]
-xyear.lag.3<-xyear[1:n]
-
-NBT.lag.3
-xyear.t3
+NBT.lag.3<-xi[9:n2]
+xyear.lag.3<-xyear[9:n2]
 
 NBT.lag.3
+xyear.lag.3
+
 
 #####################################################################################################################################################################################
 ######################################################### Lag=2 for effects over course of first winter##############################################################################
 names(NBT)
 xi<-NBT.Anom
-xyear<-NBT$Year
+xyear<-envar$Year
 xyear
-NBT.lag.2<-xi[2:(n+1)]
+NBT.lag.2<-xi[10:(n2)]
 NBT.lag.2
-xyear.t2<-xyear[2:(n+1)]
-xyear.t2
+xyear.lag.2<-xyear[10:(n2)]
 
 
+xyear.lag.2
 NBT.lag.2
 
 ######################################################################################################################################################################################
-##################################### 3 year rolling average of NBT anomoly for ffects during juvenile stages, note: temp in year y= mean((y-1)+y+(y+1) ##############################
-
-anom1<-NBT$RA_3[1:29]
-anom1
-Mid.Year<-c(1979:2007)
-Mid.Year
-RA.3<-cbind(Mid.Year,anom1)
-RA.3
-NBT.RA.3a<-anom1[1:28]
-NBT.RA.3a
-xyear<-Mid.Year[1:28]
+##################################### 3 year rolling average of NBT anomoly for effects during juvenile stages, note: temp in year y= mean((y)+(y-1)+(y-2) ##############################
+names(envar)
+envar
+envar$EBS_NBT_RA3_final_year
+xyear<-envar$Year
 xyear
+anom1<-envar$EBS_NBT_RA3_final_year[11:45]
+anom1
 
 
+End.Year<-c(1986:2019)
+End.Year
+
+RA.3.end<-cbind(End.Year,anom1)
+NBT.RA.3.end<-anom1
+
+######################################################################################################################################################################################
+##################################### 3 year rolling average of NBT anomoly for effects during juvenile stages, note: temp in year y= mean((y-1)+y+(y+1) ##############################
+names(envar)
+envar
+envar$EBS_NBT_RA3_midyear
+anom1<-envar$EBS_NBT_RA3_midyear[10:43]
+anom1
+n<-length(anom1)
+
+
+Mid.Year<-c(1984:2017)
+Mid.Year
+RA.3.mid<-cbind(Mid.Year,anom1)
+RA.3.mid
+
+
+NBT.RA.3a<-anom1[5:n] #starts in 1980
 NBT.RA.3a
+
 
 #######################################################################################################################################################################################
 ##################################### 3 year rolling average of NBT anomoly for effects during embryonic and early juvenile stages, note: temp in year y= mean((y-1)+y+(y+1)###########
 
-anom2<-NBT$RA_3[1:29]
-anom2
-Mid.Year<-c(1979:2007)
+anom1<-envar$EBS_NBT_RA3_midyear[9:42]
+anom1
+n<-length(anom1)
+
+
+Mid.Year<-c(1983:2016)
 Mid.Year
-RA.3<-cbind(Mid.Year,anom2)
-RA.3
-NBT.RA.3b<-anom2[1:27]
-xyear<-Mid.Year[1:27]
+RA.3.mid<-cbind(Mid.Year,anom1)
+RA.3.mid
 
 
-
+NBT.RA.3b<-anom1
 NBT.RA.3b
 
+
 ########################################################################################################################################################################################
-##################################### 2 year rolling average of NBT anomoly for effects during juvenile stages, note: temp in year y= mean((y-1)+y+(y+1) ################################
-
-NBT$RA_2
-anom3<-NBT$RA_2[1:30]
+##################################### 2 year rolling average of NBT anomoly for effects during juvenile stages, note: temp in year y= mean((y-1)+y ################################
+names(envar)
+envar$Year
+envar$EBS_NBT_RA2
+anom3<-envar$EBS_NBT_RA2[10:43]
 anom3
-First.Year<-c(1978:2007)
+First.Year<-c(1984:2017)
 First.Year
-RA.2<-cbind(First.Year,anom3)
-RA.2
-NBT.RA.2a<-anom3[1:28]
-xyear<-First.Year[1:28]
-xyear
+NBT.RA.2a<-anom3
 
-
-RA.2a.temp<-cbind(xyear,NBT.RA.2a)
-RA.2a.temp
 
 
 NBT.RA.2a
 
 ####################################################################################################################################################################################
-##################################### 2 year rolling average of NBT anomoly for effects during embryonic and 1st juvenile year, note: temp in year y= mean((y-1)+y+(y+1)############
+##################################### 2 year rolling average of NBT anomoly for effects during embryonic and 1st juvenile year, note: temp in year y= mean((y-1)+y)############
 
-NBT$RA_2
-anom<-NBT$RA_2[1:30]
-anom
-Embryo.Year<-c(1978:2007)
-Embryo.Year
+anom<-envar$EBS_NBT_RA2[9:42]
+anom3
+First.Year<-c(1983:2016)
+First.Year
+NBT.RA.2b<-cbind(First.Year,anom3)
 
-NBT.RA.2b<-anom[1:27]
-xyear<-Embryo.Year[1:27]
-xyear
-yi<-r[2:28]
-yyear<-Year[2:28]
-yi
-yyear
-
-RA.2b.temp<-cbind(xyear,NBT.RA.2b)
-RA.2b.temp
-RA.2b.recruit<-cbind(yyear,yi)
-RA.2b.recruit
 
 
 NBT.RA.2b
 
-
-##############################################################################################################################################
-#################################################   NBT using editted residual series  #############################################################################
-#################################################import data set##############################################################################
-
-par(mfrow=c(2,2))
-NBT<-read.csv("NBT_Anomaly.csv")
-attach(NBT)
-
-##############################################3#define variables#####################################################
-
-names(NBT)
-#Year<-NBT$Year
-NBT.mean<-Mean_NBT
-NBT.Anom<-NBT_Anom
-NBT$Year
-plot(NBT.Anom~NBT$Year,pch=16,ylab="NBT anomoly",xlab="Year")
-abline(h=0)
-
-
-
-###################################Lag=4 for effects during embryonic stage##########################################
-
-xi<-NBT.Anom
-xyear<-NBT$Year
-
-NBT.lag.4<-xi[1:27]
-NBT.lag.4.ed<-NBT.lag.4[-4]
-
-xyear
-xyear.t4a<-xyear[1:27]
-xyear.t4<-xyear.t4a[-4]
-
-
-NBT4.series<-cbind(xyear.t4,NBT.4)
-NBT4.series
-
-
-NBT.lag.4.ed
-
-##############################################################################################################
-#######################################  Lag=3 for effects in first summer######################################
-######################################## Note: below only works for lag=3#######################################
-xi<-NBT.Anom
-xyear<-NBT$Year
-
-
-
-#n <- length(yi)
-NBT.lag.3<-xi[1:28]
-NBT.lag.3.ed<-NBT.lag.3[-5]
-
-xyear
-xyear.t3<-xyear[1:28]
-NBTyear.lag.3.ed<-xyear.t3a[-5]
-
-
-NBT.3
-NBT.3a
-
-NBT3.series<-cbind(xyear.t3,NBT.lag.3)
-NBT3a.series<-cbind(xyear.t3a,NBT.lag.3a.edit)
-
-NBT3.series
-NBT3a.series
-
-
-
-NBT.lag.3.ed
-
-###################################################################################################################################################################################
-######################################################### Lag=2 for effects over course of first winter##############################################################################
-names(NBT)
-xi<-NBT.Anom
-xyear<-NBT$Year
-xi
-xyear
-
-NBT.series<-cbind(xyear,xi)
-NBT.series
-
-
-NBT.lag.2<-xi[2:29]
-NBT.lag.2.ed<-NBT.lag.2[-6]
-xyear.t2<-xyear[2:29]
-xyear.t2a<-xyear.t2a[-6]
-
-
-NBT2.series<-cbind(xyear.t2,NBT.lag.2.edit)
-NBT2.series
-
-
-NBT.lag.2.ed
-
-######################################################################################################################################################################################
-##################################### 3 year rolling average of NBT anomoly for effects during juvenile stages, note: temp in year y= mean((y-1)+y+(y+1) ##############################
-
-anom<-NBT$RA_3[1:29]
-anom
-Mid.Year<-c(1979:2007)
-Mid.Year
-RA.3<-cbind(Mid.Year,anom)
-RA.3
-
-NBT.RA.3a<-anom[1:28]
-NBT.RA.3a.ed<-NBT.RA.3a[-5]
-xyear.3<-Mid.Year[1:28]
-xyear<-xyear.3[-5]
-xyear
-
-
-RA.3.series<-cbind(xyear.3,RA.3)
-RA.3a.series<-cbind(xyear.3a,RA.3a)
-
-
-
-NBT.RA.3a.ed
-
-#######################################################################################################################################################################################
-####################################1 3 year rolling average of NBT anomoly for effects during embryonic and early juvenile stages, note: temp in year y= mean((y-1)+y+(y+1)###########
-
-anom<-NBT$RA_3[1:29]
-anom
-Mid.Year<-c(1979:2007)
-Mid.Year
-RA.3<-cbind(Mid.Year,anom)
-RA.3
-NBT.RA.3b<-anom[1:27]
-NBT.RA.3b.ed<-NBT.RA.3b[-4]
-xyear.3<-Mid.Year[1:27]
-xyear<-xyear.3[-4]
-xi
-xyear
-
-
-
-NBT.RA.3b.ed
-
-########################################################################################################################################################################################
-##################################### 2 year rolling average of NBT anomoly for effects during juvenile stages, note: temp in year y= mean((y-1)+y+(y+1) ################################
-
-NBT$RA_2
-anom2a<-NBT$RA_2[1:30]
-anom2a
-First.Year<-c(1978:2007)
-First.Year
-RA.2<-cbind(First.Year,anom2a)
-RA.2
-NBT.RA.2a<-anom2a[1:28]
-NBT.RA.2a.ed<-NBT.RA.2a[-5]
-xyear.2<-First.Year[1:28]
-xyear<-xyear.2[-5]
-xyear
-
-
-
-
-RA.2a.temp<-cbind(xyear,xi)
-RA.2a.temp
-
-
-
-NBT.RA.2a.ed
-
-####################################################################################################################################################################################
-##################################### 2 year rolling average of NBT anomoly for effects during embryonic and 1st juvenile year, note: temp in year y= mean(y+y+1)############
-
-NBT$RA_2
-anom2b<-NBT$RA_2[1:30]
-anom2b
-Embryo.Year<-c(1978:2007)
-Embryo.Year
-
-NBT.RA.2b<-anom2b[1:27]
-NBT.RA.2b
-
-NBT.RA.2b.ed<-NBT.RA.2a[-4]
-NBT.RA.2b.ed
-
-xyear.2<-Embryo.Year[1:27]
-xyear.2
-xyear<-xyear.2[-4]
-xyear
-
-
-
-NBT.RA.2b.ed
-
-
-
-##############################################################################################################################################
-#################################################     Large males         #############################################################################
-#################################################import data set##############################################################################
-
-par(mfrow=c(1,1),cex.lab=1.25,cex.axis=1.25,cex=1.25) #configure axis labels
-Males<-read.csv("Large_males_TS.csv")
-attach(Males)
-names(Males)
-
-#Year<-Males$Year
-males<-Male_abun
-male.anom<-Male_anom
-Males$Year
-plot(males~Males$Year,pch=16,ylab="Large male abundance",xlab="Year")
-abline(h=0)
-
-yi<-r
-n <- length(yi)
-
-#######################################  Lag=3 for predation on settling #######################################
-######################################## Note: below only works for lag=3#######################################
-xi<-males
-xyear<-Males$Year
-
-lag.3.males<-xi[1:n]
-xyear.t3<-xyear[1:n]
-
-lag.3.males
-xyear.t3
-
-
-#####################################################################################################################################################################################
-######################################################### Lag=2 for predation during first juve year ##############################################################################
-names(Males)
-xi<-males
-xyear<-Males$Year
-xyear
-
-lag.2.males<-xi[2:29]
-lag.2.males
-xyear.t2<-xyear[2:29]
-xyear.t2
-
-
-lag.2.males
-
-#####################################################################################################################################################################################
-######################################################### Lag=1 for predation during second juv year ##############################################################################
-names(Males)
-xi<-males
-xyear<-Males$Year
-xyear
-
-lag.1.males<-xi[3:30]
-lag.1.males
-xyear.t1<-xyear[3:30]
-xyear.t1
-
-lag1.males<-cbind(xyear.t1,lag.1.males)
-lag1.males
-
-######################################################################################################################################################################################
-##################################### 3 year rolling average of male abundance for predation through juvenile stages, note: abundance in year y= mean((y-1)+y+(y+1) ##################
-Males$RA.3
-
-RA.3.a<-Males$RA.3[1:29]
-RA.3.a
-Mid.Year<-c(1979:2007)
-Mid.Year
-RA.3<-cbind(Mid.Year,RA.3.a)
-RA.3
-
-RA.3.males<-RA.3.a[2:29]
-xyear<-Mid.Year[2:29]
-
-RA.3.b<-cbind(xyear,RA.3.males)
-RA.3.b
-
-RA.3.males
-
-########################################################################################################################################################################################
-##################################### 2 year rolling average of male abundance for predation throughout juvenile stages, note: abun in year y= mean((y-1)+y+(y+1) ################################
-Males$RA.2
-anom1<-Males$RA.2[1:30]
-anom1
-
-First.Year<-c(1978:2007)
-First.Year
-
-xyear<-First.Year[1:28]
-xyear
-
-
-
-RA.2a.males<-anom1[1:28]
-
-RA.2<-cbind(First.Year,anom1)
-RA.2
-RA.2a.males.check<-cbind(xyear,RA.2a.males)
-RA.2a.males.check
-
-
-RA.2a.males
-
-#######################################################################################################################################################################################
-##################################### 2 year rolling average of male abundance for effects during 2nd juvenile year and beginning of third, note: temp in year y= mean((y-1)+y+(y+1)###
-
-Males$RA.2
-anom2<-Males$RA.2[1:30]
-anom2
-Second.Year<-c(1979:2007)
-Second.Year
-
-RA.2bb<-cbind(Second.Year,anom2)
-RA.2bb
-
-xi.b<-anom2[2:30]
-
-xyear<-Second.Year
-xyear
-
-RA.2b.check<-cbind(xyear,xi.b)
-RA.2b.check
-
-RA.2b.males<-xi.b[2:29]
-RA.2b.males
-
-
-RA.2b.recruit<-cbind(yyear,yi)
-RA.2b.recruit
-
-###############################################################################################################################################
-################################################## Generate editted series for use with editted residual set ##################################
-
-lag.3.males.ed<-lag.3.males[-5]	
-lag.2.males.ed<-lag.2.males[-5]	
-lag.1.males.ed<-lag.1.males[-5]
-RA.3.males.ed<-RA.3.males[-5]
-RA.2a.males.ed<-RA.2a.males[-5]	
-RA.2b.males.ed<-RA.2b.males[-5] 
 
 #########################################################################################################################################################################################
 ############################################################# Flathead sole model abundance vs. S/R residuals ##########################################################################
 ################################################################ Import data and define vatiables #######################################################################################
+envar<-read.csv("data/envars.csv")
+FHS<-envar$FHS_TBM[8:45]
+avg.FHS<-mean(FHS)
+FHS.anom<-FHS-avg.FHS
+FHS.Year<-envar$Year[8:45]
 
-FHS.TS<-read.csv("FHS_SAFE.csv")
-names(FHS.TS)
-FHS.TS
-attach(FHS.TS)
-FHS<-Tot_biomass
-FHS.anom<-BM_anom
-FHS.Year<-FHS.TS$Year
-FHS.rec<-Rec_anom
 
 plot(FHS.anom~FHS.Year,ylab="flathead sole age 3+ model biomass anomoly",xlab="model year",pch=16)
 abline(h=0)
@@ -1348,27 +1172,26 @@ abline(h=0)
 
 ###############################################################################################################################################################################
 #################################################### Lag=3: Select data for effects during year of settling #########################################################
-
+envar$Year[8:45]
 FHS.anom
-FHS.lag.3<-FHS.anom[2:29]
+FHS.lag.3<-FHS.anom[2:35]
 FHS.lag.3
-FHS.lag.3.ed<-FHS.lag.3[-5]
-settle.year<-c(1978:2005)
+settle.year<-c(1983:2016)
 settle.year
 FHS.a<-cbind(settle.year,FHS.lag.3)
 FHS.a
 
 
 FHS.lag.3
-FHS.lag.3.ed
+
 ###############################################################################################################################################################################
 #################################################### Lag=2: Select data for effects during first year after settling #########################################################
-r
+
 FHS.anom
-FHS.lag.2<-FHS.anom[3:30]
+FHS.lag.2<-FHS.anom[3:36]
 FHS.lag.2
-FHS.lag.2.ed<-FHS.lag.2[-5]
-First.year<-c(1979:2006)
+
+First.year<-c(1984:2017)
 First.year
 FHS.a<-cbind(First.year,FHS.lag.2)
 FHS.a
@@ -1381,55 +1204,46 @@ FHS.lag.2.ed
 #################################################### Lag=1: Select data for effects during second year after settling #########################################################
 
 FHS.anom
-FHS.lag.1<-FHS.anom[4:31]
+FHS.lag.1<-FHS.anom[4:37]
 FHS.lag.1
-FHS.lag.1.ed<-FHS.lag.1[-5]
-Second.year<-c(1980:2007)
+Second.year<-c(1985:2018)
 Second.year
 FHS.a<-cbind(Second.year,FHS.lag.1)
 FHS.a
 
 
 FHS.lag.1
-FHS.lag.1.ed
+
 ###########################################################################################################################################
 ########################################## Set work directory and attach libraries ########################################################
 
-setwd('C:/Users/Jon Richar/Desktop/Project/Datasets for Analysis/BSC.data')#Valkrie		
-setwd('C:/Documents and Settings/Jon/Desktop/Project/Datasets for analysis/BSC.data')#Paladin
-
-############################################# PDO ##########################################################################################
-pdo<-read.csv("PDO.csv")
+############################################# PDO winter-release year ##########################################################################################
+envar$Year
+pdo<-envar$PDO_djf[9:42]
 pdo
 attach(pdo)
 
-pdos<-PDOs[79:106]
+############################################# Summer PDO - release year ###############################################################################
+pdos<-envar$PDO_jja[9:42]
 
 pdos
 
-pdos.ed<-pdos[-5]
-pdos.ed
-############################################## Arctic oscillation #########################################################################
+pdos.ed<-pdos
+############################################## Arctic oscillation - release year #########################################################################
 
-
-Arctic.osc<-read.csv("Arctic_oscillation.csv")
-Arctic.osc
-attach(Arctic.osc)
-AO<-AOIa[28:55]
+AO<-envars$AO_jfm[9:42]
 
 
 AO
+AO.ed<-AO
 
-AO.ed<-AO[-5]
-
-AO.ed
 ##################################################################################################################################################################################
 ######################################################### Factors for models##################################################################################################
 par(mfrow=c(1,1),cex.lab=1.5,cex.axis=1.25,cex=1.25) #configure axis labels
 
 ################################ Residual series ################
 r
-r6
+
 ################################ SST ############################
 
 April.anom #28 entries 1978-
@@ -1451,15 +1265,6 @@ NBT.RA.3a	#28 entries
 NBT.RA.3b	#27 entries
 NBT.RA.2a	#28 entries
 NBT.RA.2b	#27 entries
-
-############################## Large males ######################
-
-lag.3.males	#28 entries
-lag.2.males	#28 entries
-lag.1.males #28 entries
-RA.3.males #28 entries
-RA.2a.males	#28 entries
-RA.2b.males #28 entries
 
 ############################## Flathead sole #######################
 
