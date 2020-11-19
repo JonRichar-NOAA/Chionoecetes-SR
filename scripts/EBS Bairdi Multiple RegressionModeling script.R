@@ -758,25 +758,27 @@ summary(Fit6)
 #######################################################################################################################################
 ############################################### Designate residual series to use in modeling##########################################
 ######################################################################################################################################
-r
+
 r<-r3
 
 #########################################################################################################################################
 ########################################## Analyze S/R residuals against environmental variables ######################################################
 #########################################################################################################################################
-n0<-length(r)
+
 Year<-recYear_lag3
 resid.series<-cbind(Year,r)  #pairs year of recruitment to index with S/R residual of that pseudocohort
 resid.series
 plot(resid.series,ylab="Lag 3 S/R residual",xlab="Year",pch=16)
 
-r<-r[5:n0]
-RecruitmentYear<-Year[5:n0]
+r<-r[5:length(r)]
+RecruitmentYear<-Year[5:length(r)]
 RecruitmentYear
 plot(r~RecruitmentYear)
 
 resid.series<-cbind(RecruitmentYear,r)
 resid.series
+r<-as.matrix(r)
+r
 ###############################################################################################################################
 ################################################# NCAR NCEP wind data ########################################################
 ###############################################################################################################################
@@ -789,7 +791,7 @@ wind_dat
 D.90.May.ed<-wind_dat$D.90.May[-5]
 D.90.June.ed<-wind_dat$D.90.June[-5]
 D.90.July.ed<-wind_dat$D.90.July[-5]
-D.90.May.June.ed<-wind_dat$.90.May.June[-5]
+D.90.May.June.ed<-wind_dat$D.90.May.June[-5]
 D.90.JJ.ed<-wind_dat$D.90.JJ[-5]
 D.90.MJ.ed<-wind_dat$D.90.MJ[-5]
 
@@ -881,101 +883,104 @@ D.neg.90.MJ.ed<-wind_dat$D.neg.90.MJ[-5]
 
 #################################################################################################################################################################
 ################################################# Limit to same years as FHS data--only for release years 1983-2016  ##############################################################################
-nw<-length(wind_dat$year)
-wind_dat$year
-D.90.May<-D.90.May.ed[6:nw]
-D.90.June<-D.90.June.ed[6:nw]
-D.90.July<-D.90.July.ed[6:nw]
+year.ed<-wind_dat$year[-5]
+year.ed
+nw<-length(wind_dat$year[-5])
+nw
+wind_dat$year[6:nw]
+D.90.May<-D.90.May.ed[5:nw-1]
+D.90.June<-D.90.June.ed[5:nw]
+D.90.July<-D.90.July.ed[5:nw]
 D.90.May.June<-D.90.May.June.ed[6:nw]
-D.90.JJ<-D.90.JJ.ed[6:nw]
-D.90.MJ<-D.90.MJ.ed[6:nw]
+D.90.JJ<-D.90.JJ.ed[5:nw]
+D.90.MJ<-D.90.MJ.ed[5:nw]
 
-D.75.May<-D.75.May.ed[6:nw]
-D.75.June<-D.75.June.ed[6:nw]
-D.75.July<-D.75.July.ed[6:nw]
-D.75.May.June<-D.75.May.June.ed[6:nw]
-D.75.JJ<-D.75.JJ.ed[6:nw]
-D.75.MJ<-D.75.MJ.ed[6:nw]
+D.75.May<-D.75.May.ed[5:nw]
+D.75.June<-D.75.June.ed[5:nw]
+D.75.July<-D.75.July.ed[5:nw]
+D.75.May.June<-D.75.May.June.ed[5:nw]
+D.75.JJ<-D.75.JJ.ed[5:nw]
+D.75.MJ<-D.75.MJ.ed[5:nw]
 
-D.60.May<-D.60.May.ed[6:nw]
-D.60.June<-D.60.June.ed[6:nw]
-D.60.July<-D.60.July.ed[6:nw]
-D.60.May.June<-D.60.May.June.ed[6:nw]
-D.60.JJ<-D.60.JJ.ed[6:nw]
-D.60.MJ<-D.60.MJ.ed[6:nw]
+D.60.May<-D.60.May.ed[5:nw]
+D.60.June<-D.60.June.ed[5:nw]
+D.60.July<-D.60.July.ed[5:nw]
+D.60.May.June<-D.60.May.June.ed[5:nw]
+D.60.JJ<-D.60.JJ.ed[5:nw]
+D.60.MJ<-D.60.MJ.ed[5:nw]
 
-D.45.May<-D.45.May.ed[6:nw]
-D.45.June<-D.45.June.ed[6:nw]
-D.45.July<-D.45.July.ed[6:nw]
-D.45.May.June<-D.45.May.June.ed[6:nw]
-D.45.JJ<-D.45.JJ.ed[6:nw]
-D.45.MJ<-D.45.MJ.ed[6:nw]
+D.45.May<-D.45.May.ed[5:nw]
+D.45.June<-D.45.June.ed[5:nw]
+D.45.July<-D.45.July.ed[5:nw]
+D.45.May.June<-D.45.May.June.ed[5:nw]
+D.45.JJ<-D.45.JJ.ed[5:nw]
+D.45.MJ<-D.45.MJ.ed[5:nw]
 
-D.30.May<-D.30.May.ed[6:nw]
-D.30.June<-D.30.June.ed[6:nw]
-D.30.July<-D.30.July.ed[6:nw]
-D.30.May.June<-D.30.May.June.ed[6:nw]
-D.30.JJ.<-D.30.JJ.ed[6:nw]
-D.30.MJ<-D.30.MJ.ed[6:nw]
+D.30.May<-D.30.May.ed[5:nw]
+D.30.June<-D.30.June.ed[5:nw]
+D.30.July<-D.30.July.ed[5:nw]
+D.30.May.June<-D.30.May.June.ed[5:nw]
+D.30.JJ.<-D.30.JJ.ed[5:nw]
+D.30.MJ<-D.30.MJ.ed[5:nw]
 
-D.15.May<-D.15.May.ed[6:nw]
-D.15.June<-D.15.June.ed[6:nw]
-D.15.July<-D.15.July.ed[6:nw]
-D.15.May.June<-D.15.May.June.ed[6:nw]
-D.15.JJ<-D.15.JJ.ed[6:nw]
-D.15.MJ<-D.15.MJ.ed[6:nw]
+D.15.May<-D.15.May.ed[5:nw]
+D.15.June<-D.15.June.ed[5:nw]
+D.15.July<-D.15.July.ed[5:nw]
+D.15.May.June<-D.15.May.June.ed[5:nw]
+D.15.JJ<-D.15.JJ.ed[5:nw]
+D.15.MJ<-D.15.MJ.ed[5:nw]
 
-D.0.May<-D.0.May.ed[6:nw]
-D.0.June<-D.0.June.ed[6:nw]
-D.0.July<-D.0.July.ed[6:nw]
-D.0.May.June<-D.0.May.June.ed[6:nw]
-D.0.JJ<-D.0.JJ.ed[6:nw]
-D.0.MJ<-D.0.MJ.ed[6:nw]
+D.0.May<-D.0.May.ed[5:nw]
+D.0.June<-D.0.June.ed[5:nw]
+D.0.July<-D.0.July.ed[5:nw]
+D.0.May.June<-D.0.May.June.ed[5:nw]
+D.0.JJ<-D.0.JJ.ed[5:nw]
+D.0.MJ<-D.0.MJ.ed[5:nw]
 
-D.neg.15.May<-D.neg.15.May.ed[6:nw]
-D.neg.15.June<-D.neg.15.June.ed[6:nw]
-D.neg.15.July<-D.neg.15.July.ed[6:nw]
-D.neg.15.May.June<-D.neg.15.May.June.ed[6:nw]
-D.neg.15.JJ<-D.neg.15.JJ.ed[6:nw]
-D.neg.15.MJ<-D.neg.15.MJ.ed[6:nw]
+D.neg.15.May<-D.neg.15.May.ed[5:nw]
+D.neg.15.June<-D.neg.15.June.ed[5:nw]
+D.neg.15.July<-D.neg.15.July.ed[5:nw]
+D.neg.15.May.June<-D.neg.15.May.June.ed[5:nw]
+D.neg.15.JJ<-D.neg.15.JJ.ed[5:nw]
+D.neg.15.MJ<-D.neg.15.MJ.ed[5:nw]
 
-D.neg.30.May<-D.neg.30.May.ed[6:nw]
-D.neg.30.June<-D.neg.30.June.ed[6:nw]
-D.neg.30.July<-D.neg.30.July.ed[6:nw]
-D.neg.30.May.June<-D.neg.30.May.June.ed[6:nw]
-D.neg.30.JJ<-D.neg.30.JJ.ed[6:nw]
-D.neg.30.MJ<-D.neg.30.MJ.ed[6:nw]
-
-
-D.neg.45.May<-D.neg.45.May.ed[6:nw]
-D.neg.45.June<-D.neg.45.June.ed[6:nw]
-D.neg.45.July<-D.neg.45.July.ed[6:nw]
-D.neg.45.May.June<-D.neg.45.May.June.ed[6:nw]
-D.neg.45.JJ<-D.neg.45.JJ.ed[6:nw]
-D.neg.45.MJ<-D.neg.45.MJ.ed[6:nw]
+D.neg.30.May<-D.neg.30.May.ed[5:nw]
+D.neg.30.June<-D.neg.30.June.ed[5:nw]
+D.neg.30.July<-D.neg.30.July.ed[5:nw]
+D.neg.30.May.June<-D.neg.30.May.June.ed[5:nw]
+D.neg.30.JJ<-D.neg.30.JJ.ed[5:nw]
+D.neg.30.MJ<-D.neg.30.MJ.ed[5:nw]
 
 
-D.neg.60.May<-D.neg.60.May.ed[6:nw]
-D.neg.60.June<-D.neg.60.June.ed[6:nw]
-D.neg.60.July<-D.neg.60.July.ed[6:nw]
-D.neg.60.May.June<-D.neg.60.May.June.ed[6:nw]
-D.neg.60.JJ<-D.neg.60.JJ.ed[6:nw]
-D.neg.60.MJ<-D.neg.60.MJ.ed[6:nw]
+D.neg.45.May<-D.neg.45.May.ed[5:nw]
+D.neg.45.June<-D.neg.45.June.ed[5:nw]
+D.neg.45.July<-D.neg.45.July.ed[5:nw]
+D.neg.45.May.June<-D.neg.45.May.June.ed[5:nw]
+D.neg.45.JJ<-D.neg.45.JJ.ed[5:nw]
+D.neg.45.MJ<-D.neg.45.MJ.ed[5:nw]
 
 
-D.neg.75.May<-D.neg.75.May.ed[6:nw]
-D.neg.75.June.<-D.neg.75.June.ed[6:nw]
-D.neg.75.July<-D.neg.75.July.ed[6:nw]
-D.neg.75.May.June<-D.neg.75.May.June.ed[6:nw]
-D.neg.75.JJ<-D.neg.75.JJ.ed[6:nw]
-D.neg.75.MJ<-D.neg.75.MJ.ed[6:nw]
+D.neg.60.May<-D.neg.60.May.ed[5:nw]
+D.neg.60.June<-D.neg.60.June.ed[5:nw]
+D.neg.60.July<-D.neg.60.July.ed[5:nw]
+D.neg.60.May.June<-D.neg.60.May.June.ed[5:nw]
+D.neg.60.JJ<-D.neg.60.JJ.ed[5:nw]
+D.neg.60.MJ<-D.neg.60.MJ.ed[5:nw]
 
-D.neg.90.May<-D.neg.90.May.ed[6:nw]
-D.neg.90.June<-D.neg.90.June.ed[6:nw]
-D.neg.90.July<-D.neg.90.July.ed[6:nw]
-D.neg.90.May.June<-D.neg.90.May.June.ed[6:nw]
-D.neg.90.JJ<-D.neg.90.JJ.ed[6:nw]
-D.neg.90.MJ<-D.neg.90.MJ.ed[6:nw]
+
+D.neg.75.May<-D.neg.75.May.ed[5:nw]
+D.neg.75.June.<-D.neg.75.June.ed[5:nw]
+D.neg.75.July<-D.neg.75.July.ed[5:nw]
+D.neg.75.May.June<-D.neg.75.May.June.ed[5:nw]
+D.neg.75.JJ<-D.neg.75.JJ.ed[5:nw]
+D.neg.75.MJ<-D.neg.75.MJ.ed[5:nw]
+
+D.neg.90.May<-D.neg.90.May.ed[5:nw]
+D.neg.90.June<-D.neg.90.June.ed[5:nw]
+D.neg.90.July<-D.neg.90.July.ed[5:nw]
+D.neg.90.May.June<-D.neg.90.May.June.ed[5:nw]
+D.neg.90.JJ<-D.neg.90.JJ.ed[5:nw]
+D.neg.90.MJ<-D.neg.90.MJ.ed[5:nw]
 
 
 #####################################################################################################################
@@ -1231,7 +1236,7 @@ pdos
 pdos.ed<-pdos
 ############################################## Arctic oscillation - release year #########################################################################
 
-AO<-envars$AO_jfm[9:42]
+AO<-envar$AO_jfm[9:42]
 
 
 AO
@@ -1242,7 +1247,7 @@ AO.ed<-AO
 par(mfrow=c(1,1),cex.lab=1.5,cex.axis=1.25,cex=1.25) #configure axis labels
 
 ################################ Residual series ################
-r
+r        #38 entries
 
 ################################ SST ############################
 
@@ -1382,10 +1387,16 @@ D.90.May.June
 #############################################################################################################################
 
 par(mfrow=c(1,1),cex.lab=1.5,cex.axis=1.25,cex=1.25) #configure axis labels
-Year<-c(1978:2005)
+Year<-c(1983:2016)
 #############################################################################################################################
 ################################# Fit multivariate models models ###########################################################
+r<-na.omit(as.matrix(as.numeric((r))))
 r
+length(r)
+length(D.neg.90.May.June)
+length(FHS.lag.1)
+FHS.lag.1
+D.neg.90.May.June
 
 
 ############################################################################################################################
