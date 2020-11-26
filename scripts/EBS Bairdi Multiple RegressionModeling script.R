@@ -1084,7 +1084,7 @@ xyear.lag.2
 NBT.lag.2
 
 ######################################################################################################################################################################################
-##################################### 3 year rolling average of NBT anomoly for effects during juvenile stages, note: temp in year y= mean((y)+(y-1)+(y-2) ##############################
+##################################### 3 year rolling average of mean NBT for effects during juvenile stages, note: temp in year y= mean((y)+(y-1)+(y-2) ##############################
 names(envar)
 envar
 envar$EBS_NBT_RA3_final_year
@@ -1101,7 +1101,7 @@ RA.3.end<-cbind(End.Year,anom1)
 NBT.RA.3.end<-anom1
 
 ######################################################################################################################################################################################
-##################################### 3 year rolling average of NBT anomoly for effects during juvenile stages, note: temp in year y= mean((y-1)+y+(y+1) ##############################
+##################################### 3 year rolling average of mean NBT for effects during juvenile stages, note: temp in year y= mean((y-1)+y+(y+1) ##############################
 names(envar)
 envar
 envar$EBS_NBT_RA3_midyear
@@ -1121,7 +1121,7 @@ NBT.RA.3a
 
 
 #######################################################################################################################################################################################
-##################################### 3 year rolling average of NBT anomoly for effects during embryonic and early juvenile stages, note: temp in year y= mean((y-1)+y+(y+1)###########
+##################################### 3 year rolling average of mean NBT for effects during embryonic and early juvenile stages, note: temp in year y= mean((y-1)+y+(y+1)###########
 
 anom1<-envar$EBS_NBT_RA3_midyear[9:42]
 anom1
@@ -1446,10 +1446,11 @@ r<-as.matrix(as.numeric((r)))
 
 
 ###########################################################################################################################
-##################### Pcod lag 1 and FHS lag 2 and interaction term #######################################################
-rcorr(Pcod_lag2,FHS.lag.2)    # correlation = -0.33
+##################### Pcod lag 2 and FHS lag 2 and interaction term #######################################################
+cor(Pcod_lag2,FHS.lag.2)    # correlation = -0.33
+cor.test(Pcod_lag2,FHS.lag.2)
 
-fit.0<-gls(r~I(Pcod_lag2^2)+I(FHS.lag.2^2)+Pcod_lag2*FHS.lag.2,correlation=corAR1(),method="ML")
+fit.0<-gls(r~I(Pcod_lag2^2)+I(FHS.lag.2^2)+Pcod_lag1*FHS.lag.2,correlation=corAR1(),method="ML")
 summary(fit.0)
 D<-resid(fit.0)
 plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
@@ -1458,6 +1459,19 @@ AIC(fit.0)
 AICc(fit.0)
 aic.1<-AIC(fit.0)
 
+###########################################################################################################################
+##################### Add linear term for lag 2 Pcod #######################################################
+cor(Pcod_lag2,FHS.lag.2)    # correlation = -0.33
+cor.test(Pcod_lag2,FHS.lag.2)
+
+fit.01<-gls(r~I(Pcod_lag2^2)+I(FHS.lag.2^2)+Pcod_lag1*FHS.lag.2,correlation=corAR1(),method="ML")
+summary(fit.0)
+D<-resid(fit.0)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
+
+AIC(fit.0)
+AICc(fit.0)
+aic.1<-AIC(fit.0)
 ############################################################################################################################
 #################### Remove interaction term ###############################################################################
 fit.0a<-gls(r~I(Pcod_lag2^2)+I(FHS.lag.2^2),correlation=corAR1(),method="ML")
@@ -1468,6 +1482,16 @@ plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
 AIC(fit.0a)
 AICc(fit.0a)
 aic.1<-AIC(fit.0a)
+############################################################################################################################
+#################### Add linear effect for lag 2 cod ###############################################################################
+fit.0a1<-gls(r~I(Pcod_lag2^2)+Pcod_lag2+I(FHS.lag.2^2),correlation=corAR1(),method="ML")
+summary(fit.0a1)
+D<-resid(fit.0a1)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
+
+AIC(fit.0a1)
+AICc(fit.0a1)
+aic.1<-AIC(fit.0a1)
 
 ############################################################################################################################
 #################### Remove lag 2 FHS and substitute lag 1 cod  ###############################################################################
@@ -1481,6 +1505,53 @@ AICc(fit.0b)
 aic.1<-AIC(fit.0b)
 
 ############################################################################################################################
+#################### Add linear effect for lag 2 cod ###############################################################################
+fit.0b1<-gls(r~I(Pcod_lag2^2)+Pcod_lag2+I(Pcod_lag1^2),correlation=corAR1(),method="ML")
+summary(fit.0b1)
+D<-resid(fit.0b1)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
+
+AIC(fit.0b1)
+AICc(fit.0b1)
+aic.1<-AIC(fit.0b1)
+
+
+############################################################################################################################
+#################### Add linear effect for lag 2 and lag 1 cod ###############################################################################
+
+cor.test(Pcod_lag2,Pcod_lag1)                                   #significantly correlated
+
+fit.0b2<-gls(r~I(Pcod_lag2^2)+Pcod_lag2+I(Pcod_lag1^2)+Pcod_lag1,correlation=corAR1(),method="ML")
+summary(fit.0b2)
+D<-resid(fit.0b2)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
+
+AIC(fit.0b2)
+AICc(fit.0b2)
+aic.1<-AIC(fit.0b2)
+
+############################################################################################################################
+#################### Remove lag 1 cod effects ###############################################################################
+fit.0b2a<-gls(r~I(Pcod_lag2^2)+Pcod_lag2,correlation=corAR1(),method="ML")
+summary(fit.0b2a)
+D<-resid(fit.0b2a)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
+
+AIC(fit.0b2a)
+AICc(fit.0b2a)
+aic.1<-AIC(fit.0b2a)
+
+############################################################################################################################
+#################### Remove lag 2 cod effects ###############################################################################
+fit.0b2b<-gls(r~I(Pcod_lag1^2)+Pcod_lag1,correlation=corAR1(),method="ML")
+summary(fit.0b2b)
+D<-resid(fit.0b2b)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
+
+AIC(fit.0b2b)
+AICc(fit.0b2b)
+aic.1<-AIC(fit.0b2b)
+############################################################################################################################
 #################### Remove single-year cod and substiitute 3 year rolling average on end year starting hatch year  ###############################################################################
 fit.0c<-gls(r~I(Pcod_RA3_end_hatch^2),correlation=corAR1(),method="ML")
 summary(fit.0c)
@@ -1493,7 +1564,7 @@ aic.1<-AIC(fit.0c)
 
 ############################################################################################################################
 #################### Remove single-year cod and substiitute 3 year rolling average on end year starting 1 year after hatch year  ###############################################################################
-fit.0d<-gls(r~(Pcod_RA3_end_1ah^2),correlation=corAR1(),method="ML")
+fit.0d<-gls(r~I(Pcod_RA3_end_1ah^2),correlation=corAR1(),method="ML")
 summary(fit.0d)
 D<-resid(fit.0d)
 plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
@@ -1504,7 +1575,7 @@ aic.1<-AIC(fit.0d)
 
 ############################################################################################################################
 #################### Remove single-year cod and substiitute 3 year rolling average on midyear starting 1 year after hatch year  ###############################################################################
-fit.0e<-gls(r~(Pcod_RA3_mid^2),correlation=corAR1(),method="ML")
+fit.0e<-gls(r~I(Pcod_RA3_mid^2)+Pcod_RA3_mid,correlation=corAR1(),method="ML")
 summary(fit.0e)
 D<-resid(fit.0e)
 plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
@@ -1513,7 +1584,26 @@ AIC(fit.0e)
 AICc(fit.0e)
 aic.1<-AIC(fit.0e)
 
+############################################################################################################################
+#################### Remove single-year cod and substiitute 3 year rolling average on midyear starting 1 year after hatch year  ###############################################################################
+fit.0e1<-gls(r~I(Pcod_RA3_mid^2)+Pcod_RA3_mid,correlation=corAR1(),method="ML")
+summary(fit.0e1)
+D<-resid(fit.0e1)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
 
+AIC(fit.0e1)
+AICc(fit.0e1)
+aic.1<-AIC(fit.0e1)
+############################################################################################################################
+#################### Remove single-year cod and substiitute 3 year rolling average on midyear starting 1 year after hatch year  ###############################################################################
+fit.0e<-gls(r~I(Pcod_RA3_mid^2),correlation=corAR1(),method="ML")
+summary(fit.0e)
+D<-resid(fit.0e)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
+
+AIC(fit.0e)
+AICc(fit.0e)
+aic.1<-AIC(fit.0e)
 
 ############################################################################################################################
 names(envar)
@@ -1561,6 +1651,39 @@ plot(D)
 AIC(fit.1b)
 AICc(fit.1b)
 aic.1b<-AIC(fit.1b)
+
+
+############################################################################################################################
+################### Add lag 1 FHS linear term #################################################################
+
+fit.1b1<-gls(r~I(FHS.lag.1^2)+FHS.lag.1,correlation=corAR1(),method="ML")
+summary(fit.1b1)
+D<-resid(fit.1b1)
+plot(D)
+AIC(fit.1b1)
+AICc(fit.1b1)
+aic.1b1<-AIC(fit.1b1)
+
+############################################################################################################################
+################### Use poly to create orthoganal polynomials#################################################################
+
+fit.1b1a<-gls(r~poly(FHS.lag.1,2),correlation=corAR1(),method="ML")
+summary(fit.1b1a)
+D<-resid(fit.1b1a)
+plot(D)
+AIC(fit.1b1a)
+AICc(fit.1b1a)
+aic.1b1<-AIC(fit.1b1a)
+############################################################################################################################
+################### lag 1 FHS linear term only#################################################################
+
+fit.1b2<-gls(r~FHS.lag.1,correlation=corAR1(),method="ML")
+summary(fit.1b2)
+D<-resid(fit.1b2)
+plot(D)
+AIC(fit.1b2)
+AICc(fit.1b2)
+aic.1b1<-AIC(fit.1b2)
 ############################################################################################################################
 ################### Drop lag 1 FHS and add lag 2 FHS #################################################################
 
@@ -1571,6 +1694,38 @@ plot(D)
 AIC(fit.1bb)
 AICc(fit.1bb)
 aic.1b<-AIC(fit.1bb)
+
+############################################################################################################################
+################### Add lag 2 FHS linear term #################################################################
+
+fit.1bb1<-gls(r~I(FHS.lag.2^2)+FHS.lag.2,correlation=corAR1(),method="ML")  # linear term is significant
+summary(fit.1bb1)
+D<-resid(fit.1bb1)
+plot(D)
+AIC(fit.1bb1)
+AICc(fit.1bb1)
+aic.1bb1<-AIC(fit.1bb1)
+
+############################################################################################################################
+################### Use poly() to create othoganal polynomials #################################################################
+
+fit.1bb1<-gls(r~I(FHS.lag.2^2)+FHS.lag.2,correlation=corAR1(),method="ML")  # linear term is significant
+summary(fit.1bb1)
+D<-resid(fit.1bb1)
+plot(D)
+AIC(fit.1bb1)
+AICc(fit.1bb1)
+aic.1bb1<-AIC(fit.1bb1)
+############################################################################################################################
+################### lag 2 FHS linear term only#################################################################
+
+fit.1bb2<-gls(r~FHS.lag.2,correlation=corAR1(),method="ML")
+summary(fit.1bb2)
+D<-resid(fit.1bb2)
+plot(D)
+AIC(fit.1bb2)
+AICc(fit.1bb2)
+aic.1bb2<-AIC(fit.1bb2)
 ############################################################################################################################
 ################### Add minus 90 degree component #########################################################################
 
