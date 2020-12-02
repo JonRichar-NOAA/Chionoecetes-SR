@@ -201,8 +201,242 @@ ggplot(dat, aes(Year, ice.area.jfma)) + geom_point() + theme(legend.position = "
 ggplot(dat, aes(ice.area.jfma)) + geom_histogram() #+ facet_wrap(~Year, scales="free") #little better to my eye
 
 
-######################################################################################################
+#############################################################################################################################################
+################################ Examine data for correlations between environmental variables ##############################################
+reduced_envars<-read.csv("data/envars_ebs_only.csv")
+ncol(reduced_envars)
+#cor_vars<-reduced_envars[8:44,2:15]
+cor_vars<-reduced_envars[,2:15]
+cor2 <- cor(cor_vars, use="complete.obs")
+corrplot(cor2)
+dimnames(cor_vars)
+##############################################################################################################################################
+################################# Envars index for selecting data ###########################################################################
+envar$Year          #45 rows...1975 is row 1, 2019 is row 45. 2016 (final hatch year is 42)
+# First hatch year will be 1983(9), final will be 2016(42)
+#Stock recruit residuals are lage three years from hatch: first will be 1986(12), last will be 2019(45)
+# For embryonic year effects envar$[8:41]
+# for hatch year effects: envar$[9:42]
+# for effects one year after hatch(lag 1): envar$[10:43]
+# for effects two years after hatch(lag 2): envar$[11:44]
+# for two-year rolling averages with embryonic and hatch year effects : envar$[9:42]
+# for two-year rolling averages with hatch year and following year effects : envar[10:43]
+# for three-year rolling averages on END YEAR with embryonic year and following 2 years effects : envar$[10:43]
+# for three-year rolling averages on END YEAR with hatch year and following 2 years effects : envar$[11:44]
+# for three-year rolling averages on MID YEAR with embryonic year and following 2 years effects : envar$[9:42]
+# for three-year rolling averages on MID YEAR with hatch year and following 2 years effects : envar$[10:43]
+
+
+
+############################################################################################################################################################
+####################################### Plot resids versus environmental data ##############################################################################
+##############################################################################################################################################################
 names(envar)
+
+############################################################################################################################################################
+####################################### Arctic oscillation (winter) ##############################################################################################
+dat<-as.data.frame(cbind(envar$AO_jfm[9:42],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("AO_jfm","SR_residuals")
+dat
+ggplot(dat,aes(AO_jfm,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Southeast Wind (May-September) - lagged for hatch year effect ##############################################################################################
+dat<-as.data.frame(cbind(envar$SE.wind.May.Sep[9:42],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("SE.wind","SR_residuals")
+dat
+ggplot(dat,aes(SE.wind,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Northwest Wind (May-September) - lagged for hatch year effect ##############################################################################################
+dat<-as.data.frame(cbind(envar$NW.wind.May.Sep[9:42],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("NW.wind","SR_residuals")
+dat
+ggplot(dat,aes(NW.wind,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+
+############################################################################################################################################################
+####################################### Summer PDO - lagged for hatch year effect ##############################################################################################
+dat<-as.data.frame(cbind(envar$PDO_jja[9:42],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("PDO_jja","SR_residuals")
+dat
+ggplot(dat,aes(PDO_jja,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+
+############################################################################################################################################################
+####################################### Winter PDO - lagged for hatch year effect ##############################################################################################
+dat<-as.data.frame(cbind(envar$PDO_djf[9:42],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("PDO_djf","SR_residuals")
+dat
+ggplot(dat,aes(PDO_djf,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+
+############################################################################################################################################################
+####################################### Winter ice area - lagged for hatch year effect ##############################################################################################
+dat<-as.data.frame(cbind(envar$ice.area.jfma[9:42],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("ice.area.jfma","SR_residuals")
+dat
+ggplot(dat,aes(ice.area.jfma,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Winter ice area - lagged for year following hatch year effect ##############################################################################################
+dat<-as.data.frame(cbind(envar$ice.area.jfma[10:43],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("ice.area.jfma","SR_residuals")
+dat
+ggplot(dat,aes(ice.area.jfma,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+#################################################################################################################################################################
+####################################### PACIFIC COD ##########################################################################################################
+##################################################################################################################################################################
+
+############################################################################################################################################################
+####################################### Lag 3 year (release year) predation by Pacific cod ##############################################################################################
+dat<-as.data.frame(cbind(envar$Age3to7Pcodabun[9:42],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("Pcod_lag3","SR_residuals")
+dat
+ggplot(dat,aes(Pcod_lag3,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Lag 2 year (one year post release year) predation by Pacific cod ##############################################################################################
+dat<-as.data.frame(cbind(envar$Age3to7Pcodabun[10:43],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("Pcod_lag2","SR_residuals")
+dat
+ggplot(dat,aes(Pcod_lag2,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Lag 1 year (two year post release year) predation by Pacific cod ##############################################################################################
+dat<-as.data.frame(cbind(envar$Age3to7Pcodabun[11:44],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("Pcod_lag1","SR_residuals")
+dat
+ggplot(dat,aes(Pcod_lag1,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Pacific cod 3 year RA-end year for predation beginning release year ##############################################################################################
+dat<-as.data.frame(cbind(envar$Age3to7Pcodabun_RA3_end[11:44],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("Pcod_RA3","SR_residuals")
+dat
+ggplot(dat,aes(Pcod_RA3,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Pacific cod 3 year RA-mid year for predation beginning release year ##############################################################################################
+dat<-as.data.frame(cbind(envar$Age3to7Pcodabun_RA3_mid[10:43],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("Pcod_RA3","SR_residuals")
+dat
+ggplot(dat,aes(Pcod_RA3,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+
+
+#################################################################################################################################################################
+####################################### FLATHEAD SOLE ##########################################################################################################
+##################################################################################################################################################################
+
+
+############################################################################################################################################################
+####################################### Lag 3 year (release year) predation by FHS ##############################################################################################
+dat<-as.data.frame(cbind(envar$FHS_TBM[9:42],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("FHS_TBM_lag3","SR_residuals")
+dat
+ggplot(dat,aes(FHS_TBM_lag3,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Lag 2 year (one year post release year) predation by FHS ##############################################################################################
+dat<-as.data.frame(cbind(envar$FHS_TBM[10:43],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("FHS_TBM_lag2","SR_residuals")
+dat
+ggplot(dat,aes(FHS_TBM_lag2,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Lag 1 year (two year post release year) predation by FHS ##############################################################################################
+dat<-as.data.frame(cbind(envar$FHS_TBM[11:44],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("FHS_TBM_lag1","SR_residuals")
+dat
+ggplot(dat,aes(FHS_TBM_lag1,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+
+
+#################################################################################################################################################################
+####################################### NBT ##########################################################################################################
+##################################################################################################################################################################
+
+
+############################################################################################################################################################
+####################################### Lag 3 year (release year)  ##############################################################################################
+dat<-as.data.frame(cbind(envar$EBS_NBT_anom[9:42],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("EBS_NBT_anom_lag3","SR_residuals")
+dat
+ggplot(dat,aes(EBS_NBT_anom_lag3,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Lag 2 year (one year post release year)  ##############################################################################################
+dat<-as.data.frame(cbind(envar$EBS_NBT_anom[10:43],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("EBS_NBT_anom_lag2","SR_residuals")
+dat
+ggplot(dat,aes(EBS_NBT_anom_lag2,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+############################################################################################################################################################
+####################################### Lag 1 year (two year post release year)  ##############################################################################################
+dat<-as.data.frame(cbind(envar$EBS_NBT_anom[11:44],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("EBS_NBT_anom_lag1","SR_residuals")
+dat
+ggplot(dat,aes(EBS_NBT_anom_lag1,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+
+
+############################################################################################################################################################
+#######################################3 year RA-end year for effect beginning embryonic year ##############################################################################################
+dat<-as.data.frame(cbind(envar$EBS_NBT_RA3_final_year_anom[10:43],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("EBS_NBT_RA3_final_year_anom","SR_residuals")
+dat
+ggplot(dat,aes(EBS_NBT_RA3_final_year_anom,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+#######################################3 year RA-end year for effect beginning release year ##############################################################################################
+dat<-as.data.frame(cbind(envar$EBS_NBT_RA3_final_year_anom[11:44],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("EBS_NBT_RA3_final_year_anom","SR_residuals")
+dat
+ggplot(dat,aes(EBS_NBT_RA3_final_year_anom,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+############################################################################################################################################################
+####################################### 3 year RA-mid year for predation beginning release year ##############################################################################################
+dat<-as.data.frame(cbind(envar$EBS_NBT_RA3_midyear_anom[10:43],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("EBS_NBT_RA3_midyear_anom","SR_residuals")
+dat
+ggplot(dat,aes(EBS_NBT_RA3_midyear_anom,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
+
+
+###############################################################################################################################################
 ####################################### All Envars #####################################################
 
 dat4<-read.csv("data/all_envars.csv")
