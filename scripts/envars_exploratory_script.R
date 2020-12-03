@@ -51,7 +51,15 @@ cor(dat3)
 cor1 <- cor(dat3, use="complete.obs")
 corrplot(cor1)
 
-
+###########################################################################################################################################################
+################################ Examine data for correlations between environmental variables using reduced dataset ##############################################
+reduced_envars<-read.csv("data/envars_ebs_only.csv")
+ncol(reduced_envars)
+#cor_vars<-reduced_envars[8:44,2:15]
+cor_vars<-reduced_envars[,2:15]
+cor2 <- cor(cor_vars, use="complete.obs")
+corrplot(cor2)
+dimnames(cor_vars)
 #########################################################################################################################################
 ######################## Age 3 to 7 Pacific cod annual estimates ##########################################################################
 ggplot(dat, aes(Year, Age3to7Pcodabun)) + geom_point() + theme(legend.position = "none") +
@@ -201,15 +209,7 @@ ggplot(dat, aes(Year, ice.area.jfma)) + geom_point() + theme(legend.position = "
 ggplot(dat, aes(ice.area.jfma)) + geom_histogram() #+ facet_wrap(~Year, scales="free") #little better to my eye
 
 
-#############################################################################################################################################
-################################ Examine data for correlations between environmental variables ##############################################
-reduced_envars<-read.csv("data/envars_ebs_only.csv")
-ncol(reduced_envars)
-#cor_vars<-reduced_envars[8:44,2:15]
-cor_vars<-reduced_envars[,2:15]
-cor2 <- cor(cor_vars, use="complete.obs")
-corrplot(cor2)
-dimnames(cor_vars)
+
 ##############################################################################################################################################
 ################################# Envars index for selecting data ###########################################################################
 envar$Year          #45 rows...1975 is row 1, 2019 is row 45. 2016 (final hatch year is 42)
@@ -234,13 +234,27 @@ envar$Year          #45 rows...1975 is row 1, 2019 is row 45. 2016 (final hatch 
 names(envar)
 
 ############################################################################################################################################################
-####################################### Arctic oscillation (winter) ##############################################################################################
+####################################### Arctic oscillation (winter) hatch year ##############################################################################################
 dat<-as.data.frame(cbind(envar$AO_jfm[9:42],envar$Lag3_SR_residuals[12:45]))
 colnames(dat)<-c("AO_jfm","SR_residuals")
 dat
 ggplot(dat,aes(AO_jfm,SR_residuals)) + geom_point() + theme(legend.position = "none") +
   geom_smooth()
+############################################################################################################################################################
+####################################### Arctic oscillation (winter) 1st year ##############################################################################################
+dat<-as.data.frame(cbind(envar$AO_jfm[10:43],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("AO_jfm","SR_residuals")
+dat
+ggplot(dat,aes(AO_jfm,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
 
+############################################################################################################################################################
+####################################### Arctic oscillation (winter) 2nd year ##############################################################################################
+dat<-as.data.frame(cbind(envar$AO_jfm[11:44],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("AO_jfm","SR_residuals")
+dat
+ggplot(dat,aes(AO_jfm,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
 ############################################################################################################################################################
 ####################################### Southeast Wind (May-September) - lagged for hatch year effect ##############################################################################################
 dat<-as.data.frame(cbind(envar$SE.wind.May.Sep[9:42],envar$Lag3_SR_residuals[12:45]))
@@ -275,7 +289,21 @@ dat
 ggplot(dat,aes(PDO_djf,SR_residuals)) + geom_point() + theme(legend.position = "none") +
   geom_smooth()
 
+############################################################################################################################################################
+####################################### Winter PDO - lagged for 1st year effect ##############################################################################################
+dat<-as.data.frame(cbind(envar$PDO_djf[10:43],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("PDO_djf","SR_residuals")
+dat
+ggplot(dat,aes(PDO_djf,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
 
+############################################################################################################################################################
+####################################### Winter PDO - lagged for 2st year effect ##############################################################################################
+dat<-as.data.frame(cbind(envar$PDO_djf[11:44],envar$Lag3_SR_residuals[12:45]))
+colnames(dat)<-c("PDO_djf","SR_residuals")
+dat
+ggplot(dat,aes(PDO_djf,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
 ############################################################################################################################################################
 ####################################### Winter ice area - lagged for hatch year effect ##############################################################################################
 dat<-as.data.frame(cbind(envar$ice.area.jfma[9:42],envar$Lag3_SR_residuals[12:45]))
@@ -283,6 +311,7 @@ colnames(dat)<-c("ice.area.jfma","SR_residuals")
 dat
 ggplot(dat,aes(ice.area.jfma,SR_residuals)) + geom_point() + theme(legend.position = "none") +
   geom_smooth()
+
 
 ############################################################################################################################################################
 ####################################### Winter ice area - lagged for year following hatch year effect ##############################################################################################
@@ -380,6 +409,15 @@ ggplot(dat,aes(FHS_TBM_lag1,SR_residuals)) + geom_point() + theme(legend.positio
 ####################################### NBT ##########################################################################################################
 ##################################################################################################################################################################
 
+############################################################################################################################################################
+####################################### Lag 4 year (embryonic year)  ##############################################################################################
+dat<-as.data.frame(cbind(envar$EBS_NBT_anom[8:41],envar$Lag3_SR_residuals[12:45]))
+
+colnames(dat)<-c("EBS_NBT_anom_lag3","SR_residuals")
+dat
+ggplot(dat,aes(EBS_NBT_anom_lag3,SR_residuals)) + geom_point() + theme(legend.position = "none") +
+  geom_smooth()
+
 
 ############################################################################################################################################################
 ####################################### Lag 3 year (release year)  ##############################################################################################
@@ -426,7 +464,7 @@ dat
 ggplot(dat,aes(EBS_NBT_RA3_final_year_anom,SR_residuals)) + geom_point() + theme(legend.position = "none") +
   geom_smooth()
 ############################################################################################################################################################
-####################################### 3 year RA-mid year for predation beginning release year ##############################################################################################
+####################################### 3 year RA-mid year for effect beginning release year ##############################################################################################
 dat<-as.data.frame(cbind(envar$EBS_NBT_RA3_midyear_anom[10:43],envar$Lag3_SR_residuals[12:45]))
 
 colnames(dat)<-c("EBS_NBT_RA3_midyear_anom","SR_residuals")

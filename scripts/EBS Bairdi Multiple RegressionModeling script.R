@@ -883,17 +883,19 @@ D.neg.90.May.June.ed<-wind_dat$D.neg.90.May.June[-5]
 D.neg.90.JJ.ed<-wind_dat$D.neg.90.JJ[-5]
 D.neg.90.MJ.ed<-wind_dat$D.neg.90.MJ[-5]
 
+year.ed<-as.matrix(wind_dat$year[-5])
+
 #################################################################################################################################################################
 ################################################# Limit to same years as FHS data--only for release years 1983-2016  ##############################################################################
-year.ed<-wind_dat$year[-5]
+
 year.ed
 nw<-length(wind_dat$year[-5])
 nw
 wind_dat$year[6:nw]
-D.90.May<-D.90.May.ed[5:nw-1]
+D.90.May<-D.90.May.ed[5:nw]
 D.90.June<-D.90.June.ed[5:nw]
 D.90.July<-D.90.July.ed[5:nw]
-D.90.May.June<-D.90.May.June.ed[6:nw]
+D.90.May.June<-D.90.May.June.ed[5:nw]
 D.90.JJ<-D.90.JJ.ed[5:nw]
 D.90.MJ<-D.90.MJ.ed[5:nw]
 
@@ -1118,7 +1120,7 @@ RA.3.mid<-cbind(Mid.Year,anom1)
 RA.3.mid
 
 
-NBT.RA.3a<-anom1[5:n] #starts in 1980
+NBT.RA.3a<-anom1 #starts in 1980
 NBT.RA.3a
 
 
@@ -1293,6 +1295,9 @@ AO<-envar$AO_jfm[9:42]
 AO
 AO.ed<-AO
 
+############################################## Danielson wind data ##############################################################
+SE.wind<-envar$SE.wind.May.Sep[9:42]
+NW.wind<-envar$NW.wind.May.Sep[9:42]
 ##################################################################################################################################################################################
 ######################################################### Factors for models##################################################################################################
 par(mfrow=c(1,1),cex.lab=1.5,cex.axis=1.25,cex=1.25) #configure axis labels
@@ -1446,11 +1451,12 @@ Year<-c(1983:2016)
 ################################# Fit multivariate models models ###########################################################
 r<-as.matrix(as.numeric((r)))
 
-
+############################################################################################################################################
+##################### Fit 0 series - primary variable is Pacific cod #########################################################################
 ###########################################################################################################################
 ##################### Pcod lag 2 and FHS lag 2 and interaction term - all highly insignificant #######################################################
 cor(Pcod_lag2,FHS.lag.2)    # correlation = -0.33
-cor.test(Pcod_lag2,FHS.lag.2)
+cor.test(Pcod_lag2,FHS.lag.2) # correlation barely insignificant
 
 fit.0<-gls(r~I(Pcod_lag2^2)+I(FHS.lag.2^2)+Pcod_lag2*FHS.lag.2,correlation=corAR1(),method="ML")
 summary(fit.0)
@@ -1546,7 +1552,7 @@ AICc(fit.0b2a)
 aic.1<-AIC(fit.0b2a)
 
 #######################################################################################################################################
-#################### Remove lag 2 cod effects and replac with lag 1 - BOTH SIGNIFICANT !!!!!!###############################################################################
+#################### Remove lag 2 cod effects and replace with lag 1 - BOTH SIGNIFICANT !!!!!!###############################################################################
 ################################## MODEL IS SIGNIFICANT ########################################################################################
 fit.0b2b<-gls(r~I(Pcod_lag1^2)+Pcod_lag1,correlation=corAR1(),method="ML")
 summary(fit.0b2b)
@@ -1636,6 +1642,7 @@ aic.1<-AIC(fit.0e1)
 ############################################################################################################################
 ####################  3 year rolling average on midyear starting 1 year after hatch year- linear only - insignificant  ###############################################################################
 plot(r~Pcod_RA3_mid)
+
 fit.0e2<-gls(r~Pcod_RA3_mid,correlation=corAR1(),method="ML")
 summary(fit.0e2)
 D<-resid(fit.0e2)
@@ -1651,18 +1658,84 @@ names(envar)
 
 #############################################################################################################################################
 ####################### Fit 1 series - Danielson wind as primary #########################################################################
-plot(r~envar$SE.wind.May.Sep)
+par(mfrow=c(1,1))
 
-fit.1<-gls(r~SE.wind.May.Sep,correlation=corAR1(),method="ML")
+plot(r~SE.wind)
+
+############################ SE wind - with both linear and nonlinear term -insignificant ##################################################################################################
+
+
+fit.1<-gls(r~SE.wind+I(SE.wind^2),correlation=corAR1(),method="ML")
 summary(fit.1)
 D<-resid(fit.1)
 plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
-
+points(r~Year,col=2,pch=8)
 AIC(fit.1)
 AICc(fit.1)
 aic.1<-AIC(fit.1)
 
+rc<-cbind(r,D)
+rc
+############################ SE wind - linear only  insignificant##################################################################################################
 
+
+fit.1a<-gls(r~SE.wind,correlation=corAR1(),method="ML")
+summary(fit.1a)
+D<-resid(fit.1a)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
+points(r~Year,col=2,pch=8)
+AIC(fit.1a)
+AICc(fit.1a)
+aic.1a<-AIC(fit.1a)
+
+############################ SE wind -  nonlinear term only - insignificant ##################################################################################################
+
+
+fit.1a1<-gls(r~I(SE.wind^2),correlation=corAR1(),method="ML")
+summary(fit.1a1)
+D<-resid(fit.1a1)
+plot(D~Year, ylab="EBS reduced model residuals",xlab="Release Year",pch=16)
+points(r~Year,col=2,pch=8)
+AIC(fit.1a1)
+AICc(fit.1a1)
+aic.1a1<-AIC(fit.1a1)
+
+
+
+
+########################################################################################################################################
+#################### Fit 2 series - primary variable is FHS TBM ###################################################################
+
+#################### FHS lag2 linear term only #####################################################################################
+##################### MODEL IS SIGNIFICANT ##############################################################
+fit.2<-gls(r~FHS.lag.2,correlation=corAR1(),method="ML")
+summary(fit.2)
+D<-resid(fit.2)
+plot(D)
+AIC(fit.2)
+AICc(fit.2)
+aic.1a<-AIC(fit.2)
+
+#################### FHS lag2 nonlinear term only - model is insignificant#####################################################################################
+
+fit.2a<-gls(r~I(FHS.lag.2^2),correlation=corAR1(),method="ML")
+summary(fit.2a)
+D<-resid(fit.2a)
+plot(D)
+AIC(fit.2a)
+AICc(fit.2a)
+aic.1a<-AIC(fit.2a)
+
+#################### FHS lag2 nonlinear and linear terms #####################################################################################
+###################### linear term is significant, nonlinear is not #########################################################################
+
+fit.2a1<-gls(r~I(FHS.lag.2^2)+FHS.lag.2,correlation=corAR1(),method="ML")
+summary(fit.2a1)
+D<-resid(fit.2a1)
+plot(D)
+AIC(fit.2a1)
+AICc(fit.2a1)
+aic.1a<-AIC(fit.2a1)
 
 
 
@@ -1883,6 +1956,8 @@ plot(D)
 AIC(fit.1g)
 AICc(fit.1g)
 
+
+
 lm.1g<-glm(r~D.neg.90.May.June+I(FHS.lag.2^2)+D.neg.90.May.June*I(FHS.lag.2^2)+AO+pdos)
 step(lm.1g)
 
@@ -1900,7 +1975,7 @@ AICc(fit.1gg)
 lm.1g<-glm(r~D.neg.90.May.June+I(FHS.lag.2^2)+D.neg.90.May.June*I(FHS.lag.2^2)+AO+pdos)
 step(lm.1g)
 ###############################################################################################################################
-##################### Add uinteraction term between Summer PDO and minus 90 degree component ########################################################
+##################### Add interaction term between Summer PDO and minus 90 degree component ########################################################
 
 fit.1h<-gls(r~D.neg.90.May.June+I(FHS.lag.2^2)+D.neg.90.May.June*I(FHS.lag.2^2)+AO+pdos+pdos*D.neg.90.May.June,correlation=corAR1(),method="ML")
 summary(fit.1h)
@@ -2463,7 +2538,8 @@ AICc(fit.3m)
 
 #############################################################################################################################
 ###################### Minus 60 degree component and lag 1 FHS with interaction term  #######################################
-
+D.90.May.June
+r
 fit.4aa<-gls(r~D.90.May.June+I(FHS.lag.1^2)+D.90.May.June*I(FHS.lag.1^2),correlation=corAR1(),method="ML")
 summary(fit.4aa)
 D<-resid(fit.4aa)
@@ -2687,25 +2763,6 @@ AIC(fit.4m)
 AICc(fit.4m)
 
 ###############################################################################################################################
-###################### Add lag 2 males #########################################################################################
-
-fit.4n<-gls(r~D.90.May.June+I(FHS.lag.2^2)+lag.2.males+May.June.anom+AO+pdos+D.90.May.June*I(FHS.lag.2^2),correlation=corAR1(),method="ML")
-summary(fit.4n)
-D<-resid(fit.4n)
-plot(D)
-
-AIC(fit.4n)
-AICc(fit.4n)
-###############################################################################################################################
-###################### TEST #########################################################################################
-
-fit.4nn<-gls(r~D.90.May.June+I(FHS.lag.2^2)+lag.2.males+AO+pdos,correlation=corAR1(),method="ML")
-summary(fit.4nn)
-D<-resid(fit.4nn)
-plot(D)
-
-AIC(fit.4nn)
-AICc(fit.4nn)
 
 ################################################################################################################################
 ##################### Add RA3a NBT #########################################################################################
@@ -3188,8 +3245,11 @@ AICc(fit.5m)
 
 
 ############################################################################################################################################
-################################ Re-run using editted residual series ######################################################################
-##########################################################################################################################################
+################################ Re-run using editted residual series                                       ################################
+################################ NOTE: for 2020 reanalysis, editted series with 1982 females/1985 juveniles ################################
+################################ removed due to extreme female estimate were used in prior analyses         ################################
+################################ Following code retained for reference/possible future appliucation         ################################
+############################################################################################################################################
 
 r6
 
