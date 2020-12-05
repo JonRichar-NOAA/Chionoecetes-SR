@@ -38,3 +38,5 @@ AICc(mod1, mod2)
 
 ## if you want to account for autocorrelation in the data, could use GAMM with a random year term, or parameterize 
 ## the best model in GLS with autocorrelated residuals, setting the order of polynomial terms roughly equal to edf from the GAM!
+
+## I would keep spawner abundance in all models, and compare the best model with a null model including only spawners!
