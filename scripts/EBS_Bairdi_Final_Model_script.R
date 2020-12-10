@@ -890,6 +890,7 @@ summary(fit2)
 fit2a<-gls(log(recr) ~ spawn+I(cod^2)+cod+I(fhs^2)+I(temp^3),correlation = corAR1(),method="ML",data = dat) #both cod terms would be significant at alpha = 0.1
 summary(fit2a)
 
+
 ##drop Pcod
 
 fit3<-gls(log(recr) ~ spawn+I(fhs^2)+I(temp^3),correlation = corAR1(),method="ML",data = dat)
@@ -921,12 +922,25 @@ summary(fit6)
 
 fit7<-gls(logRS ~ spawn +I(fhs^2),correlation = corAR1(),method="ML",data = dat)
 summary(fit7)
-########################################## COMPARE MODELS #########################################################################################
-AICc.b(mod1)
-AICc(mod1)
+
+##################################################################################################################################################
+########################################## COMPARE MODELS ########################################################################################
+##################################################################################################################################################
+
+
+##GAM models --doesn't work
 AIC(mod1,mod2,mod3)
-AICc
+AICc(mod1,mod2,mod3)
 ?AICc()
+
+## GLS models
+##With raw recruitment as response
+AICc(fit1,fit2,fit2a,fit3)   #Fit 3 has lowest AICc(46.45), next lowest is fit2a(47.06). fit1 has highest (49.76)
+
+##with log(R/S) as response
+AICc(fit4,fit5,fit5a,fit5b,fit6,fit7)     #Fit 7 has lowest AICc(80.47), next lowest is fit2a(81.19). Fit4 has highest (88.00)
+
+
 
 ########################################## test model ##############################################################################
 mod3 <- gam(recr ~ s(spawn, k = 4) + s(spawn, k = 4) + s(cod, k = 4),
