@@ -339,7 +339,7 @@ plot(EBS.fem,type="b",ylim=y.range, pch=16,col=4,axes=FALSE,ann=FALSE,cex=1.25)
 
 axis(1, at=1:45,lab=Spawners_SC3$Year,tck=0.03)
 axis(2, las=1, at=1e+08*0:4)
-legend(8,4e+08,c("EBS female estimate"),cex=1.25,col=c(4),pch=c(16))
+#legend(8,4e+08,c("EBS female estimate"),cex=1.25,col=c(4),pch=c(16))
 abline(h=0)
 box()
 
@@ -361,13 +361,13 @@ plot(EBS.fem,type="b",ylim=y.range, pch=2,col=1,axes=FALSE,ann=FALSE)
 
 axis(1, at=1:45,lab=Spawners_SC3$Year,tck=0.03)
 axis(2, las=1, at=1e+08*0:4,labels=c("0","100","200","300","400"),tck=0.03)
-legend(8,4e+08,c("Total EBS"),cex=1.25,col=c(1),pch=c(2))
+#legend(8,4e+08,c("Total EBS"),cex=1.25,col=c(1),pch=c(2))
 #abline(h=0)
 box()
 
 title(xlab="Year")
 title(ylab="Abundance (Millions)")
-#title(main=" Reproductive female abundance by year")
+title(main=" Reproductive female abundance by year")
 
 #########################################################################################################################
 ################################## Plot all juveniles together ##########################################################
@@ -400,14 +400,14 @@ title(ylab="Abundance (Millions)")
 ########################################################################################################################
 ###################################### Repeat above customized for MEPS ###########################################
 par(mfrow=c(1,1),cex.lab=1.4,cex.axis=1.4,cex=1.5) #configure axis labels
-y.range<-range(0,9e+08)
+y.range<-range(0,4e+08)
 
 plot(EBS.juv)
 plot(EBS.juv,type="b",ylim=y.range, pch=2,col=1,axes=FALSE,ann=FALSE)
 
 #abline(h=0)
 
-axis(1, at=1:31,lab=Recruits$Year,tck=0.02)
+axis(1, at=1:n,lab=rec_30to50$Year,tck=0.02)
 axis(2, las=1, at=1e+08*0:9,labels=c("0","100","200","300","400","500","600","700","800","900"),tck=0.02)
 legend(14,9e+08,c("Total EBS"),cex=1.25,col=c(1),pch=c(2))
 #legend(15,9e+08,c("EBS juvenile estimate"),cex=1,col=c(4,1,2),pch=c(16,18,22))
@@ -415,33 +415,13 @@ box()
 
 title(xlab="Year")
 title(ylab="Abundance (Millions)")
-#title(main=" Juvenile abundance by year")
+title(main=" Juvenile abundance by year")
 
 
-
-#########################################################################################################################
-###################################### Plot juv abundance separately ####################################################
-
-Year<-Recruits$Year
-plot(R~Year, type="b",ylab="Estimated abundance of EBS juvenile bairdi", xlab="Year", main = "Estimated abundance of EBS juvenile bairdi",pch=16)
-abline(lm(R ~ Year), col=4)
-fit <- loess(R ~ Year)
-lines(x, fitted(fit), col=2)
 
 
 #############################################################################################################################################
 ########################################### Recreate data series for actual analysis ########################################################
-n<-nrow(rec_30to50)
-R<-rec_30to50$EBS_Abun_30to50[4:n]
-S<-Spawners_SC3$EBS_SC3[4:n]
-
-recYear<-rec_30to50$Year[4:n]
-spYear<-Spawners_SC3$Year[4:n]
-
-R<-R[-5]
-S<-S[-5]
-recYear<-recYear[-5]
-spYear<-spYear[-5]
 
 
 ########################################################################################################
@@ -459,9 +439,9 @@ recYear<-rec_30to50$Year[4:n]
 spYear<-Spawners_SC3$Year[4:n]
 release.year<-c(1978:2016)
 
-R<-R[-5]
+R<-R[-8]
 S<-S[-5]
-recYear<-recYear[-5]
+recYear<-recYear[-8]
 spYear<-spYear[-5]
 
 
@@ -880,49 +860,73 @@ hist(dat$recr)
 hist(log(dat$recr))
 fit1<-gls(log(recr) ~ spawn+I(cod^2)+I(fhs^2)+I(temp^3)+SE.wind,correlation = corAR1(),method="ML",data = dat)
 summary(fit1)
-
+c<-coef(fit1)
+c
 ##drop SE wind
 
 fit2<-gls(log(recr) ~ spawn+I(cod^2)+I(fhs^2)+I(temp^3),correlation = corAR1(),method="ML",data = dat)
 summary(fit2)
-
+c<-coef(fit2)
+c
 ##add linear term for PCod
 fit2a<-gls(log(recr) ~ spawn+I(cod^2)+cod+I(fhs^2)+I(temp^3),correlation = corAR1(),method="ML",data = dat) #both cod terms would be significant at alpha = 0.1
 summary(fit2a)
-
+c<-coef(fit2a)
+c
 
 ##drop Pcod
 
 fit3<-gls(log(recr) ~ spawn+I(fhs^2)+I(temp^3),correlation = corAR1(),method="ML",data = dat)
 summary(fit3)
-
+c<-coef(fit3)
+c
 
 ########################################## use log ratio of R/S as response ######################################################################
 fit4<-gls(logRS ~ spawn+I(cod^2)+I(fhs^2)+I(temp^3)+SE.wind,correlation = corAR1(),method="ML",data = dat)
 summary(fit4)
+
+c<-coef(fit4)
+c
 
 ## Remove SE wind
 
 fit5<-gls(logRS ~ spawn+I(cod^2)+I(fhs^2)+I(temp^3),correlation = corAR1(),method="ML",data = dat)
 summary(fit5)
 
+c<-coef(fit5)
+c
+
 ## Add linear cod term
+
 fit5a<-gls(logRS ~ spawn+I(cod^2)+cod+I(fhs^2)+I(temp^3),correlation = corAR1(),method="ML",data = dat)
 summary(fit5a)
 
+c<-coef(fit5a)
+c
+
 ## drop temp while keeping both linear and nonlinear cod terms
+
 fit5b<-gls(logRS ~ spawn+I(cod^2)+cod+I(fhs^2),correlation = corAR1(),method="ML",data = dat)
 summary(fit5b)
- ## drop cod
+
+c<-coef(fit5b)
+c
+
+
+## drop cod
 
 fit6<-gls(logRS ~ spawn +I(fhs^2)+I(temp^3),correlation = corAR1(),method="ML",data = dat)
 summary(fit6)
 
+c<-coef(fit6)
+c
 ## drop temp
 
 fit7<-gls(logRS ~ spawn +I(fhs^2),correlation = corAR1(),method="ML",data = dat)
 summary(fit7)
 
+c<-coef(fit7)
+c
 #################################################################################################################################################
 ########################################## COMPARE MODELS ########################################################################################
 ##################################################################################################################################################
@@ -938,7 +942,7 @@ AICc(mod1,mod2,mod3)
 AICc(fit1,fit2,fit2a,fit3)   #Fit 3 has lowest AICc(46.45), next lowest is fit2a(47.06). fit1 has highest (49.76)
 
 ##with log(R/S) as response
-AICc(fit4,fit5,fit5a,fit5b,fit6,fit7)     #Fit 7 has lowest AICc(80.47), next lowest is fit2a(81.19). Fit4 has highest (88.00)
+AICc(fit4,fit5,fit5a,fit5b,fit6,fit7)     #Fit 7 has lowest AICc(80.47), next lowest is fit5a(81.19). Fit4 has highest (88.00)
 
 
 
