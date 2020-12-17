@@ -419,11 +419,6 @@ title(main=" Juvenile abundance by year")
 
 
 
-
-#############################################################################################################################################
-########################################### Recreate data series for actual analysis ########################################################
-
-
 ########################################################################################################
 ######################################### Lag=3 ########################################################
 par(mfrow=c(1,1),cex.main=1.25, cex.lab=1.25,cex.axis=1.25,cex=1.25) #configure axis labels
@@ -464,17 +459,19 @@ plot(yi.k~xi.k,xlab="Reproductive female abundance", ylab="Lag 3 juvenile recrui
 
 plot(yi.k~xi.k,xlab="X", ylab="Y", main= "EBS lag 3",pch=16,col=4,cex=1.25)
 recYear_lag3<-yyear.k
-cor(R,S)
+
 ##############################################EDA.norm analyses of log(R/S)#############################
-eda.norm(R)
+#eda.norm(R)
 log.RS<-log(R/S)
-eda.norm(log.RS)
+#eda.norm(log.RS)
 
-
+cor(R,S)
 #################################Fit gls model with 1st order autocorrelation#######################################################
 
 Fit3<-gls(log(R/S)~S,correlation=corAR1(), na.action=na.omit)
 summary(Fit3)
+coef(Fit3)
+
 plot(log(R/S)~S, xlab="Reproductive female abundance",ylab="lag 3 log(Recruits/Repfem)",main="EBS group lag 3 Ricker model",pch=16)
 abline(Fit3)
 #plot(Fit3)
@@ -486,17 +483,6 @@ r.fit3<-loess(r3~xyear.k)
 plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
 lines(xyear.k,fitted(r.fit3),col=4)
 
-
-Fit4<-gls(log(R/S)~S,correlation=corARMA(p=2))
-summary(Fit4)
-
-
-
-Lm.Fit<-lm(log(R/S)~S, na.action=na.omit)
-dwtest(Lm.Fit)
-resid.series<-cbind(xyear.k,r3)
-colnames(resid.series)<-c("HatchYear","Lag3SR_residual")
-write.csv(resid.series,"data/EBS_Lag3_SR_residuals.csv")
 ##################################################################################################################################
 ################################################## Plot above for Publication #########################################################
 #,mai=c(1,1.25,1,1)#add to below to format margins if necessary--in inches, for in lines, use mar()
