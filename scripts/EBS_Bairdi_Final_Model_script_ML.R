@@ -648,11 +648,11 @@ SE.wind<-envar$SE.wind.May.Sep[9:42]
 ############################## set up a data frame with all the data ##############################################
 dat <- data.frame(releaseyear = c(1983:2016),
                   recr = R1 ,
-                  spawn = S1,
+                  spawners = S1,
                   logRS = log(R1/S1),
-                  cod = Pcod_lag1,
-                  fhs = FHS.lag.2,
-                  temp = NBT.RA.3.end,
+                  Pcod = Pcod_lag1,
+                  FHS = FHS.lag.2,
+                  NBT = NBT.RA.3.end,
                   SE.wind = SE.wind) # or whatever parsimonious set of variables you want to use! 
 
 dat
@@ -669,16 +669,24 @@ hist(dat$recr^0.25)
 
 ########################################## now fit the full model ##################################################################################
 
-mod1 <- gam(recr ~ s(spawn, k = 4) + s(cod, k = 4) + s(fhs, k = 4) + s(temp, k = 4) + s(SE.wind, k = 4),
+mod1 <- gam(recr ~ s(spawners, k = 4) + s(Pcod, k = 4) + s(FHS, k = 4) + s(NBT,k= 4) + s(SE.wind, k = 4),
             data = dat, family="Gamma",method = "REML")
 
 summary(mod1)
 plot(mod1, pages=1)
 
+
+##drop wind as test for effect on cod
+mod1A <- gam(recr ~ s(spawners, k = 4) + s(Pcod, k = 4) + s(FHS, k = 4) + s(NBT, k = 4),
+            data = dat, family="Gamma",method = "REML")
+
+summary(mod1A)
+plot(mod1A, pages=1)
+
 ## drop lag 1 Pcod due to terrible p-value
 
 
-mod2 <- gam(recr ~ s(spawn, k = 4) + s(fhs, k = 4) + s(temp, k = 4) + s(SE.wind, k = 4),
+mod2 <- gam(recr ~ s(spawners, k = 4) + s(FHS, k = 4) + s(, k NBT= 4) + s(SE.wind, k = 4),
             data = dat,family="Gamma",method="REML")
 
 summary(mod2)
@@ -686,7 +694,7 @@ plot(mod2, pages=1)
 ## drop Southeast wind due to terrible p-value
 
 
-mod3 <- gam(recr ~ s(spawn, k = 4) + s(fhs, k = 4) + s(temp, k = 4),
+mod3 <- gam(recr ~ s(spawners, k = 4) + s(FHS, k = 4) + s(NBT, k = 4),
             data = dat,family="Gamma",method="REML")
 
 summary(mod3)
@@ -695,15 +703,25 @@ plot(mod3, pages=1)
 AICc(mod1, mod2, mod3)
 
 ########################################## use log ratio of R/S as response ######################################################################
+
 hist(dat$logRS)
-mod4 <- gam(logRS ~  s(spawn, k = 4) + s(cod, k = 4) + s(fhs, k = 4) + s(temp, k = 4) + s(SE.wind, k = 4),
+mod4 <- gam(logRS ~  s(spawners, k = 4) + s(Pcod, k = 4) + s(FHS, k = 4) + s(NBT, k = 4) + s(SE.wind, k = 4),
             data = dat,method = "REML")
 
 summary(mod4)
 plot(mod4, pages=1)
+plot(mod4, select=1, shade=T, rug=F,axes=FALSE,ann=FALSE)
+
+
+axis(1, at=c(0,30000000,60000000,90000000,120000000),labels=c("0","30","60","90","120"),tck=0.02)
+axis(2, las=1,at=c(-3,-2,-1,0,1,2),labels=c("-3","-2","-1","0","1","2"),tck=0.02)
+box()
+title(xlab="Female abundance (Millions)")
+title(ylab="s(Female abundance, 2.66)")
+
 
 ## drop wind
-mod5 <- gam(logRS ~ s(spawn, k = 4) + s(cod, k = 4) + s(fhs, k = 4) + s(temp, k = 4),
+mod5 <- gam(logRS ~ s(spawners, k = 4) + s(Pcod, k = 4) + s(FHS, k = 4) + s(NBT, k = 4),
             data = dat,method="REML")
 
 summary(mod5)
@@ -711,7 +729,7 @@ plot(mod5, pages=1)
 
 ## drop cod
 
-mod6 <- gam(logRS ~ s(spawn, k = 4) + s(fhs, k = 4) + s(temp, k = 4),
+mod6 <- gam(logRS ~ s(spawners, k = 4) + s(FHS, k = 4) + s(NBT, k = 4),
             data = dat,method="REML")
 
 summary(mod6)
@@ -719,21 +737,63 @@ plot(mod6, pages=1)
 
 ## and drop temp
 
-mod7 <- gam(logRS ~ s(spawn, k = 4) + s(fhs, k = 4),
+mod7 <- gam(logRS ~ s(spawners, k = 4) + s(FHS, k = 4),
             data = dat,method="REML")
 
 summary(mod7)
 plot(mod7, pages=1, resid=T, pch=19)
 
+##plot for paper ##
+par(mfrow=c(1,2))
+plot(mod7, select=1, resid=T,pch=16,shade=T, rug=F,axes=FALSE,ann=FALSE)
+
+axis(1, at=c(0,30000000,60000000,90000000,120000000),labels=c("0","30","60","90","120"),tck=0.02)
+axis(2, las=1,at=c(-3,-2,-1,0,1,2),labels=c("-3","-2","-1","0","1","2"),tck=0.02)
+box()
+title(xlab="Female abundance (Millions)")
+title(ylab="s(Female abundance, 2.68)")
+
+plot(mod7, select=2, resid=T,pch=16,shade=T, rug=F,axes=FALSE,ann=FALSE)
+
+axis(1, at=c(0,300000,400000,500000,600000,700000),labels=c("0","300","400","500","600","700"),tck=0.02)
+axis(2, las=1,at=c(-3,-2,-1,0,1,2),labels=c("-3","-2","-1","0","1","2"),tck=0.02)
+box()
+title(xlab="Flathead sole TBM(1000 MT)")
+title(ylab="s(Flathead sole, 1.00)")
+
+###### compare models using samll sample size AIC
+
 AICc(mod4, mod5, mod6, mod7) # mod7 is marginaly better than mod6, much better than others
 
 acf(resid(mod7)) # some autocorrelation at lag1
 
-mod8 <- gam(logRS ~ s(log(spawn), k = 4) + s(fhs, k = 4),
+###########run model using log-transformed female abundance and FHS TBM
+mod8 <- gam(logRS ~ s(log(spawners), k = 4) + s(FHS, k = 4),
             data = dat,method="REML")
 
 summary(mod8)
-plot(mod8, pages=1, resid=T, pch=19, shade=T, rug=F)
+plot(mod8, pages=1, resid=T, pch=16, shade=T, rug=F)
+
+
+#########plot for paper ##
+par(mfrow=c(1,2))
+plot(mod8, select=1, shade=T,resid=T, pch=16, rug=F,axes=FALSE,ann=FALSE)
+
+axis(1, at=c(15,16,17,18),labels=c("15","16","17","18"),tck=0.02)
+axis(2, las=1,at=c(-3,-2,-1,0,1,2),labels=c("-3","-2","-1","0","1","2"),tck=0.02)
+box()
+title(xlab="log(Female abundance (Millions))")
+title(ylab="s(Female abundance, 1.56)")
+
+plot(mod8, select=2, shade=T,resid=T, pch=16, rug=F,axes=FALSE,ann=FALSE)
+
+axis(1, at=c(0,300000,400000,500000,600000,700000),labels=c("0","300","400","500","600","700"),tck=0.02)
+axis(2, las=1,at=c(-3,-2,-1,0,1,2,3),labels=c("-3","-2","-1","0","1","2","3"),tck=0.02)
+box()
+title(xlab="Flathead sole TBM(1000 MT)")
+title(ylab="s(Flathead sole, 1.00)")
+
+##### compare models using samll sample size AIC and examine residuals for autocorrelation
 
 AICc(mod7, mod8)
 acf(resid(mod8)) # same autocorrelation at lag1
