@@ -126,3 +126,85 @@ acf(S4,main="SC3 females 2009 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
 acf(S1,main="SC3 females 1978 to 1998",cex.lab=1.25,cex.axis=1.25,cex=1.25)
 acf(S2,main="SC3 females 1999 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
 
+## evaluate evidence for changing ar(7) characteristics across the time series -----------------------
+
+# first, examine ln(R)
+R1<-log(R[1:21])  #1978-1998
+R2<-log(R[22:42]) #1999-2019
+R3<-log(R[1:31])  #1978-2008
+R4<-log(R[32:42])  #2009-2019
+
+acf(R3,main="Juvenile index, 1978 to 2008",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+acf(R4,main="Juvenile index, 2009 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+acf(R1,main="Juvenile index, 1978 to 1998",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+acf(R2,main="Juvenile index, 1999 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+
+# not seeing a change from ACF on raw data - seems odd?
+
+recr <- data.frame(year=1978:2019,
+                   R=R,
+                   R.7=c(rep(NA,7), R[1:35]))
+
+# run a loop calculating AIC over different windows, while keeping 
+# at least 15 years in each period
+
+mod.out <- data.frame()
+
+for(i in 1992:2004){
+  
+  recr$era <- ifelse(recr$year <= i, "early", "late")
+  
+  mod <- lm(R ~ R.7:era, data=recr)
+  
+  temp.out <- data.frame(year=i,
+                         AIC = MuMIn::AICc(mod))
+  
+  mod.out <- rbind(mod.out, temp.out)
+}
+
+mod.out$delta_AICc <- mod.out$AIC - min(mod.out$AIC)
+
+# add null (stationary) model as comparison
+
+mod <- lm(R ~ R.7, data=recr)
+
+null <- data.frame(year="NULL",
+                   delta_AICc = MuMIn::AICc(mod)-min(mod.out$AIC))
+
+library(tidyverse)
+theme_set(theme_bw())
+
+ggplot(mod.out, aes(year, delta_AICc)) +
+  geom_line() +
+  geom_hline(yintercept = null$delta_AICc, lty = 2) +
+  labs(title = "AICc for different change points: AR(7) model for recruitment", subtitle = "Dashed line = stationary model") +
+  theme(axis.title.x = element_blank()) 
+
+ggsave("./figs/AR7_changepoint_AIC_plot_R.png", width = 6, height = 4, units = 'in')
+
+# best model is 2000
+# get model summaries
+
+i <- 2000
+recr$era <- ifelse(recr$year <= i, "early", "late")
+mod <- lm(R ~ R.7:era, data=recr)
+summary(mod)
+
+
+# and plot eras
+# set palette
+cb <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+i <- 2000
+recr$era <- ifelse(recr$year <= i, "early", "late")
+
+ggplot(recr, aes(R.7, R, color = era)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F) +
+  scale_color_manual(values = cb[c(2,6)]) +
+  labs(title = "Early = 2000 and earlier", 
+       x = "Recruitment year-7",
+       y = "Recruitment year 0")
+
+ggsave("./figs/AR7_changepoint_2000_scatter_plot_R.png", width = 5, height = 3, units = 'in')
+
