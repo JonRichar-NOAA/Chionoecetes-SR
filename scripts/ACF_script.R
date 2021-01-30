@@ -166,10 +166,10 @@ mod.out$delta_AICc <- mod.out$AIC - min(mod.out$AIC)
 
 # add null (stationary) model as comparison
 
-mod <- lm(R ~ R.7, data=recr)
+mod.null <- lm(R ~ R.7, data=recr)
 
 null <- data.frame(year="NULL",
-                   delta_AICc = MuMIn::AICc(mod)-min(mod.out$AIC))
+                   delta_AICc = MuMIn::AICc(mod.null)-min(mod.out$AIC))
 
 library(tidyverse)
 theme_set(theme_bw())
@@ -208,3 +208,4 @@ ggplot(recr, aes(R.7, R, color = era)) +
 
 ggsave("./figs/AR7_changepoint_2000_scatter_plot_R.png", width = 5, height = 3, units = 'in')
 
+anova(mod.null, mod) # note this isn't correct n/c df don't account for autocorrelation!
