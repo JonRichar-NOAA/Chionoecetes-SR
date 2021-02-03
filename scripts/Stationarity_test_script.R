@@ -334,6 +334,241 @@ lines(year,fitted(r.fit17),col=4)
 plot(r.fit18,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="May-July SST")
 lines(year,fitted(r.fit18),col=4)
 
+##############################################################################################################################################
+####################################### Now use GAM models with log(R/S) as response##################################################################################
+
+mod41 <- gam(lnRS ~ s(s, k = 4),
+            data = dat,method = "REML")
+
+mod42 <- gam(lnRS ~ s(Fem_CO, k = 4),
+            data = dat, method = "REML")
+
+mod43 <- gam(lnRS ~ s(cod, k = 4),
+            data = dat, method = "REML")
+
+mod44 <- gam(lnRS ~ s(fhs, k = 4),
+            data = dat, method = "REML")
+
+mod45 <- gam(lnRS ~ s(nbt, k = 4),
+            data = dat, method = "REML")
+
+mod46 <- gam(lnRS ~ s(wind, k = 4),
+            data = dat, method = "REML")
+
+mod47 <- gam(lnRS ~ s(ao, k = 4),
+            data = dat, method = "REML")
+
+mod48 <- gam(lnRS ~ s(pdo, k = 4),
+            data = dat, method = "REML")
+
+mod49 <- gam(lnRS ~ s(sst, k = 4),
+            data = dat, method = "REML")
+
+######################################################################################################################################################################
+################################################ Plot GAM models ############################################################################################
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod41 ,resid=T, pch=16, shade=T, rug=F, main = "Reproductive females")
+plot(mod42, resid=T, pch=16, shade=T, rug=F, main = "Opilio females")
+plot(mod43, resid=T, pch=16, shade=T, rug=F, main = "Pacific cod")
+plot(mod44, resid=T, pch=16, shade=T, rug=F, main = "Flathead sole")
+plot(mod45, resid=T, pch=16, shade=T, rug=F, main = "NBT")
+plot(mod46, resid=T, pch=16, shade=T, rug=F, main = "SE wind")
+plot(mod47, resid=T, pch=16, shade=T, rug=F, main = "AO")
+plot(mod48, resid=T, pch=16, shade=T, rug=F, main = "PDO")
+plot(mod49, resid=T, pch=16, shade=T, rug=F, main = "SST")
+
+r41<-resid(mod41)
+r42<-resid(mod42)
+r43<-resid(mod43)
+r44<-resid(mod44)
+r45<-resid(mod45)
+r46<-resid(mod46)
+r47<-resid(mod47)
+r48<-resid(mod48)
+r49<-resid(mod49)
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(r41~year,pch=16 , main = "Reproductive female Bairdi")
+plot(r42~year,pch=16 , main = "Reproductive female Opilio")
+plot(r43~year,pch=16 , main = "Pacific cod")
+plot(r44~year,pch=16 , main = "Flathead sole")
+plot(r45~year,pch=16 , main = "NBT")
+plot(r46~year,pch=16 , main = "SE wind")
+plot(r47~year,pch=16 , main = "AO")
+plot(r48~year,pch=16 , main = "PDO")
+plot(r49~year,pch=16 , main = "SST")
+
+
+
+
+
+################################################################################################################################################
+#################################### plot all together #############################################################################################
+r.fit41<-loess(r41~year,span=0.4)
+r.fit42<-loess(r42~year,span=0.4)
+r.fit43<-loess(r43~year,span=0.4)
+r.fit44<-loess(r44~year,span=0.4)
+r.fit45<-loess(r45~year,span=0.4)
+r.fit46<-loess(r46~year,span=0.4)
+r.fit47<-loess(r47~year,span=0.4)
+r.fit48<-loess(r48~year,span=0.4)
+r.fit49<-loess(r49~year,span=0.4)
+
+dev.new()
+par(mfrow=c(3,3))
+
+
+plot(r.fit41,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi")
+lines(year,fitted(r.fit41),col=4)
+
+plot(r.fit42,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female opilio")
+lines(year,fitted(r.fit42),col=4)
+
+plot(r.fit43,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Pacific cod")
+lines(year,fitted(r.fit43),col=4)
+
+plot(r.fit44,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Flathead sole")
+lines(year,fitted(r.fit44),col=4)
+
+plot(r.fit45,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="NBT")
+lines(year,fitted(r.fit45),col=4)
+
+plot(r.fit46,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="SE wind")
+lines(year,fitted(r.fit46),col=4)
+
+plot(r.fit47,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Arctic Oscillation")
+lines(year,fitted(r.fit47),col=4)
+
+plot(r.fit48,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Pacific Decadal Oscillation")
+lines(year,fitted(r.fit48),col=4)
+
+plot(r.fit49,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="May-July SST")
+lines(year,fitted(r.fit49),col=4)
+
+###############################################################################################################################################################
+####################################### Now use GAM models with log(R/S) as response and with additional environmental variable ##################################################################################
+
+mod51 <- gam(lnRS ~ s(s, k = 4),
+             data = dat, method = "REML")
+
+mod52 <- gam(lnRS ~s(s, k = 4)+ s(Fem_CO, k = 4),
+             data = dat, method = "REML")
+
+mod53 <- gam(lnRS ~ s(s, k = 4)+ s(cod, k = 4),
+             data = dat, method = "REML")
+
+mod54 <- gam(lnRS ~ s(s, k = 4)+ s(fhs, k = 4),
+             data = dat, method = "REML")
+
+mod55 <- gam(lnRS ~ s(s, k = 4)+ s(nbt, k = 4),
+             data = dat, method = "REML")
+
+mod56 <- gam(lnRS ~ s(s, k = 4)+ s(wind, k = 4),
+             data = dat, method = "REML")
+
+mod57 <- gam(lnRS ~ s(s, k = 4)+ s(ao, k = 4),
+             data = dat, method = "REML")
+
+mod58 <- gam(lnRS ~ s(s, k = 4)+ s(pdo, k = 4),
+             data = dat, method = "REML")
+
+mod59 <- gam(lnRS ~ s(s, k = 4)+ s(sst, k = 4),
+             data = dat, method = "REML")
+
+######################################################################################################################################################################
+################################################ Plot GAM models ############################################################################################
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod51 ,resid=T, pch=16, shade=T, rug=F, main = "Reproductive females")
+plot(mod52, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi and Opilio females")
+plot(mod53, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi and Pacific cod")
+plot(mod54, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi and Flathead sole")
+plot(mod55, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi and NBT")
+
+# each of these models except first will have two plots (one for each variable), so need to set up second graphics window
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod56, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi and SE wind")
+plot(mod57, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi and AO")
+plot(mod58, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi and PDO")
+plot(mod59, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi and SST")
+
+r51<-resid(mod51)
+r52<-resid(mod52)
+r53<-resid(mod53)
+r54<-resid(mod54)
+r55<-resid(mod55)
+r56<-resid(mod56)
+r57<-resid(mod57)
+r58<-resid(mod58)
+r59<-resid(mod59)
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(r51~year,pch=16 , main = "Reproductive female Bairdi")
+plot(r52~year,pch=16 , main = "Reproductive female Bairdi+Reproductive female Opilio")
+plot(r53~year,pch=16 , main = "Reproductive female Bairdi+Pacific cod")
+plot(r54~year,pch=16 , main = "Reproductive female Bairdi+Flathead sole")
+plot(r55~year,pch=16 , main = "Reproductive female Bairdi+NBT")
+plot(r56~year,pch=16 , main = "Reproductive female Bairdi+SE wind")
+plot(r57~year,pch=16 , main = "Reproductive female Bairdi+AO")
+plot(r58~year,pch=16 , main = "Reproductive female Bairdi+PDO")
+plot(r59~year,pch=16 , main = "Reproductive female Bairdi+SST")
+
+
+
+
+
+################################################################################################################################################
+#################################### plot all together #############################################################################################
+r.fit51<-loess(r51~year,span=0.4)
+r.fit52<-loess(r52~year,span=0.4)
+r.fit53<-loess(r53~year,span=0.4)
+r.fit54<-loess(r54~year,span=0.4)
+r.fit55<-loess(r55~year,span=0.4)
+r.fit56<-loess(r56~year,span=0.4)
+r.fit57<-loess(r57~year,span=0.4)
+r.fit58<-loess(r58~year,span=0.4)
+r.fit59<-loess(r59~year,span=0.4)
+
+dev.new()
+par(mfrow=c(3,3))
+
+
+plot(r.fit51,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi")
+lines(year,fitted(r.fit51),col=4)
+
+plot(r.fit52,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+Female opilio")
+lines(year,fitted(r.fit52),col=4)
+
+plot(r.fit53,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+Pacific cod")
+lines(year,fitted(r.fit53),col=4)
+
+plot(r.fit54,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+Flathead sole")
+lines(year,fitted(r.fit54),col=4)
+
+plot(r.fit55,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+NBT")
+lines(year,fitted(r.fit55),col=4)
+
+plot(r.fit56,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+SE wind")
+lines(year,fitted(r.fit56),col=4)
+
+plot(r.fit57,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+Arctic Oscillation")
+lines(year,fitted(r.fit57),col=4)
+
+plot(r.fit58,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+Pacific Decadal Oscillation")
+lines(year,fitted(r.fit58),col=4)
+
+plot(r.fit59,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+May-July SST")
+lines(year,fitted(r.fit59),col=4)
+
 ###########################################################################################################################################
 ########################################## GLS Models #####################################################################################
 
@@ -396,3 +631,67 @@ lines(year,fitted(r.fit28),col=4)
 
 plot(r.fit29,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="May-July SST")
 lines(year,fitted(r.fit29),col=4)
+
+
+###########################################################################################################################################
+########################################## GLS Models with spawners + single environmental variable  #####################################################################################
+
+fit31<-gls(r ~ s, correlation = corAR1(), method="ML")
+fit32<-gls(r ~ s+ Fem_CO, correlation = corAR1(), method="ML")
+fit33<-gls(r ~ s+ cod, correlation = corAR1(), method="ML")
+fit34<-gls(r ~ s+ fhs, correlation = corAR1(), method="ML")
+fit35<-gls(r ~ s+ nbt, correlation = corAR1(), method="ML")
+fit36<-gls(r ~ s+ wind, correlation = corAR1(), method="ML")
+fit37<-gls(r ~ s+ ao, correlation = corAR1(), method="ML")
+fit38<-gls(r ~ s+ pdo, correlation = corAR1(), method="ML")
+fit39<-gls(r ~ s+ sst, correlation = corAR1(), method="ML")
+
+r31<-resid(fit31)
+r32<-resid(fit32)
+r33<-resid(fit33)
+r34<-resid(fit34)
+r35<-resid(fit35)
+r36<-resid(fit36)
+r37<-resid(fit37)
+r38<-resid(fit38)
+r39<-resid(fit39)
+
+r.fit31<-loess(r31~year,span=0.4)
+r.fit32<-loess(r32~year,span=0.4)
+r.fit33<-loess(r33~year,span=0.4)
+r.fit34<-loess(r34~year,span=0.4)
+r.fit35<-loess(r35~year,span=0.4)
+r.fit36<-loess(r36~year,span=0.4)
+r.fit37<-loess(r37~year,span=0.4)
+r.fit38<-loess(r38~year,span=0.4)
+r.fit39<-loess(r39~year,span=0.4)
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(r.fit31,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female Bairdi")
+lines(year,fitted(r.fit31),col=4)
+
+plot(r.fit32,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female opilio")
+lines(year,fitted(r.fit32),col=4)
+
+plot(r.fit33,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Pacific cod")
+lines(year,fitted(r.fit33),col=4)
+
+plot(r.fit34,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Flathead sole")
+lines(year,fitted(r.fit34),col=4)
+
+plot(r.fit35,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="NBT")
+lines(year,fitted(r.fit35),col=4)
+
+plot(r.fit36,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="SE wind")
+lines(year,fitted(r.fit36),col=4)
+
+plot(r.fit37,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Arctic Oscillation")
+lines(year,fitted(r.fit37),col=4)
+
+plot(r.fit38,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Pacific Decadal Oscillation")
+lines(year,fitted(r.fit38),col=4)
+
+plot(r.fit39,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="May-July SST")
+lines(year,fitted(r.fit39),col=4)
