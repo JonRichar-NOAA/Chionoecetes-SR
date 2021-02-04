@@ -15,7 +15,8 @@ library(corrplot)
 
 ########## Import data and define variables####
 
-All_Dat<-read.csv("data/EBS_Crab_and_envar_data_for_analysis.csv")
+Lim_Dat<-read.csv("data/EBS_Crab_and_envar_data_for_analysis.csv")
+All_Dat<-read.csv("data/EBS_Crab_and_envar_data_full_extent_for_analysis.csv") #Has 1982 female bairdi and corresponding juvenile and environmental data removed
 SR_Dat<-read.csv("data/SR_data.csv")
 
 names(All_Dat)
@@ -34,7 +35,11 @@ pdo<-All_Dat$PDO_djf
 sst<-All_Dat$SST_May_July
 year<-All_Dat$releaseyear
 
-
+year.o<-All_Dat$releaseyear[3:length(All_Dat$releaseyear)]
+year.fhs<-All_Dat$releaseyear[4:length(All_Dat$releaseyear)]
+year
+year.o
+year.fhs
 ############################################################################################################################################################################
 ################################################ LINEAR MODELS #############################################################################################################
 
@@ -59,7 +64,7 @@ r.fit1<-loess(res~year,span=0.4)
 #dev.new()
 #par(mfrow=c(2,2))
 
-lm2<-lm(r~Fem_CO)
+lm2<-lm(r~Fem_CO,use="complete.obs")
 summary(lm2)
 res<-resid(lm2)
 #plot(lm2)
@@ -68,7 +73,7 @@ res<-resid(lm2)
 #par(mfrow=c(1,1))
 #plot(res~year,pch=16 )
 
-r.fit2<-loess(res~year,span=0.4)
+r.fit2<-loess(res~year.o,span=0.4,use="complete.obs")
 #plot(r.fit2,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Interdecadal trend in EBS group residuals using female opilio as predictor")
 #lines(year,fitted(r.fit2),col=4)
 ########################### Pacific cod######################################################################
@@ -84,14 +89,14 @@ res<-resid(lm3)
 #par(mfrow=c(1,1))
 #plot(res~year,pch=16 )
 
-r.fit3<-loess(res~year,span=0.4)
+r.fit3<-loess(res~year,span=0.4,use="complete.obs")
 #plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Interdecadal trend in EBS group residuals using Pacific cod as predictor")
 #lines(year,fitted(r.fit3),col=4)
 ########################### Flathead sole ######################################################################
 #dev.new()
 #par(mfrow=c(2,2))
 
-lm4<-lm(r~fhs)
+lm4<-lm(r~fhs,use="complete.obs")
 summary(lm4)
 res<-resid(lm4)
 #plot(lm4)
@@ -100,7 +105,7 @@ res<-resid(lm4)
 #par(mfrow=c(1,1))
 #plot(res~year,pch=16 )
 
-r.fit4<-loess(res~year,span=0.4)
+r.fit4<-loess(res~year.fhs,span=0.4,use="complete.obs")
 #plot(r.fit4,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Interdecadal trend in EBS group residuals using flathead sole as predictor")
 #lines(year,fitted(r.fit4),col=4)
 ########################### NBT######################################################################
@@ -196,13 +201,13 @@ plot(r.fit1,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female Bairdi
 lines(year,fitted(r.fit1),col=4)
 
 plot(r.fit2,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female opilio")
-lines(year,fitted(r.fit2),col=4)
+lines(year.o,fitted(r.fit2),col=4)
 
 plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Pacific cod")
 lines(year,fitted(r.fit3),col=4)
 
 plot(r.fit4,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Flathead sole")
-lines(year,fitted(r.fit4),col=4)
+lines(year.fhs,fitted(r.fit4),col=4)
 
 plot(r.fit5,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="NBT")
 lines(year,fitted(r.fit5),col=4)
@@ -278,9 +283,9 @@ dev.new()
 par(mfrow=c(3,3))
 
 plot(r1~year,pch=16 , main = "Reproductive female Bairdi")
-plot(r2~year,pch=16 , main = "Reproductive female Opilio")
+plot(r2~year.o,pch=16 , main = "Reproductive female Opilio")
 plot(r3~year,pch=16 , main = "Pacific cod")
-plot(r4~year,pch=16 , main = "Flathead sole")
+plot(r4~year.fhs,pch=16 , main = "Flathead sole")
 plot(r5~year,pch=16 , main = "NBT")
 plot(r6~year,pch=16 , main = "SE wind")
 plot(r7~year,pch=16 , main = "AO")
@@ -288,15 +293,15 @@ plot(r8~year,pch=16 , main = "PDO")
 plot(r9~year,pch=16 , main = "SST")
 
 
-
+length(r2)
 
 
 ################################################################################################################################################
 #################################### plot all together #############################################################################################
 r.fit10<-loess(r1~year,span=0.4)
-r.fit11<-loess(r2~year,span=0.4)
+r.fit11<-loess(r2~year.o,span=0.4)
 r.fit12<-loess(r3~year,span=0.4)
-r.fit13<-loess(r4~year,span=0.4)
+r.fit13<-loess(r4~year.fhs,span=0.4)
 r.fit14<-loess(r5~year,span=0.4)
 r.fit15<-loess(r6~year,span=0.4)
 r.fit16<-loess(r7~year,span=0.4)
@@ -310,14 +315,17 @@ par(mfrow=c(3,3))
 plot(r.fit10,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female Bairdi")
 lines(year,fitted(r.fit10),col=4)
 
+
+length(year)
+r.fit11
 plot(r.fit11,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female opilio")
-lines(year,fitted(r.fit11),col=4)
+lines(year.o,fitted(r.fit11),col=4)
 
 plot(r.fit12,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Pacific cod")
 lines(year,fitted(r.fit12),col=4)
 
 plot(r.fit13,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Flathead sole")
-lines(year,fitted(r.fit13),col=4)
+lines(year.fhs,fitted(r.fit13),col=4)
 
 plot(r.fit14,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="NBT")
 lines(year,fitted(r.fit14),col=4)
@@ -393,9 +401,9 @@ dev.new()
 par(mfrow=c(3,3))
 
 plot(r41~year,pch=16 , main = "Reproductive female Bairdi")
-plot(r42~year,pch=16 , main = "Reproductive female Opilio")
+plot(r42~year.o,pch=16 , main = "Reproductive female Opilio")
 plot(r43~year,pch=16 , main = "Pacific cod")
-plot(r44~year,pch=16 , main = "Flathead sole")
+plot(r44~year.fhs,pch=16 , main = "Flathead sole")
 plot(r45~year,pch=16 , main = "NBT")
 plot(r46~year,pch=16 , main = "SE wind")
 plot(r47~year,pch=16 , main = "AO")
@@ -409,9 +417,9 @@ plot(r49~year,pch=16 , main = "SST")
 ################################################################################################################################################
 #################################### plot all together #############################################################################################
 r.fit41<-loess(r41~year,span=0.4)
-r.fit42<-loess(r42~year,span=0.4)
+r.fit42<-loess(r42.o~year,span=0.4)
 r.fit43<-loess(r43~year,span=0.4)
-r.fit44<-loess(r44~year,span=0.4)
+r.fit44<-loess(r44.fhs~year,span=0.4)
 r.fit45<-loess(r45~year,span=0.4)
 r.fit46<-loess(r46~year,span=0.4)
 r.fit47<-loess(r47~year,span=0.4)
@@ -426,13 +434,13 @@ plot(r.fit41,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi")
 lines(year,fitted(r.fit41),col=4)
 
 plot(r.fit42,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female opilio")
-lines(year,fitted(r.fit42),col=4)
+lines(year.o,fitted(r.fit42),col=4)
 
 plot(r.fit43,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Pacific cod")
 lines(year,fitted(r.fit43),col=4)
 
 plot(r.fit44,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Flathead sole")
-lines(year,fitted(r.fit44),col=4)
+lines(year.fhs,fitted(r.fit44),col=4)
 
 plot(r.fit45,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="NBT")
 lines(year,fitted(r.fit45),col=4)
@@ -449,7 +457,7 @@ lines(year,fitted(r.fit48),col=4)
 plot(r.fit49,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="May-July SST")
 lines(year,fitted(r.fit49),col=4)
 
-###############################################################################################################################################################
+#########################################################################################################################################################################################################
 ####################################### Now use GAM models with log(R/S) as response and with additional environmental variable ##################################################################################
 
 mod51 <- gam(lnRS ~ s(s, k = 4),
@@ -479,8 +487,8 @@ mod58 <- gam(lnRS ~ s(s, k = 4)+ s(pdo, k = 4),
 mod59 <- gam(lnRS ~ s(s, k = 4)+ s(sst, k = 4),
              data = dat, method = "REML")
 
-######################################################################################################################################################################
-################################################ Plot GAM models ############################################################################################
+####################################################################################################################################################################################################
+################################################ Plot GAM models ###################################################################################################################################
 dev.new()
 par(mfrow=c(3,3))
 
@@ -513,9 +521,9 @@ dev.new()
 par(mfrow=c(3,3))
 
 plot(r51~year,pch=16 , main = "Reproductive female Bairdi")
-plot(r52~year,pch=16 , main = "Reproductive female Bairdi+Reproductive female Opilio")
+plot(r52~year.o,pch=16 , main = "Reproductive female Bairdi+Reproductive female Opilio")
 plot(r53~year,pch=16 , main = "Reproductive female Bairdi+Pacific cod")
-plot(r54~year,pch=16 , main = "Reproductive female Bairdi+Flathead sole")
+plot(r54~year.fhs,pch=16 , main = "Reproductive female Bairdi+Flathead sole")
 plot(r55~year,pch=16 , main = "Reproductive female Bairdi+NBT")
 plot(r56~year,pch=16 , main = "Reproductive female Bairdi+SE wind")
 plot(r57~year,pch=16 , main = "Reproductive female Bairdi+AO")
@@ -529,9 +537,9 @@ plot(r59~year,pch=16 , main = "Reproductive female Bairdi+SST")
 ################################################################################################################################################
 #################################### plot all together #############################################################################################
 r.fit51<-loess(r51~year,span=0.4)
-r.fit52<-loess(r52~year,span=0.4)
+r.fit52<-loess(r52~year.o,span=0.4)
 r.fit53<-loess(r53~year,span=0.4)
-r.fit54<-loess(r54~year,span=0.4)
+r.fit54<-loess(r54~year.fhs,span=0.4)
 r.fit55<-loess(r55~year,span=0.4)
 r.fit56<-loess(r56~year,span=0.4)
 r.fit57<-loess(r57~year,span=0.4)
@@ -546,13 +554,13 @@ plot(r.fit51,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi")
 lines(year,fitted(r.fit51),col=4)
 
 plot(r.fit52,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+Female opilio")
-lines(year,fitted(r.fit52),col=4)
+lines(year.o,fitted(r.fit52),col=4)
 
 plot(r.fit53,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+Pacific cod")
 lines(year,fitted(r.fit53),col=4)
 
 plot(r.fit54,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+Flathead sole")
-lines(year,fitted(r.fit54),col=4)
+lines(year.fhs,fitted(r.fit54),col=4)
 
 plot(r.fit55,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+NBT")
 lines(year,fitted(r.fit55),col=4)
@@ -593,9 +601,9 @@ r28<-resid(fit28)
 r29<-resid(fit29)
 
 r.fit21<-loess(r21~year,span=0.4)
-r.fit22<-loess(r22~year,span=0.4)
+r.fit22<-loess(r22~year.o,span=0.4)
 r.fit23<-loess(r23~year,span=0.4)
-r.fit24<-loess(r24~year,span=0.4)
+r.fit24<-loess(r24~year.fhs,span=0.4)
 r.fit25<-loess(r25~year,span=0.4)
 r.fit26<-loess(r26~year,span=0.4)
 r.fit27<-loess(r27~year,span=0.4)
@@ -609,13 +617,13 @@ plot(r.fit21,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female Baird
 lines(year,fitted(r.fit21),col=4)
 
 plot(r.fit22,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female opilio")
-lines(year,fitted(r.fit22),col=4)
+lines(year.o,fitted(r.fit22),col=4)
 
 plot(r.fit23,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Pacific cod")
 lines(year,fitted(r.fit23),col=4)
 
 plot(r.fit24,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Flathead sole")
-lines(year,fitted(r.fit24),col=4)
+lines(year.fhs,fitted(r.fit24),col=4)
 
 plot(r.fit25,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="NBT")
 lines(year,fitted(r.fit25),col=4)
@@ -657,9 +665,9 @@ r38<-resid(fit38)
 r39<-resid(fit39)
 
 r.fit31<-loess(r31~year,span=0.4)
-r.fit32<-loess(r32~year,span=0.4)
+r.fit32<-loess(r32~year.o,span=0.4)
 r.fit33<-loess(r33~year,span=0.4)
-r.fit34<-loess(r34~year,span=0.4)
+r.fit34<-loess(r34~year.fhs,span=0.4)
 r.fit35<-loess(r35~year,span=0.4)
 r.fit36<-loess(r36~year,span=0.4)
 r.fit37<-loess(r37~year,span=0.4)
@@ -673,13 +681,13 @@ plot(r.fit31,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female Baird
 lines(year,fitted(r.fit31),col=4)
 
 plot(r.fit32,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Female opilio")
-lines(year,fitted(r.fit32),col=4)
+lines(year.o,fitted(r.fit32),col=4)
 
 plot(r.fit33,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Pacific cod")
 lines(year,fitted(r.fit33),col=4)
 
 plot(r.fit34,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Flathead sole")
-lines(year,fitted(r.fit34),col=4)
+lines(year.fhs,fitted(r.fit34),col=4)
 
 plot(r.fit35,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="NBT")
 lines(year,fitted(r.fit35),col=4)
