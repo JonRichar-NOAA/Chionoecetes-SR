@@ -591,6 +591,7 @@ dev.new()
 par(mfrow=c(3,3))
 
 plot(r40~year,pch=16 , main = "Reproductive female Bairdi")
+acf(r40)
 plot(r41~year.o,pch=16 , main = "Reproductive female Bairdi+Reproductive female Opilio")
 plot(r42~year,pch=16 , main = "Reproductive female Bairdi+Pacific cod")
 plot(r43~year,pch=16 , main = "Reproductive female Bairdi+RA2 Pacific cod")
@@ -656,7 +657,7 @@ plot(r.fit46,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+RA2 Fl
 lines(year.fhs2,fitted(r.fit46),col=4)
 
 plot(r.fit47,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+RA3 NBT")
-lines(year,fitted(r.fit55),col=4)
+lines(year,fitted(r.fit47),col=4)
 
 plot(r.fit48,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+SE wind")
 lines(year,fitted(r.fit48),col=4)
@@ -682,3 +683,612 @@ lines(year,fitted(r.fit54),col=4)
 plot(r.fit55,pch=16,xlab="Hatch year", ylab="Ln(R/S)",main="Female Bairdi+May-July SST")
 lines(year,fitted(r.fit55),col=4)
 
+##############################################################################################################################################
+########################## Add juveniles 6 years prior to recruitment as predictor ###########################################################
+###### Create data variables
+n<-7
+lnRS_6<-All_Dat$logRS[n:length(r)]
+Fem_CO_6<-All_Dat$Ovig_female_CO[n:length(r)]
+cod_6<-All_Dat$Pcod_lag1[n:length(r)]
+cod2_6<-All_Dat$PCod_RA2[n:length(r)]
+cod3_6<-All_Dat$PCod_RA3[n:length(r)]
+fhs_6<-All_Dat$FHS_lag2[n:length(r)]
+fhs2_6<-All_Dat$FHS_RA2[n:length(r)]
+nbt_6<-All_Dat$NBT_3RA[n:length(r)]
+wind_6<-All_Dat$SE.wind[n:length(r)]
+ao_6<-All_Dat$AO_jfm[n:length(r)]
+ao2_6<-All_Dat$AO_RA2[n:length(r)]
+ao3_6<-All_Dat$AO_RA3[n:length(r)]
+pdo_6<-All_Dat$PDO_djf[n:length(r)]
+pdo2_6<-All_Dat$PDO_RA2[n:length(r)]
+pdo3_6<-All_Dat$PDO_RA3[n:length(r)]
+sst_6<-All_Dat$SST_May_July[n:length(r)]
+year_6<-All_Dat$releaseyear[n:length(r)]
+
+
+R6<-r[n:length(r)]
+Rminus6<-r[1:(length(r)-6)]
+length(Rminus6)
+length(R6)
+S6<-s[n:length(r)]
+#logR7<-log(R7/S7)
+
+acf(r)
+
+
+
+mod_6_test <- gam(lnRS_6 ~ s(S6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+summary(mod_6_test)
+
+r_6<-resid(mod_6)
+r.fit_6<-loess(r_6~year_6,span=0.4)
+
+dev.new()
+plot(r.fit_6,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Females and juveniles6 years prior")
+lines(year_6,fitted(r.fit_6),col=4)
+cor(R6,S6)
+cor(R6,Rminus6)
+cor(S6,Rminus6)
+
+dwtest(mod_6_test)
+
+
+##############################################################################################################################
+##################################### Run models adding juvenile abundance 6 years previously to multifactor models ##########
+#########################################################################################################################################################################################################
+####################################### Now use GAM models with log(R/S) as response and with additional environmental variable ##################################################################################
+
+mod60 <- gam(lnRS_6 ~ s(S6, k = 4)+s(Rminus6, k = 4),
+           data = dat, method = "REML")
+
+mod61 <- gam(lnRS_6 ~s(S6, k = 4)+ s(Fem_CO_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod62 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(cod_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod63 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(cod2_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod64 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(cod3_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod65 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(fhs_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod66 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(fhs2_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod67 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(nbt_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod68 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(wind_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod69 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(ao_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod70 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(ao2_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod71 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(ao3_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod72 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(pdo_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod73 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(pdo2_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod74 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(pdo3_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+mod75 <- gam(lnRS_6 ~ s(S6, k = 4)+ s(sst_6, k = 4)+s(Rminus6, k = 4),
+             data = dat, method = "REML")
+
+dwtest(mod60)
+dwtest(mod61)
+dwtest(mod62)
+dwtest(mod63)
+dwtest(mod64)
+dwtest(mod65)
+dwtest(mod66)
+dwtest(mod67)
+dwtest(mod68)
+dwtest(mod69)
+dwtest(mod70)
+dwtest(mod71)
+dwtest(mod72)
+dwtest(mod73)
+dwtest(mod74)
+dwtest(mod75)
+
+
+summary(mod60)
+summary(mod61)
+summary(mod62)
+summary(mod63)
+summary(mod64)
+summary(mod65)
+summary(mod66)
+summary(mod67)
+summary(mod68)
+summary(mod69)
+summary(mod70)
+summary(mod71)
+summary(mod72)
+summary(mod73)
+summary(mod74)
+summary(mod75)
+####################################################################################################################################################################################################
+################################################ Plot GAM models ###################################################################################################################################
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod60 ,resid=T, pch=16, shade=T, rug=F, main = "Reproductive females with Juveniles 6 yrs prior")
+plot(mod61, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs priorand Opilio females")
+plot(mod62, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and Pacific cod")
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod63, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and RA2 Pacific cod")
+plot(mod64, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and RA3 Pacific cod")
+plot(mod65, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and Flathead sole")
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod66, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and RA2 Flathead sole")
+plot(mod67, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and NBT")
+plot(mod68, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and SE wind")
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod69, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and AO")
+plot(mod70, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and RA2 AO")
+plot(mod71, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and RA3 AO")
+
+# each of these models except first will have two plots (one for each variable), so need to set up second graphics window
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod72, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and PDO")
+plot(mod73, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and RA2 PDO")
+plot(mod74, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and RA3 PDO")
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod75, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 6 yrs prior and SST")
+
+r60<-resid(mod60)
+r61<-resid(mod61)
+r62<-resid(mod62)
+r63<-resid(mod63)
+r64<-resid(mod64)
+r65<-resid(mod65)
+r66<-resid(mod66)
+r67<-resid(mod67)
+r68<-resid(mod68)
+r69<-resid(mod69)
+r70<-resid(mod70)
+r71<-resid(mod71)
+r72<-resid(mod72)
+r73<-resid(mod73)
+r74<-resid(mod74)
+r75<-resid(mod75)
+
+acf(r60)
+
+dev.new()
+par(mfrow=c(3,3))
+
+
+
+plot(r60~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior")
+plot(r61~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and Reproductive female Opilio")
+plot(r62~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and Pacific cod")
+plot(r63~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA2 Pacific cod")
+plot(r64~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA3 Pacific cod")
+plot(r65~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and Flathead sole")
+plot(r66~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA2 Flathead sole")
+plot(r67~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and NBT")
+plot(r68~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and SE wind")
+
+par(mfrow=c(3,3))
+
+plot(r69~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and AO")
+plot(r70~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA2 AO")
+plot(r71~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA3 AO")
+plot(r72~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and PDO")
+plot(r73~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA2 PDO")
+plot(r74~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA3 PDO")
+plot(r75~year_6,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and SST")
+
+
+
+
+
+################################################################################################################################################
+#################################### plot all together #############################################################################################
+r.fit60<-loess(r60~year_6,span=0.4)
+r.fit61<-loess(r61~year_6,span=0.4)
+r.fit62<-loess(r62~year_6,span=0.4)
+r.fit63<-loess(r63~year_6,span=0.4)
+r.fit64<-loess(r64~year_6,span=0.4)
+r.fit65<-loess(r65~year_6,span=0.4)
+r.fit66<-loess(r66~year_6,span=0.4)
+r.fit67<-loess(r67~year_6,span=0.4)
+r.fit68<-loess(r68~year_6,span=0.4)
+r.fit69<-loess(r69~year_6,span=0.4)
+r.fit70<-loess(r70~year_6,span=0.4)
+r.fit71<-loess(r71~year_6,span=0.4)
+r.fit72<-loess(r72~year_6,span=0.4)
+r.fit73<-loess(r73~year_6,span=0.4)
+r.fit74<-loess(r74~year_6,span=0.4)
+r.fit75<-loess(r75~year_6,span=0.4)
+
+dev.new()
+par(mfrow=c(3,3))
+
+
+plot(r.fit60,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi +Juveniles 6 yrs prior")
+lines(year_6,fitted(r.fit60),col=4)
+
+plot(r.fit61,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and Female opilio")
+lines(year_6,fitted(r.fit61),col=4)
+
+plot(r.fit62,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and Pacific cod")
+lines(year_6,fitted(r.fit62),col=4)
+
+plot(r.fit63,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and RA2Pacific cod")
+lines(year_6,fitted(r.fit63),col=4)
+
+plot(r.fit64,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and RA3Pacific cod")
+lines(year_6,fitted(r.fit64),col=4)
+
+plot(r.fit65,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and Flathead sole")
+lines(year_6,fitted(r.fit65),col=4)
+
+plot(r.fit66,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and RA2 Flathead sole")
+lines(year_6,fitted(r.fit66),col=4)
+
+plot(r.fit67,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and RA3 NBT")
+lines(year_6,fitted(r.fit67),col=4)
+
+plot(r.fit68,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and SE wind")
+lines(year_6,fitted(r.fit68),col=4)
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(r.fit69,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and Arctic Oscillation")
+lines(year_6,fitted(r.fit69),col=4)
+
+plot(r.fit70,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and RA2 Arctic Oscillation")
+lines(year_6,fitted(r.fit70),col=4)
+
+plot(r.fit71,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and RA3 Arctic Oscillation")
+lines(year_6,fitted(r.fit71),col=4)
+
+plot(r.fit72,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and Pacific Decadal Oscillation")
+lines(year_6,fitted(r.fit72),col=4)
+
+plot(r.fit73,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and RA2 Pacific Decadal Oscillation")
+lines(year_6,fitted(r.fit73),col=4)
+
+plot(r.fit74,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and RA3 Pacific Decadal Oscillation")
+lines(year_6,fitted(r.fit74),col=4)
+
+plot(r.fit75,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 6 yrs prior and May-July SST")
+lines(year_6,fitted(r.fit75),col=4)
+
+
+##############################################################################################################################################
+########################## Add juveniles 7 years prior to recruitment as predictor ###########################################################
+###### Create data variables
+n<-8
+lnRS_7<-All_Dat$logRS[n:length(r)]
+Fem_CO_7<-All_Dat$Ovig_female_CO[n:length(r)]
+cod_7<-All_Dat$Pcod_lag1[n:length(r)]
+cod2_7<-All_Dat$PCod_RA2[n:length(r)]
+cod3_7<-All_Dat$PCod_RA3[n:length(r)]
+fhs_7<-All_Dat$FHS_lag2[n:length(r)]
+fhs2_7<-All_Dat$FHS_RA2[n:length(r)]
+nbt_7<-All_Dat$NBT_3RA[n:length(r)]
+wind_7<-All_Dat$SE.wind[n:length(r)]
+ao_7<-All_Dat$AO_jfm[n:length(r)]
+ao2_7<-All_Dat$AO_RA2[n:length(r)]
+ao3_7<-All_Dat$AO_RA3[n:length(r)]
+pdo_7<-All_Dat$PDO_djf[n:length(r)]
+pdo2_7<-All_Dat$PDO_RA2[n:length(r)]
+pdo3_7<-All_Dat$PDO_RA3[n:length(r)]
+sst_7<-All_Dat$SST_May_July[n:length(r)]
+year_7<-All_Dat$releaseyear[n:length(r)]
+
+
+R7<-r[n:length(r)]
+Rminus7<-r[1:(length(r)-7)]
+length(Rminus7)
+length(R7)
+S7<-s[n:length(r)]
+#logR7<-log(R7/S7)
+
+acf(r)
+
+
+
+mod_7_test <- gam(lnRS_7 ~ s(S7, k = 4)+s(Rminus7, k = 4),
+                  data = dat, method = "REML")
+summary(mod_7_test)
+
+r_7<-resid(mod_7)
+r.fit_7<-loess(r_7~year_7,span=0.4)
+
+dev.new()
+plot(r.fit_7,pch=16,xlab="Hatch year", ylab="Lag 3 residuals",main="Females and juveniles 7 years prior")
+lines(year_7,fitted(r.fit_7),col=4)
+cor(R7,S7)
+cor(R6,S6)
+cor(R7,Rminus7)
+cor(S7,Rminus7)
+cor(S6,Rminus6)
+
+dwtest(mod_7_test)
+
+
+##############################################################################################################################
+##################################### Run models adding juvenile abundance 7 years previously to multifactor models ##########
+#########################################################################################################################################################################################################
+####################################### Now use GAM models with log(R/S) as response and with additional environmental variable ##################################################################################
+
+mod80 <- gam(lnRS_7 ~ s(S7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod81 <- gam(lnRS_7 ~s(S7, k = 4)+ s(Fem_CO_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod82 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(cod_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod83 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(cod2_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod84 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(cod3_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod85 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(fhs_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod86 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(fhs2_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod87 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(nbt_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod88 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(wind_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod89 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(ao_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod90 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(ao2_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod91 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(ao3_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod92 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(pdo_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod93 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(pdo2_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod94 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(pdo3_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+mod95 <- gam(lnRS_7 ~ s(S7, k = 4)+ s(sst_7, k = 4)+s(Rminus7, k = 4),
+             data = dat, method = "REML")
+
+dwtest(mod80)
+dwtest(mod81)
+dwtest(mod82)
+dwtest(mod83)
+dwtest(mod84)
+dwtest(mod85)
+dwtest(mod86)
+dwtest(mod87)
+dwtest(mod88)
+dwtest(mod89)
+dwtest(mod90)
+dwtest(mod91)
+dwtest(mod92)
+dwtest(mod93)
+dwtest(mod94)
+dwtest(mod95)
+
+
+summary(mod80)
+summary(mod81)
+summary(mod82)
+summary(mod83)
+summary(mod84)
+summary(mod85)
+summary(mod86)
+summary(mod87)
+summary(mod88)
+summary(mod89)
+summary(mod90)
+summary(mod91)
+summary(mod92)
+summary(mod93)
+summary(mod94)
+summary(mod95)
+####################################################################################################################################################################################################
+################################################ Plot GAM models ###################################################################################################################################
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod80 ,resid=T, pch=16, shade=T, rug=F, main = "Reproductive females with Juveniles 7 yrs prior")
+plot(mod81, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs priorand Opilio females")
+plot(mod82, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and Pacific cod")
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod83, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and RA2 Pacific cod")
+plot(mod84, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and RA3 Pacific cod")
+plot(mod85, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and Flathead sole")
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod86, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and RA2 Flathead sole")
+plot(mod87, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and NBT")
+plot(mod88, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and SE wind")
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod89, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and AO")
+plot(mod90, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and RA2 AO")
+plot(mod91, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and RA3 AO")
+
+# each of these models except first will have two plots (one for each variable), so need to set up second graphics window
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod82, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and PDO")
+plot(mod83, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and RA2 PDO")
+plot(mod84, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and RA3 PDO")
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(mod85, resid=T, pch=16, shade=T, rug=F, main = "Reproductive female bairdi with Juveniles 7 yrs prior and SST")
+
+r80<-resid(mod80)
+r81<-resid(mod81)
+r82<-resid(mod82)
+r83<-resid(mod83)
+r84<-resid(mod84)
+r85<-resid(mod85)
+r86<-resid(mod86)
+r87<-resid(mod87)
+r88<-resid(mod88)
+r89<-resid(mod89)
+r90<-resid(mod90)
+r91<-resid(mod91)
+r92<-resid(mod92)
+r93<-resid(mod93)
+r94<-resid(mod94)
+r95<-resid(mod95)
+
+acf(r80)
+
+dev.new()
+par(mfrow=c(3,3))
+
+
+
+plot(r80~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior")
+plot(r81~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and Reproductive female Opilio")
+plot(r82~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and Pacific cod")
+plot(r83~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA2 Pacific cod")
+plot(r84~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA3 Pacific cod")
+plot(r85~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and Flathead sole")
+plot(r86~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA2 Flathead sole")
+plot(r87~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and NBT")
+plot(r88~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and SE wind")
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(r89~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and AO")
+plot(r90~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA2 AO")
+plot(r91~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA3 AO")
+plot(r92~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and PDO")
+plot(r93~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA2 PDO")
+plot(r94~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and RA3 PDO")
+plot(r95~year_7,pch=16 , main = "Reproductive female Bairdi+Juveniles 6 yrs prior and SST")
+
+
+
+
+
+################################################################################################################################################
+#################################### plot all together #############################################################################################
+r.fit80<-loess(r80~year_7,span=0.4)
+r.fit81<-loess(r81~year_7,span=0.4)
+r.fit82<-loess(r82~year_7,span=0.4)
+r.fit83<-loess(r83~year_7,span=0.4)
+r.fit84<-loess(r84~year_7,span=0.4)
+r.fit85<-loess(r85~year_7,span=0.4)
+r.fit86<-loess(r86~year_7,span=0.4)
+r.fit87<-loess(r87~year_7,span=0.4)
+r.fit88<-loess(r88~year_7,span=0.4)
+r.fit89<-loess(r89~year_7,span=0.4)
+r.fit90<-loess(r90~year_7,span=0.4)
+r.fit91<-loess(r91~year_7,span=0.4)
+r.fit92<-loess(r92~year_7,span=0.4)
+r.fit93<-loess(r93~year_7,span=0.4)
+r.fit94<-loess(r94~year_7,span=0.4)
+r.fit95<-loess(r95~year_7,span=0.4)
+
+dev.new()
+par(mfrow=c(3,3))
+
+
+plot(r.fit80,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior")
+lines(year_7,fitted(r.fit80),col=4)
+
+plot(r.fit81,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and Female opilio")
+lines(year_7,fitted(r.fit81),col=4)
+
+plot(r.fit82,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and Pacific cod")
+lines(year_7,fitted(r.fit82),col=4)
+
+plot(r.fit83,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and RA2Pacific cod")
+lines(year_7,fitted(r.fit83),col=4)
+
+plot(r.fit84,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and RA3Pacific cod")
+lines(year_7,fitted(r.fit84),col=4)
+
+plot(r.fit85,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and Flathead sole")
+lines(year_7,fitted(r.fit85),col=4)
+
+plot(r.fit86,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and RA2 Flathead sole")
+lines(year_7,fitted(r.fit86),col=4)
+
+plot(r.fit87,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and RA3 NBT")
+lines(year_7,fitted(r.fit87),col=4)
+
+plot(r.fit88,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and SE wind")
+lines(year_7,fitted(r.fit88),col=4)
+
+dev.new()
+par(mfrow=c(3,3))
+
+plot(r.fit89,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and Arctic Oscillation")
+lines(year_7,fitted(r.fit89),col=4)
+
+plot(r.fit90,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and RA2 Arctic Oscillation")
+lines(year_7,fitted(r.fit90),col=4)
+
+plot(r.fit91,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and RA3 Arctic Oscillation")
+lines(year_7,fitted(r.fit91),col=4)
+
+plot(r.fit92,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and Pacific Decadal Oscillation")
+lines(year_7,fitted(r.fit92),col=4)
+
+plot(r.fit93,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and RA2 Pacific Decadal Oscillation")
+lines(year_7,fitted(r.fit93),col=4)
+
+plot(r.fit94,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and RA3 Pacific Decadal Oscillation")
+lines(year_7,fitted(r.fit94),col=4)
+
+plot(r.fit95,pch=16,xlab="Hatch year", ylab="Ln(R/S) residual",main="Female Bairdi+Juveniles 7 yrs prior and May-July SST")
+lines(year_7,fitted(r.fit95),col=4)
