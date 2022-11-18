@@ -1,3 +1,5 @@
+############ This script runs GAM models for time period of 1978 to 2005 ###########
+
 library(stats)
 library(MASS)
 library(nlme)
@@ -15,18 +17,17 @@ library(corrplot)
 
 ########## Import data 
 
-dat <- read.csv("data/EBS_Crab_and_envar_data_full_extent_for_analysis.csv", row.names = 1) #Has 1982 female bairdi and corresponding juvenile and environmental data removed
+dat0 <- read.csv("data/EBS_Crab_and_envar_data_full_extent_for_analysis.csv", row.names = 1) #Has 1982 female bairdi and corresponding juvenile and environmental data removed
+dat0 %>%
+  select(Era==1)->dat1
+
+dat1
+dat1 %>%
+  select(releaseyear:NE.wind) ->dat
 
 head(dat)
 
-# load NE wind
-wind <- read.csv("./data/mean.tanner.wind.csv", row.names = 1)
-names(wind) <- c("releaseyear", "NE.wind")
 dat
-dat <- left_join(dat, wind)
-dat
-hist(dat$logRS)
-
 cor.dat <- dat %>%
   select(-era)
 

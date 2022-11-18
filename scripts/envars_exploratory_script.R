@@ -38,7 +38,7 @@ eda.norm <- function(x, ...)
 
 ########################################################################################################
 
-dat<-read.csv("data/envars.csv")
+dat<-read.csv("./data/envars.csv")
 names(dat)
 dat<-as.data.frame(dat)
 n<-ncol(dat)
@@ -487,9 +487,24 @@ m
 dat5<-dat[,2:n]
 dat6<-dat4[8:44,]
 eda.norm(dat6)
-
+names(dat6)
 cor(dat6)
 cor2 <- cor(dat6, use="complete.obs")
+dev.new()
 corrplot(cor2)
 
 dat6
+cod<-dat6$Age3to7Pcodabun
+fhs<-dat6$FHS_TBM
+#pdo_s<-dat6$PDO_jja
+pdo_w<-dat6$PDO_djf
+sst_MJ<-dat6$May.July.anom
+AO<-dat6$AO_jfm
+NBT<-dat6$EBS_NBT_RA3_final_year
+dat7<-cbind(cod,fhs,pdo_w,sst_MJ,ao,nbt)
+cor(dat7)
+cor3 <- cor(dat7, use="complete.obs")
+dev.new()
+corrplot(cor3)
+
+write.csv(cor3, "")

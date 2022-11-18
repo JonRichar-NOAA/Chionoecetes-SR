@@ -307,19 +307,20 @@ par(mfrow=c(1,1),cex.lab=1.4,cex.axis=1.4,cex=1.5) #configure axis labels
 y.range<-range(0,4e+08)
 
 plot(EBS.juv)
+dev.new()
 plot(EBS.juv,type="b",ylim=y.range, pch=2,col=1,axes=FALSE,ann=FALSE)
 
 #abline(h=0)
 
 axis(1, at=1:n,lab=rec_30to50$Year,tck=0.02)
 axis(2, las=1, at=1e+08*0:9,labels=c("0","100","200","300","400","500","600","700","800","900"),tck=0.02)
-legend(14,9e+08,c("Total EBS"),cex=1.25,col=c(1),pch=c(2))
-#legend(15,9e+08,c("EBS juvenile estimate"),cex=1,col=c(4,1,2),pch=c(16,18,22))
+#legend(14,9e+08,c("Total EBS"),cex=1,col=c(1),pch=c(2))
+#legend(15,9e+08,c("EBS juvenile estimate"),cex=0.9,col=c(4,1,2),pch=c(16,18,22))
 box()
 
-title(xlab="Year")
-title(ylab="Abundance (Millions)")
-title(main=" Juvenile abundance by year")
+title(xlab="Year",cex=0.75)
+title(ylab="Abundance (Millions)",cex=0.75)
+#title(main=" Juvenile abundance by year")
 
 
 

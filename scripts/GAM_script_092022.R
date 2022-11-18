@@ -19,13 +19,6 @@ dat <- read.csv("data/EBS_Crab_and_envar_data_full_extent_for_analysis.csv", row
 
 head(dat)
 
-# load NE wind
-wind <- read.csv("./data/mean.tanner.wind.csv", row.names = 1)
-names(wind) <- c("releaseyear", "NE.wind")
-dat
-dat <- left_join(dat, wind)
-dat
-hist(dat$logRS)
 
 cor.dat <- dat %>%
   select(-era)
