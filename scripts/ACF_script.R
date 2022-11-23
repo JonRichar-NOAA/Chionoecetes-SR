@@ -91,7 +91,10 @@ R<-rec_30to50$EBS_Abun_30to50[4:45]
 
 ########################################## Full Timeseries #############################################################
 
-acf(R,main="Juvenile index, 1978 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)##### using "" removes main title
+output <- acf(R,main="Juvenile index, 1978 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)##### using "" removes main title
+
+str(output)
+output$acf
 #?acf()
 
 ########################################## Divide into two equal stanzas and original from grad school work (1978 to 2008)#
