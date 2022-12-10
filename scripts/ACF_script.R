@@ -90,7 +90,7 @@ rec_30to50$Year[4:45] #check years
 R<-rec_30to50$EBS_Abun_30to50[4:45]
 
 ########################################## Full Timeseries #############################################################
-
+dev.new()
 output <- acf(R,main="Juvenile index, 1978 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)##### using "" removes main title
 
 str(output)
@@ -153,11 +153,13 @@ plot <- output %>%
 ggplot(plot, aes(window_end, value, color = name)) +
   geom_line() +
   geom_point() +
-  labs(y = "AICc")
+  labs(y = "AICc",x="Analysis window end")
 
 ggsave("./figs/R_autocorrelation_candidate_windows.png", width = 6, height = 4, units = 'in')
 
 # 1998 is the best-supported window end
+
+dev.new()
 plot_acf <- data.frame(Lag = as.factor(1:10),
                        ACF_85_98 = acf(dat$log_R[dat$year %in% 1985:1998])$acf[1:10],
                        ACF_99_19 = acf(dat$log_R[dat$year %in% 1999:2019])$acf[1:10]) %>%
@@ -244,6 +246,9 @@ mod.out$delta_AICc <- mod.out$AIC - min(mod.out$AIC)
 
 mod.null <- lm(R ~ R.7, data=recr)
 
+# rerun using GLS procedures to allow accounting for autocorrelation
+mod.null2<-gls(R ~ R.7, data=recr,correlation=corAR1(),na.action=na.omit)
+
 null <- data.frame(year="NULL",
                    delta_AICc = MuMIn::AICc(mod.null)-min(mod.out$AIC))
 
@@ -266,6 +271,10 @@ recr$era <- ifelse(recr$year <= i, "early", "late")
 mod <- lm(R ~ R.7:era, data=recr)
 summary(mod)
 
+# rerun using GLS procedures to allow accounting for autocorrelation
+mod2<-gls(R ~ R.7:era, data=recr,correlation=corAR1(),na.action=na.omit)
+summary(mod2)
+
 
 # and plot eras
 # set palette
@@ -274,6 +283,7 @@ cb <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E
 i <- 2000
 recr$era <- ifelse(recr$year <= i, "early", "late")
 
+dev.new()
 ggplot(recr, aes(R.7, R, color = era)) +
   geom_point() +
   geom_smooth(method = "lm", se = F) +
@@ -285,3 +295,4 @@ ggplot(recr, aes(R.7, R, color = era)) +
 ggsave("./figs/AR7_changepoint_2000_scatter_plot_R.png", width = 5, height = 3, units = 'in')
 
 anova(mod.null, mod) # note this isn't correct n/c df don't account for autocorrelation!
+
