@@ -30,10 +30,7 @@ dat1 %>%
 head(dat)
 
 dat
-cor.dat <- dat %>%
-  select(-Era_AICcera)
 
-cor(cor.dat, use="p")
 
 
 ## fit models to explain recruitment variability -------------
@@ -79,7 +76,7 @@ acf(resid(mod1)) # not perfect, not terrible!
 gam.check(mod1)
 
 ## evaluate models including additional covariates in S-R model ---------------------------
-cor(dat$ReproductiveFemales, dat$Ovig_female_CO, use="p") # 0.24
+cor(dat$ReproductiveFemales, dat$Ovig_female_CO, use="p") # not correlated
 
 mod3 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(Ovig_female_CO, k = 4),
             data = dat)
@@ -110,12 +107,12 @@ mod5 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4),
 summary(mod5)
 plot(mod5, resid=T, pch=1, se=F, rug=F, pages=1)
 
-## examine the residuals for mod6
+## examine the residuals for mod5
 
 resid5 <- data.frame(year=dat$releaseyear[dat$releaseyear >= 1983],
                      resid=residuals(mod5))
 
-ggplot(resid5, aes(year, resid5)) +
+ggplot(resid5, aes(year, resid)) +
   geom_line() +
   geom_point()
 
@@ -146,7 +143,7 @@ summary(mod7)
 plot(mod7, resid=T, pch=1, se=F, rug=F, pages=1) # FHS effect is negative/linear = plausible!
 
 ## NE wind
-cor(dat$FHS_lag2, dat$NE.wind, use="p") # 0.07
+cor(dat$FHS_lag2, dat$NE.wind, use="p") # wind and FHS not correlated
 cor(dat$ReproductiveFemales, dat$NE.wind, use="p") # -0.29
 
 mod8 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(NE.wind, k=4),
@@ -186,9 +183,9 @@ MuMIn::AICc(mod6, mod10) # adding AO not helpful!
 
 ## and bottom temp rolling average
 cor(dat$FHS_lag2, dat$NBT_3RA, use="p") # -0.45.....correlated!
-cor(dat$ReproductiveFemales, dat$NBT_3RA, use="p")
+cor(dat$ReproductiveFemales, dat$NBT_3RA, use="p") #-0.23....weakly correlated
 
-mod11 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(NBT_3RA, k=4),
+mod11 <- gam(logRS ~ s(Reproductiv-eFemales, k=4) + s(FHS_lag2, k=4) + s(NBT_3RA, k=4),
             data = dat)
 
 summary(mod11)
@@ -199,7 +196,7 @@ MuMIn::AICc(mod6, mod11) # adding bottom temp only marginally better
 
 
 ## sst
-cor(dat$FHS_lag2, dat$SST_May_July, use="p") #-0.38...correlated
+cor(dat$FHS_lag2, dat$SST_May_July, use="p")            #-0.38...correlated
 cor(dat$ReproductiveFemales, dat$SST_May_July, use="p") #0.16
 
 mod12 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(SST_May_July, k=4),
@@ -212,6 +209,7 @@ plot(mod12, resid=T, pch=1, se=F, rug=F, pages=1)
 ## shifts FHS into improbable shape!
 
 ## refit with linear FHS effect
+## No need for correlation calculations as repeat of prior model with modded term
 mod13 <- gam(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + s(SST_May_July, k=4),
              data = dat)
 
@@ -244,3 +242,11 @@ dwtest(resid(mod14)~1)
 acf(resid(mod14)) #pretty good!
 
 MuMIn::AICc(mod1, mod2, mod3, mod4, mod5, mod6, mod7, mod8, mod9, mod10, mod11, mod12, mod13, mod14) ## Model 8 is best performing for Era 1 by AICc
+
+names(dat)
+cor.dat <- dat %>%
+  select(-era,-releaseyear)
+
+cor(cor.dat, use="p")
+
+write.csv(cor.dat,"output/Variable_correlations_AICc_Era1")

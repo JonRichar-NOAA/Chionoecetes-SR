@@ -40,6 +40,7 @@ cor(cor.dat, use="p")
 
 ## begin with spawner-recruit models ----------------
 ## with and without 2000 breakpoint suggested by earlier
+
 mod1 <- gam(logRS ~ s(ReproductiveFemales, k = 4),
             data = dat)
 
@@ -74,6 +75,8 @@ MuMIn::AICc(mod1, mod2)
 plot(mod2, resid=T, pch=1, se=F, rug=F, pages=1)
 
 ## Re-run ovigerous female CO model but with FHS added 
+cor(dat$Ovig_female_CO,dat$FHS_lag2, use="p")
+cor(dat$ReproductiveFemales,dat$FHS_lag2, use="p")
 
 mod3 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4)+ s(Ovig_female_CO, k = 4),
              data = dat[dat$releaseyear >= 1983,])
@@ -83,6 +86,11 @@ summary(mod3)
 plot(mod3, resid=T, pch=1, se=F, rug=F, pages=1)
 
 ## Re-run ovigerous female CO model but with FHS and Pcod added 
+cor(dat$Ovig_female_CO,dat$FHS_lag2, use="p")
+cor(dat$PCod_RA3,dat$FHS_lag2, use="p")
+cor(dat$Ovig_female_CO,PCod_RA3, use="p")
+cor(dat$ReproductiveFemales,dat$PCod_RA3, use="p")
+cor(dat$ReproductiveFemales,dat$FHS_lag2, use="p")
 
 mod4 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4)+ s(Ovig_female_CO, k = 4)
              + s(dat$PCod_RA3, k=4), data = dat[dat$releaseyear >= 1983,])
@@ -90,6 +98,9 @@ summary(mod4)
 plot(mod4, resid=T, pch=1, se=F, rug=F, pages=1)
 
 ## Re-run ovigerous female CO model but withPcod added 
+cor(dat$PCod_RA3,dat$FHS_lag2, use="p")
+cor(dat$Ovig_female_CO,PCod_RA3, use="p")
+cor(dat$ReproductiveFemales,dat$PCod_RA3, use="p")
 
 mod5 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(Ovig_female_CO, k = 4)
              + s(dat$PCod_RA3, k=4), data = dat[dat$releaseyear >= 1983,])
@@ -105,6 +116,7 @@ MuMIn::AICc(mod1, mod2,mod3,mod4,mod5,mod3c)
 # seems likely to be spurious
 
 ## cod
+cor(dat$ReproductiveFemales,dat$PCod_RA3, use="p")
 cor(dat$ReproductiveFemales, dat$PCod_RA3) # -0.06
 
 mod6 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4),
@@ -135,19 +147,21 @@ summary(mod8)
 plot(mod8, resid=T, pch=1, se=F, rug=F, pages=1)
 
 ## examine the residuals for mod7
-resid7 <- data.frame(year=dat$releaseyear[dat$releaseyear >= 1983],
-                      resid=residuals(mod7a))
+resid8 <- data.frame(year=dat$releaseyear[dat$releaseyear >= 1983],
+                      resid=residuals(mod8))
 
 ggplot(resid7, aes(year, resid)) +
   geom_line() +
   geom_point()
 
-dwtest(resid(mod7)~1)
-acf(resid(mod7)) # again, not great-great
+dwtest(resid(mod8)~1)
+acf(resid(mod8)) # again, not great-great
 
 ## retain FHS, and see if it's possible to improve with AO/wind/other physical covariates?? ----------
 
 # refit 5a with all available data (i.e., not limited to years available for FHS_RA2)
+cor(dat$ReproductiveFemales,dat$FHS_lag2, use="p")
+
 mod9 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4),
              data = dat)
 
@@ -156,6 +170,7 @@ summary(mod9)
 plot(mod9, resid=T, pch=1, se=F, rug=F, pages=1) # FHS effect is negative/linear = plausible!
 
 ## NE wind
+cor(dat$ReproductiveFemales, dat$NE.wind, use="p") # wind and female bairdi not correlated
 cor(dat$FHS_lag2, dat$NE.wind, use="p") # wind and FHS not correlated
 
 mod10 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(NE.wind, k=4),
@@ -167,8 +182,9 @@ plot(mod10, resid=T, pch=1, se=F, rug=F, pages=1)
 AICc(mod1, mod10) # adding wind not helpful!
 
 
-## NE wind
-cor(dat$FHS_lag2, dat$SE.wind, use="p") # wind and FHS not correlated
+## SE wind
+cor(dat$FHS_lag2, dat$SE.wind, use="p") # SE wind and FHS not correlated
+cor(dat$ReproductiveFemales, dat$SE.wind, use="p") # SE wind and correlated
 
 mod11 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(SE.wind, k=4),
              data = dat)
@@ -181,7 +197,8 @@ AICc(mod1, mod11) # adding wind not helpful!
 
 
 ## AO
-cor(dat$FHS_lag2, dat$AO_RA3, use="p")
+cor(dat$FHS_lag2, dat$AO_RA3, use="p") # Not correlated
+cor(dat$ReproductiveFemales, dat$AO_RA3, use="p") # Not correlated
 
 mod12 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(AO_RA3, k=4),
             data = dat)
@@ -194,7 +211,8 @@ MuMIn::AICc(mod1, mod12) # adding AO very helpful!
 
 
 ## and bottom temp
-cor(dat$FHS_lag2, dat$NBT_3RA, use="p")
+cor(dat$ReproductiveFemales, dat$NBT_3RA, use="p") # Not correlated
+cor(dat$FHS_lag2, dat$NBT_3RA, use="p")            # Not correlated
 
 mod13 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(NBT_3RA, k=4),
             data = dat)
@@ -208,6 +226,7 @@ MuMIn::AICc(mod1, mod13) # adding bottom temp only marginally better
 
 ## sst
 cor(dat$FHS_lag2, dat$SST_May_July, use="p")
+cor(dat$ReproductiveFemales, dat$SST_May_July, use="p")
 
 mod14 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(SST_May_July, k=4),
             data = dat)
@@ -219,6 +238,8 @@ plot(mod14, resid=T, pch=1, se=F, rug=F, pages=1)
 ## shifts FHS into improbable shape!
 
 ## refit with linear FHS effect
+## No need to run correlations here as same as above except FHS now linear
+
 mod15 <- gam(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + s(SST_May_July, k=4),
              data = dat)
 
@@ -230,6 +251,9 @@ MuMIn::AICc(mod1, mod14, mod15) # not surprisingly - not any better
 
 
 ## PDO
+cor(dat$FHS_lag2, dat$PDO_RA3, use="p")   #somewhat correlated
+cor(dat$ReproductiveFemales, dat$PDO_RA3, use="p") # not correlated
+
 mod16 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=3) + s(PDO_RA3, k=4),
              data = dat[dat$releaseyear >= 1983,], na.action = "na.fail")
 
@@ -253,7 +277,9 @@ acf(resid(mod16)) #pretty good!
 
 ####################### Re-run FHS inclusive models substituting Pcod ############
 ## cod
-cor(dat$ReproductiveFemales, dat$PCod_RA3) # -0.06
+
+cor(dat$ReproductiveFemales, dat$PCod_RA3) # not correlated
+
 mod17 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4),
             data = dat)
 
@@ -267,6 +293,8 @@ MuMIn::AICc(mod1, mod17) # almost the same
 ## retain Pcod, and see if it's possible to improve with AO/wind/other physical covariates?? ----------
 
 ## NE wind
+cor(dat$ReproductiveFemales, dat$NE.wind) # not correlated
+cor(dat$PCod_RA3, dat$NE.wind) # not correlated
 
 mod18 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(NE.wind, k=4),
             data = dat)
@@ -280,6 +308,7 @@ cor(dat$PCod_RA3, dat$NE.wind, use="p") # wind and FHS not correlated
 
 ## SE wind
 cor(dat$PCod_RA3, dat$SE.wind, use="p") # wind and FHS not correlated
+cor(dat$ReproductiveFemales, dat$SE.wind, use="p") # correlated
 
 mod19 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(SE.wind, k=4),
              data = dat)
@@ -292,7 +321,8 @@ AICc(mod1, mod19) # adding wind not helpful!
 
 
 ## AO
-cor(dat$PCod_RA3, dat$AO_RA3, use="p")
+cor(dat$PCod_RA3, dat$AO_RA3, use="p")               # Not correlated
+cor(dat$ReproductiveFemales, dat$AO_RA3, use="p")    # Not correlated
 
 mod20 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(AO_RA3, k=4),
             data = dat)
@@ -305,7 +335,8 @@ MuMIn::AICc(mod1, mod20) # adding AO not helpful!
 
 
 ## and bottom temp
-cor(dat$PCod_RA3, dat$NBT_3RA, use="p")
+cor(dat$PCod_RA3, dat$NBT_3RA, use="p")                 # Not correlated
+cor(dat$ReproductiveFemales, dat$NBT_3RA, use="p")      # Not correlated
 
 mod21 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(NBT_3RA, k=4),
             data = dat)
@@ -318,8 +349,8 @@ MuMIn::AICc(mod1, mod21) # adding bottom temp only marginally better
 
 
 ## sst
-
-cor(dat$PCod_RA3, dat$SST_May_July, use="p")
+cor(dat$ReproductiveFemales, dat$SST_May_July, use="p") # Not correlated
+cor(dat$PCod_RA3, dat$SST_May_July, use="p")            # STRONGLY negatively correlated
 
 mod22 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(SST_May_July, k=4),
             data = dat)
@@ -341,6 +372,10 @@ MuMIn::AICc(mod1, mod16, mod23) # not surprisingly - not any better
 
 
 ## PDO
+
+cor(dat$ReproductiveFemales, dat$PDO_RA3, use="p") # Not correlated
+cor(dat$PCod_RA3, dat$PDO_RA3, use="p")            # STRONGLY negatively correlated
+
 mod24 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(PDO_RA3, k=4),
              data = dat[dat$releaseyear >= 1983,], na.action = "na.fail")
 
@@ -350,7 +385,7 @@ plot(mod24, resid=T, pch=1, se=F, rug=F, pages=1)
 
 MuMIn::AICc(mod1,mod16, mod24) # quite an improvement to include PDO
 
-## examine the residuals for mod1
+## examine the residuals for mod24
 resid24 <- data.frame(year=dat$releaseyear[dat$releaseyear >= 1983],
                       resid=residuals(mod24, type="response"))
 
@@ -364,4 +399,12 @@ acf(resid(mod24)) #
 
 
 MuMIn::AICc(mod1,mod2,mod3,mod4, mod5,mod6, mod7,mod8,mod9,mod10,mod11,mod12,mod13,mod14,mod15,
-            mod16,mod17,mod18,mod19,mod20,mod21, mod22,mod23,mod24)    
+            mod16,mod17,mod18,mod19,mod20,mod21, mod22,mod23,mod24) #mods 7 and 9 are repeats, Model 12 is best   
+
+names(dat)
+cor.dat <- dat %>%
+  select(-era,-releaseyear)
+
+cor(cor.dat, use="p")
+
+write.csv(cor.dat,"output/Variable_correlations_AICc_Era2.csv")
