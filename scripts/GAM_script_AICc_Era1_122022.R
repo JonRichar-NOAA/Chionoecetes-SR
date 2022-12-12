@@ -247,6 +247,6 @@ names(dat)
 cor.dat <- dat %>%
   select(-era,-releaseyear)
 
-cor(cor.dat, use="p")
-
-write.csv(cor.dat,"output/Variable_correlations_AICc_Era1")
+c<-cor(cor.dat, use="p")
+c
+write.csv(c,"output/Variable_correlations_AICc_Era1.csv")
