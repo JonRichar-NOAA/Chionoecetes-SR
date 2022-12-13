@@ -136,6 +136,10 @@ mod7 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4),
 
 summary(mod7)
 
+plot(mod7, resid=T, pch=1, se=F, rug=F, pages=1)
+
+MuMIn::AICc(mod1, mod7) # almost the same
+
 ## Now use FHS RA
 cor(dat$ReproductiveFemales, dat$FHS_RA2, use="p") # -0.12
 
@@ -196,7 +200,7 @@ AICc(mod1, mod11) # adding wind not helpful!
 
 
 
-## AO
+## AO # This is currently best performing model
 cor(dat$FHS_lag2, dat$AO_RA3, use="p") # Not correlated
 cor(dat$ReproductiveFemales, dat$AO_RA3, use="p") # Not correlated
 
@@ -208,6 +212,20 @@ summary(mod12)
 plot(mod12, resid=T, pch=1, se=F, rug=F, pages=1) 
 
 MuMIn::AICc(mod1, mod12) # adding AO very helpful!
+
+## examine the residuals for mod1
+resid12 <- data.frame(year=dat$releaseyear[dat$releaseyear >= 1983],
+                      resid=residuals(mod12, type="response"))
+
+ggplot(resid12, aes(year, resid)) +
+  geom_line() +
+  geom_point() +
+  geom_smooth(method="gam", formula = y ~ s(x, k=4))
+
+dwtest(resid(mod12)~1)
+acf(resid(mod12)) #pretty good!
+
+
 
 
 ## and bottom temp
@@ -397,9 +415,34 @@ ggplot(resid23, aes(year, resid)) +
 dwtest(resid(mod24)~1)
 acf(resid(mod24)) #
 
+##### AO only #########################################################################################
+## AO # This is currently best performing model
+
+cor(dat$ReproductiveFemales, dat$AO_RA3, use="p") # Not correlated
+
+mod25 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(AO_RA3, k=4),
+             data = dat)
+
+summary(mod25)
+
+plot(mod25, resid=T, pch=1, se=F, rug=F, pages=1) 
+
+MuMIn::AICc(mod1, mod12, mod25) # 
+
+## examine the residuals for mod1
+resid25 <- data.frame(year=dat$releaseyear[dat$releaseyear >= 1983],
+                      resid=residuals(mod25, type="response"))
+
+ggplot(resid25, aes(year, resid)) +
+  geom_line() +
+  geom_point() +
+  geom_smooth(method="gam", formula = y ~ s(x, k=4))
+
+dwtest(resid(mod25)~1)
+acf(resid(mod25)) #
 
 MuMIn::AICc(mod1,mod2,mod3,mod4, mod5,mod6, mod7,mod8,mod9,mod10,mod11,mod12,mod13,mod14,mod15,
-            mod16,mod17,mod18,mod19,mod20,mod21, mod22,mod23,mod24) #mods 7 and 9 are repeats, Model 12 is best   
+            mod16,mod17,mod18,mod19,mod20,mod21, mod22,mod23,mod24,mod25) #mods 7 and 9 are repeats, Model 12 is best , model 29 is worse b 0.3 AICc units  
 
 names(dat)
 cor.dat <- dat %>%
