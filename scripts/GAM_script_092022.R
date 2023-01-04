@@ -34,7 +34,36 @@ mod1 <- gam(logRS ~ s(ReproductiveFemales, k = 4),
             data = dat)
 
 summary(mod1)
-plot(mod1, resid=T, pch=19, rug=F, se=F)
+
+dev.new()
+par(mfrow=c(2,1),cex.main=1, cex.lab=1,cex.axis=1,cex=1) #configure axis labels
+
+plot(mod1, resid=T, pch=19, rug=F, se=F, ylab="Log(recruits/spawners)",xlab = "SC3 female abundance")
+
+
+r1<-resid(mod1)
+#plot(1r,pch=16)
+r.fit1<-loess(r1~dat$releaseyear)
+plot(r.fit1,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals")
+lines(dat$releaseyear,fitted(r.fit1),col=4)
+
+## examine the residuals for mod1
+resid1 <- data.frame(year=dat$releaseyear,
+                     resid=residuals(mod1))
+
+#plot(resid1$resid~resid1$year)
+
+
+ggplot(resid1, aes(year, resid)) +
+  geom_line() +
+  geom_point()
+
+dwtest(resid(mod1)~1)
+acf(resid(mod1)) # not perfect, not terrible!
+
+gam.check(mod1) 
+
+##################Evaluate by apparent era #################
 
 dat$era <- as.factor(if_else(dat$releaseyear <= 2000, 1, 2))
 
@@ -58,18 +87,7 @@ ggplot(dat, aes(ReproductiveFemales, logRS)) +
 ## full range of the relationship is not present for analysis!
 ## should make our work easier!
 
-## examine the residuals for mod1
-resid1 <- data.frame(year=dat$releaseyear,
-                     resid=residuals(mod1))
 
-ggplot(resid1, aes(year, resid)) +
-  geom_line() +
-  geom_point()
-
-dwtest(resid(mod1)~1)
-acf(resid(mod1)) # not perfect, not terrible!
-
-gam.check(mod1)
 
 ## evaluate models including additional covariates in S-R model ---------------------------
 cor(dat$ReproductiveFemales, dat$Ovig_female_CO, use="p") # 0.31
@@ -202,12 +220,21 @@ MuMIn::AICc(mod5a, mod9b) # not surprisingly - not any better
 
 
 ## PDO
-mod10 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=3) + s(PDO_RA3, k=4),
+mod10 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(PDO_RA3, k=4),
 data = dat[dat$releaseyear >= 1983,], na.action = "na.fail")
 
 summary(mod10)
 
+dev.new()
+par(mfrow=c(2,2))
 plot(mod10, resid=T, pch=1, se=F, rug=F, pages=1) 
+
+r1<-resid(mod10)
+#plot(1r,pch=16)
+r.fit1<-loess(r1~dat$releaseyear[dat$releaseyear >= 1983],span=0.5)
+plot(r.fit1,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
+lines(dat$releaseyear[dat$releaseyear >= 1983],fitted(r.fit1),col=4)
+
 MuMIn::AICc(mod5a, mod10) # quite an improvement to include PDO
 
 ## examine the residuals for mod1
@@ -222,3 +249,6 @@ geom_smooth(method="gam", formula = y ~ s(x, k=4))
 dwtest(resid(mod10)~1)
 acf(resid(mod10)) #pretty good!
 MuMIn::AICc(mod1,mod1b,mod2,mod3,mod4,mod5a,mod5b,mod6,mod7,mod8,mod9, mod9b,mod10)    #model 10 improves on next best (model 9) by ~5 AIC points.
+
+
+

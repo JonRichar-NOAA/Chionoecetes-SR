@@ -34,14 +34,16 @@ cor.dat <- dat %>%
   select(-Era_AICc)
 
 cor(cor.dat, use="p")
+## Create log(R) dataset
 
+logR<-log(dat$Lag3_recruits)
 
 ## fit models to explain recruitment variability -------------
 
 ## begin with spawner-recruit models ----------------
 ## with and without 2000 breakpoint suggested by earlier
 
-mod1 <- gam(logRS ~ s(ReproductiveFemales, k = 4),
+mod1 <- gam(logR ~ s(ReproductiveFemales, k = 4),
             data = dat)
 
 summary(mod1)
@@ -66,7 +68,7 @@ gam.check(mod1)
 ## evaluate models including additional covariates in S-R model ---------------------------
 cor(dat$ReproductiveFemales, dat$Ovig_female_CO, use="p") # 0.31
 
-mod2 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(Ovig_female_CO, k = 4),
+mod2 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(Ovig_female_CO, k = 4),
             data = dat)
 
 summary(mod2)
@@ -78,7 +80,7 @@ plot(mod2, resid=T, pch=1, se=F, rug=F, pages=1)
 cor(dat$Ovig_female_CO,dat$FHS_lag2, use="p")
 cor(dat$ReproductiveFemales,dat$FHS_lag2, use="p")
 
-mod3 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4)+ s(Ovig_female_CO, k = 4),
+mod3 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4)+ s(Ovig_female_CO, k = 4),
              data = dat[dat$releaseyear >= 1983,])
 summary(mod3)
 
@@ -92,7 +94,7 @@ cor(dat$Ovig_female_CO,PCod_RA3, use="p")
 cor(dat$ReproductiveFemales,dat$PCod_RA3, use="p")
 cor(dat$ReproductiveFemales,dat$FHS_lag2, use="p")
 
-mod4 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4)+ s(Ovig_female_CO, k = 4)
+mod4 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4)+ s(Ovig_female_CO, k = 4)
              + s(dat$PCod_RA3, k=4), data = dat[dat$releaseyear >= 1983,])
 summary(mod4)
 plot(mod4, resid=T, pch=1, se=F, rug=F, pages=1)
@@ -102,7 +104,7 @@ cor(dat$PCod_RA3,dat$FHS_lag2, use="p")
 cor(dat$Ovig_female_CO,PCod_RA3, use="p")
 cor(dat$ReproductiveFemales,dat$PCod_RA3, use="p")
 
-mod5 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(Ovig_female_CO, k = 4)
+mod5 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(Ovig_female_CO, k = 4)
              + s(dat$PCod_RA3, k=4), data = dat[dat$releaseyear >= 1983,])
 summary(mod5)
 plot(mod5, resid=T, pch=1, se=F, rug=F, pages=1)
@@ -119,7 +121,7 @@ MuMIn::AICc(mod1, mod2,mod3,mod4,mod5,mod3c)
 cor(dat$ReproductiveFemales,dat$PCod_RA3, use="p")
 cor(dat$ReproductiveFemales, dat$PCod_RA3) # -0.06
 
-mod6 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4),
+mod6 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4),
             data = dat)
 
 summary(mod6)
@@ -131,7 +133,7 @@ MuMIn::AICc(mod1, mod4) # almost the same
 ## FHS
 cor(dat$ReproductiveFemales, dat$FHS_lag2, use="p") # 0.001
 
-mod7 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4),
+mod7 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4),
              data = dat[dat$releaseyear >= 1983,])
 
 summary(mod7)
@@ -143,7 +145,7 @@ MuMIn::AICc(mod1, mod7) # almost the same
 ## Now use FHS RA
 cor(dat$ReproductiveFemales, dat$FHS_RA2, use="p") # -0.12
 
-mod8 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_RA2, k=4),
+mod8 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_RA2, k=4),
              data = dat[dat$releaseyear >= 1983,])
 
 summary(mod8)
@@ -166,7 +168,7 @@ acf(resid(mod8)) # again, not great-great
 # refit 5a with all available data (i.e., not limited to years available for FHS_RA2)
 cor(dat$ReproductiveFemales,dat$FHS_lag2, use="p")
 
-mod9 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4),
+mod9 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4),
              data = dat)
 
 summary(mod9)
@@ -177,7 +179,7 @@ plot(mod9, resid=T, pch=1, se=F, rug=F, pages=1) # FHS effect is negative/linear
 cor(dat$ReproductiveFemales, dat$NE.wind, use="p") # wind and female bairdi not correlated
 cor(dat$FHS_lag2, dat$NE.wind, use="p") # wind and FHS not correlated
 
-mod10 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(NE.wind, k=4),
+mod10 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(NE.wind, k=4),
             data = dat)
 
 summary(mod10)
@@ -190,7 +192,7 @@ AICc(mod1, mod10) # adding wind not helpful!
 cor(dat$FHS_lag2, dat$SE.wind, use="p") # SE wind and FHS not correlated
 cor(dat$ReproductiveFemales, dat$SE.wind, use="p") # SE wind and correlated
 
-mod11 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(SE.wind, k=4),
+mod11 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(SE.wind, k=4),
              data = dat)
 
 summary(mod11)
@@ -204,7 +206,7 @@ AICc(mod1, mod11) # adding wind not helpful!
 cor(dat$FHS_lag2, dat$AO_RA3, use="p") # Not correlated
 cor(dat$ReproductiveFemales, dat$AO_RA3, use="p") # Not correlated
 
-mod12 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(AO_RA3, k=4),
+mod12 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(AO_RA3, k=4),
             data = dat)
 
 summary(mod12)
@@ -232,7 +234,7 @@ acf(resid(mod12)) #pretty good!
 cor(dat$ReproductiveFemales, dat$NBT_3RA, use="p") # Not correlated
 cor(dat$FHS_lag2, dat$NBT_3RA, use="p")            # Not correlated
 
-mod13 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(NBT_3RA, k=4),
+mod13 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(NBT_3RA, k=4),
             data = dat)
 
 summary(mod13)
@@ -246,7 +248,7 @@ MuMIn::AICc(mod1, mod13) # adding bottom temp only marginally better
 cor(dat$FHS_lag2, dat$SST_May_July, use="p")
 cor(dat$ReproductiveFemales, dat$SST_May_July, use="p")
 
-mod14 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(SST_May_July, k=4),
+mod14 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(SST_May_July, k=4),
             data = dat)
 
 summary(mod14)
@@ -258,7 +260,7 @@ plot(mod14, resid=T, pch=1, se=F, rug=F, pages=1)
 ## refit with linear FHS effect
 ## No need to run correlations here as same as above except FHS now linear
 
-mod15 <- gam(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + s(SST_May_July, k=4),
+mod15 <- gam(logR ~ s(ReproductiveFemales, k=4) + FHS_lag2 + s(SST_May_July, k=4),
              data = dat)
 
 summary(mod15)
@@ -272,7 +274,7 @@ MuMIn::AICc(mod1, mod14, mod15) # not surprisingly - not any better
 cor(dat$FHS_lag2, dat$PDO_RA3, use="p")   #somewhat correlated
 cor(dat$ReproductiveFemales, dat$PDO_RA3, use="p") # not correlated
 
-mod16 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=3) + s(PDO_RA3, k=4),
+mod16 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=3) + s(PDO_RA3, k=4),
              data = dat[dat$releaseyear >= 1983,], na.action = "na.fail")
 
 summary(mod16)
@@ -298,7 +300,7 @@ acf(resid(mod16)) #pretty good!
 
 cor(dat$ReproductiveFemales, dat$PCod_RA3) # not correlated
 
-mod17 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4),
+mod17 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4),
             data = dat)
 
 summary(mod17)
@@ -314,7 +316,7 @@ MuMIn::AICc(mod1, mod17) # almost the same
 cor(dat$ReproductiveFemales, dat$NE.wind) # not correlated
 cor(dat$PCod_RA3, dat$NE.wind) # not correlated
 
-mod18 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(NE.wind, k=4),
+mod18 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(NE.wind, k=4),
             data = dat)
 
 summary(mod18)
@@ -328,7 +330,7 @@ cor(dat$PCod_RA3, dat$NE.wind, use="p") # wind and FHS not correlated
 cor(dat$PCod_RA3, dat$SE.wind, use="p") # wind and FHS not correlated
 cor(dat$ReproductiveFemales, dat$SE.wind, use="p") # correlated
 
-mod19 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(SE.wind, k=4),
+mod19 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(SE.wind, k=4),
              data = dat)
 
 summary(mod19)
@@ -342,7 +344,7 @@ AICc(mod1, mod19) # adding wind not helpful!
 cor(dat$PCod_RA3, dat$AO_RA3, use="p")               # Not correlated
 cor(dat$ReproductiveFemales, dat$AO_RA3, use="p")    # Not correlated
 
-mod20 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(AO_RA3, k=4),
+mod20 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(AO_RA3, k=4),
             data = dat)
 
 summary(mod20)
@@ -356,7 +358,7 @@ MuMIn::AICc(mod1, mod20) # adding AO not helpful!
 cor(dat$PCod_RA3, dat$NBT_3RA, use="p")                 # Not correlated
 cor(dat$ReproductiveFemales, dat$NBT_3RA, use="p")      # Not correlated
 
-mod21 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(NBT_3RA, k=4),
+mod21 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(NBT_3RA, k=4),
             data = dat)
 
 summary(mod21)
@@ -370,17 +372,17 @@ MuMIn::AICc(mod1, mod21) # adding bottom temp only marginally better
 cor(dat$ReproductiveFemales, dat$SST_May_July, use="p") # Not correlated
 cor(dat$PCod_RA3, dat$SST_May_July, use="p")            # STRONGLY negatively correlated
 
-mod22 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(SST_May_July, k=4),
+mod22 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(SST_May_July, k=4),
             data = dat)
 
 summary(mod22)
 
 plot(mod22, resid=T, pch=1, se=F, rug=F, pages=1) 
 
-
+## shifts FHS into improbable shape!
 
 ## refit with linear Pcod effect
-mod23 <- gam(logRS ~ s(ReproductiveFemales, k=4) + PCod_RA3 + s(SST_May_July, k=4),
+mod23 <- gam(logR ~ s(ReproductiveFemales, k=4) + PCod_RA3 + s(SST_May_July, k=4),
              data = dat)
 
 summary(mod23)
@@ -394,7 +396,7 @@ MuMIn::AICc(mod1, mod16, mod23) # not surprisingly - not any better
 cor(dat$ReproductiveFemales, dat$PDO_RA3, use="p") # Not correlated
 cor(dat$PCod_RA3, dat$PDO_RA3, use="p")            # STRONGLY negatively correlated
 
-mod24 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(PDO_RA3, k=4),
+mod24 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(PDO_RA3, k=4),
              data = dat[dat$releaseyear >= 1983,], na.action = "na.fail")
 
 summary(mod24)
@@ -420,7 +422,7 @@ acf(resid(mod24)) #
 
 cor(dat$ReproductiveFemales, dat$AO_RA3, use="p") # Not correlated
 
-mod25 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(AO_RA3, k=4),
+mod25 <- gam(logR ~ s(ReproductiveFemales, k=4) + s(AO_RA3, k=4),
              data = dat)
 
 summary(mod25)

@@ -9,7 +9,10 @@ library(ncdf4)
 library(chron)
 library(lattice)
 library(nlstools)
-#?nlstools
+#?nlstools)
+library(MuMIn)
+library(tidyverse)
+library(corrplot)
 
 ########## Import data and define variables####
 
@@ -550,7 +553,8 @@ r.fit3<-loess(r1~xyear.k)
 plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 2 S/R residuals")
 lines(xyear.k,fitted(r.fit3),col=4)
 
-
+MuMIn::AICc(Fit3)      #129.1765
+AIC_lag2<-MuMIn::AICc(Fit3)
 ########################################################################################################
 ######################################### Lag=3 ########################################################
 #par(mfrow=c(1,1),cex.main=1.25, cex.lab=1.25,cex.axis=1.25,cex=1.25) #configure axis labels
@@ -589,33 +593,33 @@ yyear.k
 
 #################################Fit gls model with 1st order autocorrelation#######################################################
 
-Fit3<-gls(log(R/S)~S,correlation=corAR1(), na.action=na.omit)
-summary(Fit3)
+Fit4<-gls(log(R/S)~S,correlation=corAR1(), na.action=na.omit)
+summary(Fit4)
 #par(mfrow=c(1,1))
 
 plot(log(R/S)~S, xlab="Reproductive female abundance",ylab="log(R/S)",main="Lag 3 S-R model",pch=16)
-abline(Fit3)
+abline(Fit4)
 
 #plot(Fit3)
-coef(Fit3)
+coef(Fit4)
 
 
 par(mfrow=c(1,1),cex.main=1.5, cex.lab=1.25,cex.axis=1.25,cex=1.25) #configure axis labels
-r3<-resid(Fit3)
+r4<-resid(Fit4)
 #plot(r3,pch=16)
-r.fit3<-loess(r3~xyear.k)
-plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
-lines(xyear.k,fitted(r.fit3),col=4)
+r.fit4<-loess(r4~xyear.k)
+plot(r.fit4,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
+lines(xyear.k,fitted(r.fit4),col=4)
 
-
-
+MuMIn::AICc(Fit4)     # 131.4126
+AIC_lag3<-MuMIn::AICc(Fit4)
 ##################################################################################################################################
 ################################################## Plot above for MEPS #########################################################
 #,mai=c(1,1.25,1,1)#add to below to format margins if necessary--in inches, for in lines, use mar()
 dev.new()
 par(mfrow=c(2,1),cex.lab=1.55,cex.axis=1.25,cex=1.25) #configure axis labels
 y.range<-range(0,9e+08)
-r6<-resid(Fit3)
+r6<-resid(Fit4)
 xyear<-xyear.k
 
 ### Raw abundances
@@ -630,7 +634,7 @@ xyear<-xyear.k
 
 ### Log-survival
 plot(log(R/S)~S,pch=16,col=1,axes=FALSE,ann=FALSE)
-abline(Fit3)
+abline(Fit4)
 axis(1, at=1e+07*c(0,5,10,15,20),labels=c("0","50","100","150","200"),tck=0.02)
 axis(2, las=1, at=c(-1,0,1,2,3,4,5),labels=c("-1","0","1","2","3","4","5"),tck=0.02)
 box()
@@ -695,14 +699,19 @@ abline(Fit5)
 coef(Fit5)
 
 par(mfrow=c(1,1))
-r5<-resid(Fit3)
+r5<-resid(Fit5)
 #plot(r5,pch=16)
 r.fit5<-loess(r5~xyear.k)
 plot(r.fit5,pch=16,xlab="Hatch year", ylab="Lag 4 S/R residuals")
 lines(xyear.k,fitted(r.fit5),col=4)
 
+MuMIn::AICc(Fit5)       #132.5493
+AIC_lag4<-MuMIn::AICc(Fit5)
 
-
+########################################### AICc values for all models ######################################################
+AIC_lag2
+AIC_lag3
+AIC_lag4
 ##############################################################################################################################################
 ########################################### SHELL CONDITION 3 AND 4 COMBINED FEMALES  ########################################################
 ###############################################################################################################################################
@@ -760,7 +769,7 @@ r.fit3<-loess(r1~xyear.k)
 plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 2 S/R residuals")
 lines(xyear.k,fitted(r.fit3),col=4)
 
-
+MuMIn::AICc(Fit3)
 ########################################################################################################
 ######################################### Lag=3 ########################################################
 #par(mfrow=c(1,1),cex.main=1.25, cex.lab=1.25,cex.axis=1.25,cex=1.25) #configure axis labels
@@ -817,7 +826,7 @@ r.fit3<-loess(r3~xyear.k)
 plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
 lines(xyear.k,fitted(r.fit3),col=4)
 
-
+MuMIn::AICc(Fit3)
 
 ##################################################################################################################################
 ################################################## Plot above for MEPS #########################################################
@@ -911,6 +920,7 @@ r.fit5<-loess(r5~xyear.k)
 plot(r.fit5,pch=16,xlab="Hatch year", ylab="Lag 4 S/R residuals")
 lines(xyear.k,fitted(r.fit5),col=4)
 
+MuMIn::AICc(Fit5)
 ##############################################################################################################################################
 ########################################### Three quarters full and full clutch size females  ################################################
 ##############################################################################################################################################
@@ -975,7 +985,7 @@ plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdeca
 lines(xyear.k,fitted(r.fit3),col=4)
 
 
-
+MuMIn::AICc(Fit3)
 ##################################################################################################################################
 ################################################## Plot above for MEPS #########################################################
 #,mai=c(1,1.25,1,1)#add to below to format margins if necessary--in inches, for in lines, use mar()
@@ -1069,7 +1079,7 @@ r.fit7<-loess(r7~xyear.k)
 plot(r.fit7,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
 lines(xyear.k,fitted(r.fit7),col=4)
 
-
+MuMIn::AICc(Fit7)
 
 ##################################################################################################################################
 ################################################## Plot above for MEPS #########################################################
@@ -1167,6 +1177,8 @@ r7<-resid(Fit7)
 r.fit7<-loess(r7~xyear.k)
 plot(r.fit7,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
 lines(xyear.k,fitted(r.fit7),col=4)
+
+MuMIn::AICc(Fit7)
 ##############################################################################################################################################
 ########################################### Ovigerous females  ################################################
 ##############################################################################################################################################
@@ -1232,7 +1244,7 @@ r.fit3<-loess(r3~xyear.k)
 plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
 lines(xyear.k,fitted(r.fit3),col=4)
 
-
+MuMIn::AICc(Fit3)
 
 ##################################################################################################################################
 ################################################## Plot above for MEPS #########################################################
@@ -1325,7 +1337,7 @@ r.fit8<-loess(r8~xyear.k)
 plot(r.fit8,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
 lines(xyear.k,fitted(r.fit8),col=4)
 
-
+MuMIn::AICc(Fit8)
 
 ##################################################################################################################################
 ################################################## Plot above for MEPS #########################################################
@@ -1422,3 +1434,4 @@ r8<-resid(Fit8)
 r.fit8<-loess(r8~xyear.k)
 plot(r.fit8,pch=16,xlab="Hatch year", ylab="Lag 5 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
 lines(xyear.k,fitted(r.fit8),col=4)
+MuMIn::AICc(Fit8)
