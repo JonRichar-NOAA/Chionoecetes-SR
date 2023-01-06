@@ -358,16 +358,17 @@ for(i in names(Spawners_SC3)) {		# cycle through all names in data frame
 ###################################### Plot for paper ###########################################
 y.range<-range(0,4e+08)
 dev.new()
-par(mfrow=c(2,1),cex.main=1.5, cex.lab=1.2,cex.axis=1.2,cex=1.2) #configure axis labels
+par(mfrow=c(2,1),cex.main=1.2, cex.lab=1.2,cex.axis=1.2,cex=1.2) #configure axis labels
 
 #########################################################################################################################
 ################################## Plot all juveniles together ##########################################################
-EBS.juv<-rec_30to50$EBS_Abun_30to50
-
+EBS.juv.a<-rec_30to50$EBS_Abun_30to50
+EBS.juv<-EBS.juv.a[4:length(EBS.juv.a)]
+rec_30to50$Year
 plot(EBS.juv,type="b",ylim=y.range, pch=2,col=1,axes=FALSE,ann=FALSE)
 #abline(h=0)
 
-axis(1, at=1:45,lab=rec_30to50$Year,tck=0.02)
+axis(1, at=1:42,lab=rec_30to50$Year[4:length(rec_30to50$Year)],tck=0.02)
 axis(2, las=1, at=1e+08*0:9,labels=c("0","100","200","300","400","500","600","700","800","900"),tck=0.02)
 #legend(14,9e+08,c("Total EBS", "Western area", "Eastern area"),cex=1.25,col=c(1,1,1),pch=c(2,18,22))
 #legend(15,9e+08,c("EBS juvenile estimate"),cex=1,col=c(4,1,2),pch=c(16,18,22))
@@ -375,24 +376,25 @@ box()
 
 title(xlab="Year")
 title(ylab="Abundance (Millions)")
+title(main = "EBS juvenile abundance by year")
 #title(main=" Juvenile abundance by year")
 
 
 ############################## Plot Spawners ###########################################
 
-EBS.fem<-Spawners_SC3$EBS_SC3
-
+EBS.fem<-Spawners_SC3$EBS_SC3[4:length(Spawners_SC3$EBS_SC3)]
+EBS.fem
 plot(EBS.fem,type="b",ylim=y.range, pch=2,col=1,axes=FALSE,ann=FALSE)
 
 
-axis(1, at=1:45,lab=Spawners_SC3$Year,tck=0.03)
+axis(1, at=1:42,lab=Spawners_SC3$Year[4:length(Spawners_SC3$Year)],tck=0.03)
 axis(2, las=1, at=1e+08*0:4,labels=c("0","100","200","300","400"),tck=0.03)
 #abline(h=0)
 box()
 
 title(xlab="Year")
 title(ylab="Abundance (Millions)")
-#title(main=" Reproductive female abundance by year")
+title(main=" Oldshell female abundance by year")
 
 
 

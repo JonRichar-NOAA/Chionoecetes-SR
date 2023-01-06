@@ -25,12 +25,13 @@ head(dat)
 mod1 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=3)+ s(PDO_RA3, k=4)+ s(AO_RA3, k=4),
             data = dat)
 summary(mod1)
-plot(mod1, resid=T, pch=19, rug=F, se=F)
+plot(mod1, resid=T, pch=19, rug=F, se=F, pages=1)
 
 #Now run with era interaction
 mod2 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=3)+ s(PDO_RA3, k=4, by =Era_AICc)+ s(AO_RA3, k=4, by = Era_AICc),
             data = dat)
 summary(mod2)
-plot(mod1, resid=T, pch=19, rug=F, se=F)
+plot(mod2, resid=T, pch=19, rug=F, se=F, pages=1)
 
 MuMIn::AICc(mod1, mod2) 
+ 

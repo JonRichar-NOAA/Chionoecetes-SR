@@ -220,13 +220,13 @@ MuMIn::AICc(mod5a, mod9b) # not surprisingly - not any better
 
 
 ## PDO
-mod10 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(PDO_RA3, k=4),
+mod10 <- gam(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=3) + s(PDO_RA3, k=4),
 data = dat[dat$releaseyear >= 1983,], na.action = "na.fail")
 
 summary(mod10)
 
-dev.new()
-par(mfrow=c(2,2))
+#dev.new()
+#par(mfrow=c(2,2))
 plot(mod10, resid=T, pch=1, se=F, rug=F, pages=1) 
 
 r1<-resid(mod10)
@@ -249,6 +249,3 @@ geom_smooth(method="gam", formula = y ~ s(x, k=4))
 dwtest(resid(mod10)~1)
 acf(resid(mod10)) #pretty good!
 MuMIn::AICc(mod1,mod1b,mod2,mod3,mod4,mod5a,mod5b,mod6,mod7,mod8,mod9, mod9b,mod10)    #model 10 improves on next best (model 9) by ~5 AIC points.
-
-
-
