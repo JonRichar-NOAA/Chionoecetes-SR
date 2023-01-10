@@ -100,74 +100,43 @@ acf(S2,main="SC3 females 1999 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
 
 
 ########################################################################################################################
-
-for(i in names(Spawners_SC3)) {		# cycle through all names in data frame
-	x <- Spawners_SC3$Year			# convert to numeric variable
-	y <- Spawners_SC3[,i]
-	# Plot time series for variable i using both points and lines. 
-	# Suppress default axis labels and add variable name as title:
-	plot(x, y, type = "b", xlab="", ylab="", main = i,pch=16)
-	# Fit linear time trend and add line to plot:
-}
-
-
-########################################################################################################################
 ###################################### Plot females using customized graphic ###########################################
 y.range<-range(0,4e+08)
-par(mfrow=c(1,1),cex.main=1.5, cex.lab=1.5,cex.axis=1.25,cex=1.25) #configure axis labels
+par(mfrow=c(2,1),cex.main=1.5, cex.lab=1.5,cex.axis=1.25,cex=1.25) #configure axis labels
+
 names(Spawners_SC3)
-W166.fem<-Spawners_SC3$W166_SC3
 EBS.fem<-Spawners_SC3$EBS_SC3
-E166.fem<-Spawners_SC3$E166_SC3
-plot(EBS.fem)
 
 plot(EBS.fem,type="b",ylim=y.range, pch=16,col=4,axes=FALSE,ann=FALSE)
-lines(W166.fem,type="b",pch=18,col=1)
-lines(E166.fem,type="b",pch=22,col=2)
+
 
 axis(1, at=1:45,lab=Spawners_SC3$Year,tck=0.03)
 axis(2, las=1, at=1e+08*0:4,labels=c("0","100","200","300","400"),tck=0.03)
-legend(35,4e+08,c("Total EBS", "Western area", "Eastern area"),cex=1.25,col=c(4,1,2),pch=c(16,18,22))
-#abline(h=0)
+
 box()
 
 title(xlab="Year")
 title(ylab="Abundance (Millions)")
-#title(main=" Reproductive female abundance by year")
+title(main=" Reproductive female abundance by year")
 
 
 
 #######################################################################################################################
 ###################################### Plot juveniles using customized graphic  #######################################
-par(mfrow=c(1,1),cex.lab=1.4,cex.axis=1.4,cex=1.5) #configure axis labels
-y.range<-range(0,9e+08)
+y.range<-range(0,3e+08)
 
-plot(EBS.juv)
 plot(EBS.juv,type="b",ylim=y.range, pch=2,col=1,axes=FALSE,ann=FALSE)
-lines(W166.juv,type="b",pch=18,col=1,lty=2)
-lines(E166.juv,type="b",pch=22,col=1,lty=3)
+
 #abline(h=0)
 
-axis(1, at=1:31,lab=Recruits$Year,tck=0.02)
+axis(1, at=1:45,lab=Recruits$SURVEY_YEAR,tck=0.02)
 axis(2, las=1, at=1e+08*0:9,labels=c("0","100","200","300","400","500","600","700","800","900"),tck=0.02)
-legend(14,9e+08,c("Total EBS", "Western area", "Eastern area"),cex=1.25,col=c(1,1,1),pch=c(2,18,22))
-#legend(15,9e+08,c("EBS juvenile estimate"),cex=1,col=c(4,1,2),pch=c(16,18,22))
+
 box()
 
 title(xlab="Year")
 title(ylab="Abundance (Millions)")
-#title(main=" Juvenile abundance by year")
-
-
-
-######################################################################################################################
-###################################### Plot juv abundance separately #################################################
-
-Year<-Recruits$Year
-plot(R~Year, type="b",ylab="Estimated abundance of EBS juvenile bairdi", xlab="Year", main = "Estimated abundance of EBS juvenile bairdi",pch=16)
-abline(lm(R ~ Year), col=4)
-fit <- loess(R ~ Year)
-lines(x, fitted(fit), col=2)
+title(main=" Juvenile abundance by year")
 
 #######################################################################################################################
 ########################################### STOCK RECRUIT MODELS  #####################################################
@@ -216,23 +185,23 @@ yyear.k
 
 ########################################## Now do ACF for log(R/S) ######################################################
 
-logRS<-log(R/S)
+logR<-log(R)
 
 dev.new()
 par(mfrow=c(2,1))
 
-logRS_1<-logRS[1:20]  #1978-1998
-logRS_2<-logRS[21:38] #1999-2019
+logR_1<-logR[1:20]  #1978-1998
+logR_2<-logR[21:38] #1999-2019
 
 
 
-acf(logRS_1,main="Log(R/S), lag 2-yr, 1978 to 1998",cex.lab=1.25,cex.axis=1.25,cex=1.25)
-acf(logRS_2,main="Log(R/S), lag 2-yr, 1999 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+acf(logR_1,main="Log(R), lag 2-yr, 1978 to 1998",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+acf(logR_2,main="Log(R), lag 2-yr, 1999 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
 
 ####################################Fit GAMM models with 1st and 2nd order autocorrelation#############################
 
 
-mod1<-gamm(log(R/S)~s(S),correlation=corAR1(), na.action=na.omit)
+mod1<-gamm(log(R)~s(S),correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod1)
@@ -291,22 +260,22 @@ yyear.k
 
 ########################################## Now do ACF for log(R/S) ######################################################
 
-logRS<-log(R/S)
+logR<-log(R)
 
 dev.new()
 par(mfrow=c(2,1))
 
-logRS_1<-logRS[1:20]  #1978-1998
-logRS_2<-logRS[21:38] #1999-2019
+logR_1<-logR[1:20]  #1978-1998
+logR_2<-logR[21:38] #1999-2019
 
 
 
-acf(logRS_1,main="Log(R/S), lag 3-yr, 1978 to 1998",cex.lab=1.25,cex.axis=1.25,cex=1.25)
-acf(logRS_2,main="Log(R/S), lag 3-yr, 1999 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+acf(logR_1,main="Log(R), lag 3-yr, 1978 to 1998",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+acf(logR_2,main="Log(R), lag 3-yr, 1999 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
 
 #################################Fit GAMM model with 1st order autocorrelation###########################################
 
-mod2<-gamm(log(R/S)~s(S),correlation=corAR1(), na.action=na.omit)
+mod2<-gamm(log(R)~s(S),correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod2)
@@ -360,22 +329,22 @@ yyear.k
 
 ########################################## Now do ACF for log(R/S) #################################################
 
-logRS<-log(R/S)
+logR<-log(R)
 
 dev.new()
 par(mfrow=c(2,1))
 
-logRS_1<-logRS[1:20]  #1978-1998
-logRS_2<-logRS[21:38] #1999-2019
+logR_1<-logR[1:20]  #1978-1998
+logR_2<-logR[21:38] #1999-2019
 
 
 
-acf(logRS_1,main="Log(R/S), lag 4-yr, 1978 to 1998",cex.lab=1.25,cex.axis=1.25,cex=1.25)
-acf(logRS_2,main="Log(R/S), lag 4-yr, 1999 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+acf(logR_1,main="Log(R), lag 4-yr, 1978 to 1998",cex.lab=1.25,cex.axis=1.25,cex=1.25)
+acf(logR_2,main="Log(R), lag 4-yr, 1999 to 2019",cex.lab=1.25,cex.axis=1.25,cex=1.25)
 ####################################################################################################################
 ############################################## Fit GAMM model with 1st order autocorrelation #######################
 
-mod3<-gamm(log(R/S)~s(S),correlation=corAR1(), na.action=na.omit)
+mod3<-gamm(log(R)~s(S),correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod3)
