@@ -318,7 +318,7 @@ mod2
 
 #plot
 dev.new()
-par(mfrow=c(2,1))
+par(mfrow=c(1,1))
 
 plot(mod2$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod2$lme, resid=T, pch=19, rug=F, se=F, pages=1)

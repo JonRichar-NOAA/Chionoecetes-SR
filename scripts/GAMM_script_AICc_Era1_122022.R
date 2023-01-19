@@ -208,10 +208,13 @@ MuMIn::AICc(mod5, mod7) # adding AO not helpful!
 
 
 ## and bottom temp rolling average
+plot(FHS_lag2~NBT_3RA,data = dat[dat$releaseyear >= 1981,],pch = 16)
+
 cor(dat$FHS_lag2, dat$NBT_3RA, use="p") # -0.45.....correlated!
 cor(dat$ReproductiveFemales, dat$NBT_3RA, use="p") #-0.23....weakly correlated
+cor(dat$ReproductiveFemales, dat$FHS_lag2, use="p") #-0.23....weakly correlated
 
-mod8 <- gamm(logRS ~ s(Reproductiv-eFemales, k=4) + s(FHS_lag2, k=4) + s(NBT_3RA, k=4),
+mod8 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(NBT_3RA, k=4),
             data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
@@ -326,10 +329,32 @@ plot(mod12$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 MuMIn::AICc(mod5, mod12)
 
+## refit with linear FHS effect ONLY
+## No need for correlation calculations as repeat of prior model with modded term
+
+mod13 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2,
+              data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
+
+#Model summaries
+summary(mod13)
+summary(mod13$gam)
+summary(mod13$lme)
+
+#Inspect model object
+mod13
+
+#plot
+dev.new()
+par(mfrow=c(2,1))
+
+plot(mod13$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+plot(mod13$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+
+MuMIn::AICc(mod1, mod13) # not surprisingly - not any better
 
 ###################### Wrap up ##########################################
 
-MuMIn::AICc(mod1, mod2, mod3, mod4, mod5, mod6, mod7, mod8, mod9, mod10, mod11, mod12) ## Model 7 is best performing for Era 1 by AICc
+MuMIn::AICc(mod1, mod2, mod3, mod4, mod5, mod6, mod7, mod8, mod9, mod10, mod11, mod12,mod13) ## Model 7 is best performing for Era 1 by AICc
 
 names(dat)
 cor.dat <- dat %>%
