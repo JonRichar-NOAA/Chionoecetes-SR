@@ -11,6 +11,7 @@ library(nlstools)
 library(MuMIn)
 library(tidyverse)
 library(corrplot)
+library(voxel)
 #?nlstools
 
 ########## Import data 
@@ -185,6 +186,127 @@ par(mfrow=c(2,1))
 plot(mod8$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod8$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
+#########################################################################################################################
+mod9 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + PDO_RA3:Era_AICc + AO_RA3,
+             data = dat, correlation=corAR1())        
+
+#Model summaries
+summary(mod9)
+summary(mod9$gam)
+summary(mod9$lme)
+
+#Inspect model object
+mod9
+
+#plot
+dev.new()
+par(mfrow=c(2,1))
+
+plot(mod9$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+plot(mod9$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+
+#########################################################################################################################
+mod10 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + PDO_RA3:Era_AICc + AO_RA3:Era_AICc,
+             data = dat, correlation=corAR1())        
+
+#Model summaries
+summary(mod10)
+summary(mod10$gam)
+summary(mod10$lme)
+
+#Inspect model object
+mod10
+
+#plot
+dev.new()
+par(mfrow=c(2,1))
+
+plot(mod10)
+plot(mod10$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+plot(mod10$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+
+###### Neither of following codes currently works ###################
+plotGAMM(mod10, smooth.cov, groupCovs = NULL, orderedAsFactor = F,
+         rawOrFitted = F, plotCI = T, grouping = NULL)
+
+r1<-resid(mod10)
+r1
+#plot(1r,pch=16)
+r.fit1<-loess(r1~dat$releaseyear)
+plot(r.fit1,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals")
+lines(dat$releaseyear,fitted(r.fit1),col=4)
+
+## examine the residuals for mod1
+resid1 <- data.frame(year=dat$releaseyear,
+                     resid=residuals(mod1))
+
+#plot(resid1$resid~resid1$year)
+
+
+ggplot(resid1, aes(year, resid)) +
+  geom_line() +
+  geom_point()
+
+dwtest(resid(mod1)~1)
+acf(resid(mod1)) # not perfect, not terrible!
+#########################################################################################################################
+mod11 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2,
+              data = dat, correlation=corAR1())        
+
+#Model summaries
+summary(mod11)
+summary(mod11$gam)
+summary(mod11$lme)
+
+#Inspect model object
+mod11
+
+#plot
+dev.new()
+par(mfrow=c(2,1))
+
+plot(mod11$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+plot(mod11$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+
+#########################################################################################################################
+mod12 <- gamm(logRS ~ s(ReproductiveFemales, k=4) +s(PDO_RA3, k=4, by = Era_AICc),
+              data = dat, correlation=corAR1())        
+
+#Model summaries
+summary(mod12)
+summary(mod12$gam)
+summary(mod12$lme)
+
+#Inspect model object
+mod12
+
+#plot
+dev.new()
+par(mfrow=c(2,1))
+
+plot(mod12$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+plot(mod12$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+
+
+#########################################################################################################################
+mod13 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + PDO_RA3:Era_AICc,
+              data = dat, correlation=corAR1())        
+
+#Model summaries
+summary(mod13)
+summary(mod13$gam)
+summary(mod13$lme)
+
+#Inspect model object
+mod13
+
+#plot
+dev.new()
+par(mfrow=c(2,1))
+
+plot(mod13$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+plot(mod13$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+
 ############################################# wrap up ##########################################################
-MuMIn::AICc(mod1,mod2,mod3,mod4, mod5,mod6,mod7,mod8)
+MuMIn::AICc(mod1,mod2,mod3,mod4, mod5,mod6,mod7,mod8,mod9,mod10,mod11,mod12,mod13)
 

@@ -31,7 +31,7 @@ names(Recruits)
 rec_30to50<-as.data.frame(as.matrix(cbind(Recruits$SURVEY_YEAR,(Recruits$NUM_MALE_30TO50 + Recruits$NUM_FEMALE_30TO50))))
 
 
-colnames(rec_30to50)<-c("Year", "EBS_Abun_30to50","E166_Abun_30to50","W166_Abun_30to50")
+colnames(rec_30to50)<-c("Year", "EBS_Abun_30to50")
 
 
 #########################################################################################################
@@ -97,7 +97,7 @@ window_end <- 1991:2012
 
 # create data frame to capture results
 output <- data.frame()
-
+output2 <- data.frame()
 # loop through each candidate window, fit linear model, and record AICc value
 
 for(i in 1:length(window_end)){
@@ -115,7 +115,9 @@ for(i in 1:length(window_end)){
                   data.frame(window_end = window_end[i],
                              R_AICc = AICc(mod1),
                              log_R_AICc = AICc(mod2)))
-
+  output2 <- rbind(output2,
+                data.frame(window_end = window_end[i],
+                           log_R_AICc = AICc(mod2)))
 }
 
 # arrange and plot
@@ -131,6 +133,21 @@ ggplot(plot, aes(window_end, value, color = name)) +
   labs(y = "AICc",x="Analysis window end")
 
 ggsave("./figs/R_autocorrelation_candidate_windows.png", width = 6, height = 4, units = 'in')
+
+#### Log R only for paper #############################################################################
+dev.new()
+plot <- output2 %>%
+  mutate(
+         delta_AICc_log_R = log_R_AICc - min(log_R_AICc)) %>%
+  select(-log_R_AICc) %>%
+  pivot_longer(cols = -window_end)
+
+ggplot(plot, aes(window_end, value, color = name)) +
+  geom_line() +
+  geom_point() +
+  labs(y = "AICc",x="Analysis window end")
+
+ggsave("./figs/Log_R_autocorrelation_candidate_windows.png", width = 6, height = 4, units = 'in')
 
 # 1998 is the best-supported window end
 

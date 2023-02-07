@@ -226,8 +226,6 @@ par(mfrow=c(2,1))
 plot(mod8$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod8$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-
-
 ## NE wind 
 
 
@@ -280,8 +278,7 @@ plot(mod10$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 AICc(mod1, mod10) # adding wind not helpful!
 
-## AO 
-
+## AO # This is currently best performing model
 cor(dat$FHS_lag2, dat$AO_RA3, use="p") # Not correlated
 cor(dat$ReproductiveFemales, dat$AO_RA3, use="p") # Not correlated
 
@@ -354,9 +351,6 @@ plot(mod13$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod13$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 
-
-## shifts FHS into improbable shape!
-
 ## refit with linear FHS effect
 ## No need to run correlations here as same as above except FHS now linear
 
@@ -378,15 +372,14 @@ par(mfrow=c(2,1))
 plot(mod14$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod14$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-
-MuMIn::AICc(mod1, mod13, mod14) # not surprisingly - not any better
+MuMIn::AICc(mod1, mod14, mod15) # not surprisingly - not any better
 
 
 ## PDO
 cor(dat$FHS_lag2, dat$PDO_RA3, use="p")   #somewhat correlated
 cor(dat$ReproductiveFemales, dat$PDO_RA3, use="p") # not correlated
 
-mod15<- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(PDO_RA3, k=4),
+mod15 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(PDO_RA3, k=4),
              data = dat, correlation=corAR1())
 
 #Model summaries
@@ -404,16 +397,16 @@ par(mfrow=c(2,1))
 plot(mod15$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod15$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-MuMIn::AICc(mod1, mod15) #No improvement
+MuMIn::AICc(mod1, mod15) # No improvement
 
 
-####################### Re-run FHS inclusive models substituting Pcod ############
-## cod
+##########################################################################################
+################################# try linear terms #######################################
+## refit with linear FHS effect ONLY
+## No need for correlation calculations as repeat of prior model with modded term
 
-cor(dat$ReproductiveFemales, dat$PCod_RA3) # not correlated
-
-mod16 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4),
-            data = dat, correlation=corAR1())
+mod16 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2,
+              data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod16)
@@ -430,17 +423,13 @@ par(mfrow=c(2,1))
 plot(mod16$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod16$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-MuMIn::AICc(mod1, mod16) # almost the same
+MuMIn::AICc(mod1, mod16) # not surprisingly - not any better
+
+## evaluate models including additional covariates in S-R model ---------------------------
 
 
-## retain Pcod, and see if it's possible to improve with AO/wind/other physical covariates?? ----------
-
-## NE wind
-cor(dat$ReproductiveFemales, dat$NE.wind) # not correlated
-cor(dat$PCod_RA3, dat$NE.wind) # not correlated
-
-mod17 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(NE.wind, k=4),
-            data = dat, correlation=corAR1())
+mod17 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + Ovig_female_CO,
+              data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod17)
@@ -457,16 +446,12 @@ par(mfrow=c(2,1))
 plot(mod17$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod17$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-AICc(mod1, mod17) # adding wind not helpful!
+MuMIn::AICc(mod1, mod17)
 
-cor(dat$PCod_RA3, dat$NE.wind, use="p") # wind and FHS not correlated
+## cod
 
-## SE wind
-cor(dat$PCod_RA3, dat$SE.wind, use="p") # wind and FHS not correlated
-cor(dat$ReproductiveFemales, dat$SE.wind, use="p") # correlated
-
-mod18 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(SE.wind, k=4),
-             data = dat, correlation=corAR1())
+mod18 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + PCod_RA3,
+              data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod18)
@@ -483,16 +468,14 @@ par(mfrow=c(2,1))
 plot(mod18$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod18$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-AICc(mod1, mod18) # adding wind not helpful!
+MuMIn::AICc(mod1, mod18) # almost the same
 
 
+## NE wind
 
-## AO
-cor(dat$PCod_RA3, dat$AO_RA3, use="p")               # Not correlated
-cor(dat$ReproductiveFemales, dat$AO_RA3, use="p")    # Not correlated
 
-mod19 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(AO_RA3, k=4),
-            data = dat, correlation=corAR1())
+mod19 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + NE.wind,
+              data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod19)
@@ -509,15 +492,14 @@ par(mfrow=c(2,1))
 plot(mod19$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod19$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-MuMIn::AICc(mod1, mod19) # adding AO not helpful!
+
+AICc(mod1, mod19) # adding wind not helpful, even makes model worse!
 
 
-## and bottom temp
-cor(dat$PCod_RA3, dat$NBT_3RA, use="p")                 # Not correlated
-cor(dat$ReproductiveFemales, dat$NBT_3RA, use="p")      # Not correlated
 
-mod20 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(NBT_3RA, k=4),
-            data = dat, correlation=corAR1())
+## SE wind
+mod20 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + s(SE.wind, k=4),
+              data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod20)
@@ -534,23 +516,22 @@ par(mfrow=c(2,1))
 plot(mod20$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod20$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-MuMIn::AICc(mod1, mod20) # adding bottom temp only marginally better
+AICc(mod1, mod20) # adding wind not helpful!
 
 
-## sst
-cor(dat$ReproductiveFemales, dat$SST_May_July, use="p") # Not correlated
-cor(dat$PCod_RA3, dat$SST_May_July, use="p")            # STRONGLY negatively correlated
+## AO
 
-mod21 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(SST_May_July, k=4),
-            data = dat, correlation=corAR1())
+mod21 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + AO_RA3,
+              data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod21)
+
 summary(mod21$gam)
 summary(mod21$lme)
 
 #Inspect model object
-mod22
+mod21
 
 #plot
 dev.new()
@@ -559,10 +540,13 @@ par(mfrow=c(2,1))
 plot(mod21$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod21$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
+MuMIn::AICc(mod1, mod21) # adding AO not helpful!
 
-## refit with linear Pcod effect
-mod22 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + PCod_RA3 + s(SST_May_July, k=4),
-             data = dat, correlation=corAR1())
+
+## and bottom temp rolling average
+
+mod22 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + NBT_3RA,
+              data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod22)
@@ -579,17 +563,13 @@ par(mfrow=c(2,1))
 plot(mod22$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod22$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
+MuMIn::AICc(mod1, mod22) 
 
-MuMIn::AICc(mod1, mod16, mod22) # not surprisingly - not any better
 
+## sst
 
-## PDO
-
-cor(dat$ReproductiveFemales, dat$PDO_RA3, use="p") # Not correlated
-cor(dat$PCod_RA3, dat$PDO_RA3, use="p")            # STRONGLY negatively correlated
-
-mod23 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(dat$PCod_RA3, k=4) + s(PDO_RA3, k=4),
-             data = dat, correlation=corAR1())
+mod23 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + SST_May_July,
+              data = dat[dat$releaseyear >= 1981,], correlation=corAR1(), na.action=na.omit)
 
 #Model summaries
 summary(mod23)
@@ -606,18 +586,12 @@ par(mfrow=c(2,1))
 plot(mod23$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod23$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-
-MuMIn::AICc(mod1,mod15, mod23) # quite an improvement to include PDO
-
+MuMIn::AICc(mod1, mod23)
 
 
-##### AO only #########################################################################################
-## AO # This is currently best performing model
-
-cor(dat$ReproductiveFemales, dat$AO_RA3, use="p") # Not correlated
-
-mod24 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + s(AO_RA3, k=4),
-             data = dat, correlation=corAR1())
+## PDO
+mod24 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + PDO_RA3,
+              data = dat[dat$releaseyear >= 1981,], na.action = na.omit, correlation=corAR1())
 
 #Model summaries
 summary(mod24)
@@ -635,14 +609,12 @@ plot(mod24$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod24$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 
-MuMIn::AICc(mod1, mod11, mod24) # 
+MuMIn::AICc(mod1, mod24) # 
 
-## PDO only
+## Add Pacific cod combined with FHS
 
-cor(dat$ReproductiveFemales, dat$PDO_RA3, use="p") # Not correlated
-
-mod25 <- gamm(logRS ~ s(ReproductiveFemales, k=4) +  s(PDO_RA3, k=4),
-              data = dat, correlation=corAR1())
+mod25 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + PCod_RA3,
+              data = dat[dat$releaseyear >= 1981,], na.action = na.omit, correlation=corAR1())
 
 #Model summaries
 summary(mod25)
@@ -654,18 +626,16 @@ mod25
 
 #plot
 dev.new()
-par(mfrow=c(2,1))
+par(mfrow=c(3,1))
 
 plot(mod25$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod25$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-MuMIn::AICc(mod1,mod15, mod25) # quite an improvement to include PDO
+MuMIn::AICc(mod1, mod25)
 
-## refit with linear FHS effect and AO
-## No need to run correlations here as same as above except FHS now linear
-
-mod26 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + s(AO_RA3, k=4),
-              data = dat, correlation=corAR1())
+## PDO
+mod26 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + PDO_RA3 + AO_RA3,
+              data = dat[dat$releaseyear >= 1981,], na.action = na.omit, correlation=corAR1())
 
 #Model summaries
 summary(mod26)
@@ -682,13 +652,14 @@ par(mfrow=c(2,1))
 plot(mod26$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod26$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-MuMIn::AICc(mod1, mod26) # Good!
 
-## refit with linear FHS effect and AO
-## No need to run correlations here as same as above except FHS now linear
+MuMIn::AICc(mod1, mod26) # 
 
-mod27 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + s(PDO_RA3, k=4),
-              data = dat, correlation=corAR1())
+####### TRY NEW 3 YEAR MIN NBT VARIABLE ##########################
+## Add Pacific cod combined with FHS
+
+mod27 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2 + NBT_3yr_minTemp,
+              data = dat[dat$releaseyear >= 1981,], na.action = na.omit, correlation=corAR1())
 
 #Model summaries
 summary(mod27)
@@ -700,39 +671,15 @@ mod27
 
 #plot
 dev.new()
-par(mfrow=c(2,1))
+par(mfrow=c(3,1))
 
 plot(mod27$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod27$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 MuMIn::AICc(mod1, mod27)
-
-
-## refit with linear FHS effect ONLY
-
-mod28 <- gamm(logRS ~ s(ReproductiveFemales, k=4) + FHS_lag2,
-              data = dat, correlation=corAR1())
-
-#Model summaries
-summary(mod28)
-summary(mod28$gam)
-summary(mod28$lme)
-
-#Inspect model object
-mod28
-
-#plot
-dev.new()
-par(mfrow=c(2,1))
-
-plot(mod28$gam, resid=T, pch=19, rug=F, se=F, pages=1)
-plot(mod28$lme, resid=T, pch=19, rug=F, se=F, pages=1)
-
-MuMIn::AICc(mod1, mod28)
-
 ##### Wrap up 
-MuMIn::AICc(mod1,mod2,mod3,mod4, mod5,mod6, mod7,mod8,mod9, mod10,mod11,mod12,mod13,mod14,mod15,
-            mod16,mod17,mod18,mod19,mod20,mod21, mod22,mod23,mod24,mod25,mod26,mod27,mod28) 
+MuMIn::AICc(mod1,mod2,mod3,mod4, mod5,mod6, mod7,mod8,mod10,mod11,mod12,mod13,mod14,mod15,
+            mod16,mod17,mod18,mod19,mod20,mod21, mod22,mod23,mod24,mod25,mod26) #  
 
 names(dat)
 cor.dat <- dat %>%
