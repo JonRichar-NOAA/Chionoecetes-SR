@@ -13,7 +13,7 @@ library(nlstools)
 library(MuMIn)
 library(tidyverse)
 library(corrplot)
-
+library(ggpubr)
 ########## Import data and define variables####
 
 Recruits<-read.csv("data/cb_ebs_pop_juvenile.csv")
@@ -115,3 +115,14 @@ ggsave("./figs/juvenile_female_abundance.png",
         height = 6,
         units = 'in')
 getwd()
+
+plot_cb<-ggplot(plot_dat, aes(Year, abundance)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~name, scales = "free_y", ncol = 1) +
+  theme(axis.title.x = element_blank()) +
+  ylab("Abundance (millions)")
+
+ggarrange(plot_cb +rremove("x.text"),
+          labels = c("a.)", "b.)"))
+         
