@@ -1,0 +1,21 @@
+library(stats)
+library(MASS)
+library(nlme)
+library(lmtest)
+library(mgcv)
+library(nlme)
+library(ncdf4)
+library(chron)
+library(lattice)
+library(nlstools)
+library(tidyverse)
+
+################################################################################################
+dat<-read.csv("./data/EBS_Crab_and_envar_data_full_extent_for_analysis_updated.csv")
+names(dat)
+###########################################################################################
+par(mfrow=c(2,2))
+plot(dat$SC3logRS~dat$SC3ReproductiveFemales,pch=16, main = "SC3 females")
+plot(dat$SC2logRS~dat$SC2ReproductiveFemales,pch=16, main = "SC2 females")
+plot(dat$OviglogRS~dat$OvigReproductiveFemales,pch=16, main = "All ovigerous females")
+plot(dat$SC3_SC4_logRS~dat$SC3_SC4_ReproductiveFemales,pch=16, main = "SC3 and SC4 females")

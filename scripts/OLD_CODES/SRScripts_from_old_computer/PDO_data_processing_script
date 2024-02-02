@@ -1,0 +1,60 @@
+setwd('C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA')
+
+dat<-read.csv("PDO_data.csv")
+date<-dat$Date
+
+
+year<-as.matrix(substr(date,1,4))
+year
+
+month<-as.matrix(substr(date,5,6))
+month
+dat2<-cbind(as.numeric(year),as.numeric(month), as.numeric(dat$Value))
+
+dat2
+
+colnames(dat2)<-c("Year","Month","Value")
+
+dat2<-as.data.frame(dat2)
+dat2
+##################### Winter PDO ################################################
+
+yyear<-c(1975:2019)
+year<-as.matrix(as.numeric(yyear))
+
+out<-matrix(0,nrow=nrow(year), ncol = 1) 
+
+for(i in 1:nrow(year)){
+	a<-as.data.frame(subset(dat2, dat2$Year == year[i] & dat2$Month==1 |dat2$Year == year[i] & dat2$Month==2))
+	b<-as.data.frame(subset(dat2, dat2$Year == year[i-1] & dat2$Month==12))
+	c<-rbind(a,b)
+	d<-as.data.frame(c)
+	x<-d$Value
+	x2<-mean(x)
+	out[i,1]<-x2
+}
+
+out
+dat3<-cbind(year,out)
+colnames(dat3)<-c("Year","PDO_djf")
+write.csv(dat3, "Winter PDO.csv")
+
+##################### Summer PDO ################################################
+
+yyear<-c(1975:2019)
+year<-as.matrix(as.numeric(yyear))
+
+out<-matrix(0,nrow=nrow(year), ncol = 1) 
+
+for(i in 1:nrow(year)){
+	a<-as.data.frame(subset(dat2, dat2$Year == year[i] & dat2$Month==6 |dat2$Year == year[i] & dat2$Month==7|dat2$Year == year[i] & dat2$Month==8))
+	d<-as.data.frame(a)
+	x<-d$Value
+	x2<-mean(x)
+	out[i,1]<-x2
+}
+
+out
+dat3<-cbind(year,out)
+colnames(dat3)<-c("Year","PDO_jja")
+write.csv(dat3, "Summer PDO.csv")

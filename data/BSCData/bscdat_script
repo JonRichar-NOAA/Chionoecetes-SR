@@ -1,0 +1,12 @@
+library(ncdf4)
+setwd('C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/BSCData')
+
+ao<-nc_open('AO.nc')
+print(ao)
+
+aoia<-ncvar_get(ao, "time")
+
+aoia
+
+z<-ao$depth
+z

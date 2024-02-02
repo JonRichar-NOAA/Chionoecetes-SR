@@ -1,0 +1,3677 @@
+#vfiles
+library(ncdf4)
+############################################################################################################################
+################################################### 1978 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1978<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1978.nc")
+u.wind.1978
+
+lon.test<-ncvar_get(u.wind.1978,varid="lon")	#Degrees East--must subtract from 360 to get degrees west
+lat.test<-ncvar_get(u.wind.1978,varid="lat")	#Degees North
+time.test<-ncvar_get(u.wind.1978,varid="time")  #time is in hours, by 24 hr increment
+wind.test<-ncvar_get(u.wind.1978,varid="uwnd")
+lon.test
+lat.test
+time.test					#time is in hours, by 24 hr increment
+wind.test
+
+
+X <- ncvar_get(u.wind.1978,varid="uwnd")
+
+
+May.78U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.78U
+mean(May.78U)
+mean.May.78U<-mean(May.78U)
+
+June.78U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.78U
+mean(June.78U)
+mean.June.78U<-mean(June.78U)
+
+July.78U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.78U
+mean(July.78U)
+mean.July.78U<-mean(July.78U)
+
+May.June.78U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.78U
+mean(May.June.78U)
+mean.May.June.78U<-mean(May.June.78U)
+
+JJ.78U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.78U
+mean(JJ.78U)
+mean.JJ.78U<-mean(JJ.78U)
+
+May.July.78U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.78U
+mean(May.July.78U)
+mean.May.July.78U<-mean(May.July.78U)
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+
+v.wind.1978<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1978.nc")
+
+
+Y<- ncvar_get(v.wind.1978,varid="vwnd")
+
+
+May.78V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.78V
+mean(May.78V)
+mean.May.78V<-mean(May.78V)
+
+June.78V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.78V
+mean(June.78V)
+mean.June.78V<-mean(June.78V)
+
+July.78V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.78V
+mean(July.78V)
+mean.July.78V<-mean(July.78V)
+
+May.June.78V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.78V
+mean(May.June.78V)
+mean.May.June.78V<-mean(May.June.78V)
+
+JJ.78V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.78V
+mean(JJ.78V)
+mean.JJ.78V<-mean(JJ.78V)
+
+May.July.78V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.78V
+mean(May.July.78V)
+mean.May.July.78V<-mean(May.July.78V)
+
+############################################################################################################################
+################################################### 1979 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+
+u.wind.1979<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1979.nc")
+X <- ncvar_get(u.wind.1979,varid="uwnd")
+
+
+
+May.79U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.79U
+mean(May.79U)
+mean.May.79U<-mean(May.79U)
+
+June.79U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.79U
+mean(June.79U)
+mean.June.79U<-mean(June.79U)
+
+July.79U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.79U
+mean(July.79U)
+mean.July.79U<-mean(July.79U)
+
+May.June.79U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.79U
+mean(May.June.79U)
+mean.May.June.79U<-mean(May.June.79U)
+
+JJ.79U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.79U
+mean(JJ.79U)
+mean.JJ.79U<-mean(JJ.79U)
+
+May.July.79U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.79U
+mean(May.July.79U)
+mean.May.July.79U<-mean(May.July.79U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1979<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1979.nc")
+Y<- ncvar_get(v.wind.1979,varid="vwnd")
+
+May.79V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.79V
+mean(May.79V)
+mean.May.79V<-mean(May.79V)
+
+June.79V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.79V
+mean(June.79V)
+mean.June.79V<-mean(June.79V)
+
+July.79V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.79V
+mean(July.79V)
+mean.July.79V<-mean(July.79V)
+
+May.June.79V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.79V
+mean(May.June.79V)
+mean.May.June.79V<-mean(May.June.79V)
+
+JJ.79V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.79V
+mean(JJ.79V)
+mean.JJ.79V<-mean(JJ.79V)
+
+May.July.79V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.79V
+mean(May.July.79V)
+mean.May.July.79V<-mean(May.July.79V)
+
+
+############################################################################################################################
+################################################### 1980 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+u.wind.1980<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1980.nc")
+X <- ncvar_get(u.wind.1980,varid="uwnd")
+
+
+
+May.80U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.80U
+mean(May.80U)
+mean.May.80U<-mean(May.80U)
+
+June.80U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.80U
+mean(June.80U)
+mean.June.80U<-mean(June.80U)
+
+July.80U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.80U
+mean(July.80U)
+mean.July.80U<-mean(July.80U)
+
+May.June.80U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.80U
+mean(May.June.80U)
+mean.May.June.80U<-mean(May.June.80U)
+
+JJ.80U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.80U
+mean(JJ.80U)
+mean.JJ.80U<-mean(JJ.80U)
+
+May.July.80U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.80U
+mean(May.July.80U)
+mean.May.July.80U<-mean(May.July.80U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+
+v.wind.1980<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1980.nc")
+Y<- ncvar_get(v.wind.1980,varid="vwnd")
+
+
+
+
+May.80V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.80V
+mean(May.80V)
+mean.May.80V<-mean(May.80V)
+
+June.80V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.80V
+mean(June.80V)
+mean.June.80V<-mean(June.80V)
+
+July.80V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.80V
+mean(July.80V)
+mean.July.80V<-mean(July.80V)
+
+May.June.80V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.80V
+mean(May.June.80V)
+mean.May.June.80V<-mean(May.June.80V)
+
+JJ.80V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.80V
+mean(JJ.80V)
+mean.JJ.80V<-mean(JJ.80V)
+
+May.July.80V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.80V
+mean(May.July.80V)
+mean.May.July.80V<-mean(May.July.80V)
+
+############################################################################################################################
+################################################### 1981 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+#u.wind.1978<-open.ncdf(file.choose())
+
+u.wind.1981<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1981.nc")
+X <- ncvar_get(u.wind.1981,varid="uwnd")
+
+
+
+X <- get.var.ncdf(u.wind.1981,"uwnd")
+
+
+May.81U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.81U
+mean(May.81U)
+mean.May.81U<-mean(May.81U)
+
+June.81U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.81U
+mean(June.81U)
+mean.June.81U<-mean(June.81U)
+
+July.81U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.81U
+mean(July.81U)
+mean.July.81U<-mean(July.81U)
+
+May.June.81U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.81U
+mean(May.June.81U)
+mean.May.June.81U<-mean(May.June.81U)
+
+JJ.81U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.81U
+mean(JJ.81U)
+mean.JJ.81U<-mean(JJ.81U)
+
+May.July.81U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.81U
+mean(May.July.81U)
+mean.May.July.81U<-mean(May.July.81U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1981<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1981.nc")
+Y<- ncvar_get(v.wind.1981,varid="vwnd")
+
+
+Y<- get.var.ncdf(v.wind.1981,"vwnd")
+
+
+May.81V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.81V
+mean(May.81V)
+mean.May.81V<-mean(May.81V)
+
+June.81V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.81V
+mean(June.81V)
+mean.June.81V<-mean(June.81V)
+
+July.81V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.81V
+mean(July.81V)
+mean.July.81V<-mean(July.81V)
+
+May.June.81V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.81V
+mean(May.June.81V)
+mean.May.June.81V<-mean(May.June.81V)
+
+JJ.81V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.81V
+mean(JJ.81V)
+mean.JJ.81V<-mean(JJ.81V)
+
+May.July.81V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.81V
+mean(May.July.81V)
+mean.May.July.81V<-mean(May.July.81V)
+
+############################################################################################################################
+################################################### 1982 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1982<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1982.nc")
+X <- ncvar_get(u.wind.1982,varid="uwnd")
+
+
+
+May.82U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.82U
+mean(May.82U)
+mean.May.82U<-mean(May.82U)
+
+June.82U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.82U
+mean(June.82U)
+mean.June.82U<-mean(June.82U)
+
+July.82U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.82U
+mean(July.82U)
+mean.July.82U<-mean(July.82U)
+
+May.June.82U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.82U
+mean(May.June.82U)
+mean.May.June.82U<-mean(May.June.82U)
+
+JJ.82U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.82U
+mean(JJ.82U)
+mean.JJ.82U<-mean(JJ.82U)
+
+May.July.82U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.82U
+mean(May.July.82U)
+mean.May.July.82U<-mean(May.July.82U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1982<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1982.nc")
+Y<- ncvar_get(v.wind.1982,varid="vwnd")
+
+
+May.82V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.82V
+mean(May.82V)
+mean.May.82V<-mean(May.82V)
+
+June.82V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.82V
+mean(June.82V)
+mean.June.82V<-mean(June.82V)
+
+July.82V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.82V
+mean(July.82V)
+mean.July.82V<-mean(July.82V)
+
+May.June.82V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.82V
+mean(May.June.82V)
+mean.May.June.82V<-mean(May.June.82V)
+
+JJ.82V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.82V
+mean(JJ.82V)
+mean.JJ.82V<-mean(JJ.82V)
+
+May.July.82V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.82V
+mean(May.July.82V)
+mean.May.July.82V<-mean(May.July.82V)
+
+############################################################################################################################
+################################################### 1983 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1983<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1983.nc")
+X <- ncvar_get(u.wind.1983,varid="uwnd")
+
+
+
+May.83U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.83U
+mean(May.83U)
+mean.May.83U<-mean(May.83U)
+
+June.83U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.83U
+mean(June.83U)
+mean.June.83U<-mean(June.83U)
+
+July.83U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.83U
+mean(July.83U)
+mean.July.83U<-mean(July.83U)
+
+May.June.83U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.83U
+mean(May.June.83U)
+mean.May.June.83U<-mean(May.June.83U)
+
+JJ.83U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.83U
+mean(JJ.83U)
+mean.JJ.83U<-mean(JJ.83U)
+
+May.July.83U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.83U
+mean(May.July.83U)
+mean.May.July.83U<-mean(May.July.83U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1983<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1983.nc")
+Y<- ncvar_get(v.wind.1983,varid="vwnd")
+
+
+
+May.83V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.83V
+mean(May.83V)
+mean.May.83V<-mean(May.83V)
+
+June.83V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.83V
+mean(June.83V)
+mean.June.83V<-mean(June.83V)
+
+July.83V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.83V
+mean(July.83V)
+mean.July.83V<-mean(July.83V)
+
+May.June.83V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.83V
+mean(May.June.83V)
+mean.May.June.83V<-mean(May.June.83V)
+
+JJ.83V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.83V
+mean(JJ.83V)
+mean.JJ.83V<-mean(JJ.83V)
+
+May.July.83V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.83V
+mean(May.July.83V)
+mean.May.July.83V<-mean(May.July.83V)
+
+############################################################################################################################
+################################################### 1984 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1984<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1984.nc")
+X <- ncvar_get(u.wind.1984,varid="uwnd")
+
+
+May.84U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.84U
+mean(May.84U)
+mean.May.84U<-mean(May.84U)
+
+June.84U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.84U
+mean(June.84U)
+mean.June.84U<-mean(June.84U)
+
+July.84U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.84U
+mean(July.84U)
+mean.July.84U<-mean(July.84U)
+
+May.June.84U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.84U
+mean(May.June.84U)
+mean.May.June.84U<-mean(May.June.84U)
+
+JJ.84U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.84U
+mean(JJ.84U)
+mean.JJ.84U<-mean(JJ.84U)
+
+May.July.84U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.84U
+mean(May.July.84U)
+mean.May.July.84U<-mean(May.July.84U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1984<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1984.nc")
+Y<- ncvar_get(v.wind.1984,varid="vwnd")
+
+
+Y<- get.var.ncdf(v.wind.1984,"vwnd")
+
+
+May.84V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.84V
+mean(May.84V)
+mean.May.84V<-mean(May.84V)
+
+June.84V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.84V
+mean(June.84V)
+mean.June.84V<-mean(June.84V)
+
+July.84V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.84V
+mean(July.84V)
+mean.July.84V<-mean(July.84V)
+
+May.June.84V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.84V
+mean(May.June.84V)
+mean.May.June.84V<-mean(May.June.84V)
+
+JJ.84V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.84V
+mean(JJ.84V)
+mean.JJ.84V<-mean(JJ.84V)
+
+May.July.84V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.84V
+mean(May.July.84V)
+mean.May.July.84V<-mean(May.July.84V)
+
+############################################################################################################################
+################################################### 1985 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1985<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1985.nc")
+X <- ncvar_get(u.wind.1985,varid="uwnd")
+
+May.85U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.85U
+mean(May.85U)
+mean.May.85U<-mean(May.85U)
+
+June.85U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.85U
+mean(June.85U)
+mean.June.85U<-mean(June.85U)
+
+July.85U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.85U
+mean(July.85U)
+mean.July.85U<-mean(July.85U)
+
+May.June.85U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.85U
+mean(May.June.85U)
+mean.May.June.85U<-mean(May.June.85U)
+
+JJ.85U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.85U
+mean(JJ.85U)
+mean.JJ.85U<-mean(JJ.85U)
+
+May.July.85U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.85U
+mean(May.July.85U)
+mean.May.July.85U<-mean(May.July.85U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1985<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1985.nc")
+Y<- ncvar_get(v.wind.1985,varid="vwnd")
+
+
+
+May.85V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.85V
+mean(May.85V)
+mean.May.85V<-mean(May.85V)
+
+June.85V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.85V
+mean(June.85V)
+mean.June.85V<-mean(June.85V)
+
+July.85V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.85V
+mean(July.85V)
+mean.July.85V<-mean(July.85V)
+
+May.June.85V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.85V
+mean(May.June.85V)
+mean.May.June.85V<-mean(May.June.85V)
+
+JJ.85V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.85V
+mean(JJ.85V)
+mean.JJ.85V<-mean(JJ.85V)
+
+May.July.85V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.85V
+mean(May.July.85V)
+mean.May.July.85V<-mean(May.July.85V)
+
+############################################################################################################################
+################################################### 1986 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1986<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1986.nc")
+X <- ncvar_get(u.wind.1986,varid="uwnd")
+
+
+May.86U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.86U
+mean(May.86U)
+mean.May.86U<-mean(May.86U)
+
+June.86U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.86U
+mean(June.86U)
+mean.June.86U<-mean(June.86U)
+
+July.86U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.86U
+mean(July.86U)
+mean.July.86U<-mean(July.86U)
+
+May.June.86U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.86U
+mean(May.June.86U)
+mean.May.June.86U<-mean(May.June.86U)
+
+JJ.86U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.86U
+mean(JJ.86U)
+mean.JJ.86U<-mean(JJ.86U)
+
+May.July.86U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.86U
+mean(May.July.86U)
+mean.May.July.86U<-mean(May.July.86U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1986<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1986.nc")
+Y<- ncvar_get(v.wind.1986,varid="vwnd")
+
+
+May.86V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.86V
+mean(May.86V)
+mean.May.86V<-mean(May.86V)
+
+June.86V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.86V
+mean(June.86V)
+mean.June.86V<-mean(June.86V)
+
+July.86V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.86V
+mean(July.86V)
+mean.July.86V<-mean(July.86V)
+
+May.June.86V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.86V
+mean(May.June.86V)
+mean.May.June.86V<-mean(May.June.86V)
+
+JJ.86V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.86V
+mean(JJ.86V)
+mean.JJ.86V<-mean(JJ.86V)
+
+May.July.86V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.86V
+mean(May.July.86V)
+mean.May.July.86V<-mean(May.July.86V)
+
+############################################################################################################################
+################################################### 1987 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1987<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1987.nc")
+X <- ncvar_get(u.wind.1987,varid="uwnd")
+
+
+May.87U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.87U
+mean(May.87U)
+mean.May.87U<-mean(May.87U)
+
+June.87U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.87U
+mean(June.87U)
+mean.June.87U<-mean(June.87U)
+
+July.87U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.87U
+mean(July.87U)
+mean.July.87U<-mean(July.87U)
+
+May.June.87U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.87U
+mean(May.June.87U)
+mean.May.June.87U<-mean(May.June.87U)
+
+JJ.87U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.87U
+mean(JJ.87U)
+mean.JJ.87U<-mean(JJ.87U)
+
+May.July.87U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.87U
+mean(May.July.87U)
+mean.May.July.87U<-mean(May.July.87U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1987<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1987.nc")
+Y<- ncvar_get(v.wind.1987,varid="vwnd")
+
+
+May.87V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.87V
+mean(May.87V)
+mean.May.87V<-mean(May.87V)
+
+June.87V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.87V
+mean(June.87V)
+mean.June.87V<-mean(June.87V)
+
+July.87V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.87V
+mean(July.87V)
+mean.July.87V<-mean(July.87V)
+
+May.June.87V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.87V
+mean(May.June.87V)
+mean.May.June.87V<-mean(May.June.87V)
+
+JJ.87V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.87V
+mean(JJ.87V)
+mean.JJ.87V<-mean(JJ.87V)
+
+May.July.87V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.87V
+mean(May.July.87V)
+mean.May.July.87V<-mean(May.July.87V)
+
+############################################################################################################################
+################################################### 1988 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1988<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1988.nc")
+X <- ncvar_get(u.wind.1988,varid="uwnd")
+
+
+May.88U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.88U
+mean(May.88U)
+mean.May.88U<-mean(May.88U)
+
+June.88U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.88U
+mean(June.88U)
+mean.June.88U<-mean(June.88U)
+
+July.88U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.88U
+mean(July.88U)
+mean.July.88U<-mean(July.88U)
+
+May.June.88U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.88U
+mean(May.June.88U)
+mean.May.June.88U<-mean(May.June.88U)
+
+JJ.88U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.88U
+mean(JJ.88U)
+mean.JJ.88U<-mean(JJ.88U)
+
+May.July.88U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.88U
+mean(May.July.88U)
+mean.May.July.88U<-mean(May.July.88U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1988<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1988.nc")
+Y<- ncvar_get(v.wind.1988,varid="vwnd")
+
+
+May.88V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.88V
+mean(May.88V)
+mean.May.88V<-mean(May.88V)
+
+June.88V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.88V
+mean(June.88V)
+mean.June.88V<-mean(June.88V)
+
+July.88V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.88V
+mean(July.88V)
+mean.July.88V<-mean(July.88V)
+
+May.June.88V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.88V
+mean(May.June.88V)
+mean.May.June.88V<-mean(May.June.88V)
+
+JJ.88V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.88V
+mean(JJ.88V)
+mean.JJ.88V<-mean(JJ.88V)
+
+May.July.88V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.88V
+mean(May.July.88V)
+mean.May.July.88V<-mean(May.July.88V)
+
+############################################################################################################################
+################################################### 1989 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1989<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1989.nc")
+X <- ncvar_get(u.wind.1989,varid="uwnd")
+
+
+May.89U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.89U
+mean(May.89U)
+mean.May.89U<-mean(May.89U)
+
+June.89U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.89U
+mean(June.89U)
+mean.June.89U<-mean(June.89U)
+
+July.89U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.89U
+mean(July.89U)
+mean.July.89U<-mean(July.89U)
+
+May.June.89U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.89U
+mean(May.June.89U)
+mean.May.June.89U<-mean(May.June.89U)
+
+JJ.89U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.89U
+mean(JJ.89U)
+mean.JJ.89U<-mean(JJ.89U)
+
+May.July.89U<-X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.89U
+mean(May.July.89U)
+mean.May.July.89U<-mean(May.July.89U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1989<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1989.nc")
+Y<- ncvar_get(v.wind.1989,varid="vwnd")
+
+
+May.89V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.89V
+mean(May.89V)
+mean.May.89V<-mean(May.89V)
+
+June.89V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.89V
+mean(June.89V)
+mean.June.89V<-mean(June.89V)
+
+July.89V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.89V
+mean(July.89V)
+mean.July.89V<-mean(July.89V)
+
+May.June.89V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.89V
+mean(May.June.89V)
+mean.May.June.89V<-mean(May.June.89V)
+
+JJ.89V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.89V
+mean(JJ.89V)
+mean.JJ.89V<-mean(JJ.89V)
+
+May.July.89V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.89V
+mean(May.July.89V)
+mean.May.July.89V<-mean(May.July.89V)
+
+############################################################################################################################
+################################################### 1990 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1990<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1990.nc")
+X <- ncvar_get(u.wind.1990,varid="uwnd")
+
+
+May.90U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.90U
+mean(May.90U)
+mean.May.90U<-mean(May.90U)
+
+June.90U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.90U
+mean(June.90U)
+mean.June.90U<-mean(June.90U)
+
+July.90U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.90U
+mean(July.90U)
+mean.July.90U<-mean(July.90U)
+
+May.June.90U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.90U
+mean(May.June.90U)
+mean.May.June.90U<-mean(May.June.90U)
+
+JJ.90U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.90U
+mean(JJ.90U)
+mean.JJ.90U<-mean(JJ.90U)
+
+May.July.90U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.90U
+mean(May.July.90U)
+mean.May.July.90U<-mean(May.July.90U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1990<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1990.nc")
+Y<- ncvar_get(v.wind.1990,varid="vwnd")
+
+
+
+May.90V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.90V
+mean(May.90V)
+mean.May.90V<-mean(May.90V)
+
+June.90V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.90V
+mean(June.90V)
+mean.June.90V<-mean(June.90V)
+
+July.90V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.90V
+mean(July.90V)
+mean.July.90V<-mean(July.90V)
+
+May.June.90V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.90V
+mean(May.June.90V)
+mean.May.June.90V<-mean(May.June.90V)
+
+JJ.90V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.90V
+mean(JJ.90V)
+mean.JJ.90V<-mean(JJ.90V)
+
+May.July.90V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.90V
+mean(May.July.90V)
+mean.May.July.90V<-mean(May.July.90V)
+
+
+############################################################################################################################
+################################################### 1991 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+u.wind.1991<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1991.nc")
+X <- ncvar_get(u.wind.1991,varid="uwnd")
+
+
+May.91U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.91U
+mean(May.91U)
+mean.May.91U<-mean(May.91U)
+
+June.91U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.91U
+mean(June.91U)
+mean.June.91U<-mean(June.91U)
+
+July.91U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.91U
+mean(July.91U)
+mean.July.91U<-mean(July.91U)
+
+May.June.91U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.91U
+mean(May.June.91U)
+mean.May.June.91U<-mean(May.June.91U)
+
+JJ.91U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.91U
+mean(JJ.91U)
+mean.JJ.91U<-mean(JJ.91U)
+
+May.July.91U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.91U
+mean(May.July.91U)
+mean.May.July.91U<-mean(May.July.91U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1991<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1991.nc")
+Y<- ncvar_get(v.wind.1991,varid="vwnd")
+
+
+
+May.91V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.91V
+mean(May.91V)
+mean.May.91V<-mean(May.91V)
+
+June.91V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.91V
+mean(June.91V)
+mean.June.91V<-mean(June.91V)
+
+July.91V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.91V
+mean(July.91V)
+mean.July.91V<-mean(July.91V)
+
+May.June.91V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.91V
+mean(May.June.91V)
+mean.May.June.91V<-mean(May.June.91V)
+
+JJ.91V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.91V
+mean(JJ.91V)
+mean.JJ.91V<-mean(JJ.91V)
+
+May.July.91V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.91V
+mean(May.July.91V)
+mean.May.July.91V<-mean(May.July.91V)
+
+
+############################################################################################################################
+################################################### 1992 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1992<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1992.nc")
+X <- ncvar_get(u.wind.1992,varid="uwnd")
+
+
+May.92U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.92U
+mean(May.92U)
+mean.May.92U<-mean(May.92U)
+
+June.92U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.92U
+mean(June.92U)
+mean.June.92U<-mean(June.92U)
+
+July.92U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.92U
+mean(July.92U)
+mean.July.92U<-mean(July.92U)
+
+May.June.92U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.92U
+mean(May.June.92U)
+mean.May.June.92U<-mean(May.June.92U)
+
+JJ.92U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.92U
+mean(JJ.92U)
+mean.JJ.92U<-mean(JJ.92U)
+
+May.July.92U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.92U
+mean(May.July.92U)
+mean.May.July.92U<-mean(May.July.92U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1992<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1992.nc")
+Y<- ncvar_get(v.wind.1992,varid="vwnd")
+
+
+
+May.92V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.92V
+mean(May.92V)
+mean.May.92V<-mean(May.92V)
+
+June.92V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.92V
+mean(June.92V)
+mean.June.92V<-mean(June.92V)
+
+July.92V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.92V
+mean(July.92V)
+mean.July.92V<-mean(July.92V)
+
+May.June.92V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.92V
+mean(May.June.92V)
+mean.May.June.92V<-mean(May.June.92V)
+
+JJ.92V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.92V
+mean(JJ.92V)
+mean.JJ.92V<-mean(JJ.92V)
+
+May.July.92V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.92V
+mean(May.July.92V)
+mean.May.July.92V<-mean(May.July.92V)
+
+############################################################################################################################
+################################################### 1993 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1993<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1993.nc")
+X <- ncvar_get(u.wind.1993,varid="uwnd")
+
+
+May.93U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.93U
+mean(May.93U)
+mean.May.93U<-mean(May.93U)
+
+June.93U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.93U
+mean(June.93U)
+mean.June.93U<-mean(June.93U)
+
+July.93U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.93U
+mean(July.93U)
+mean.July.93U<-mean(July.93U)
+
+May.June.93U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.93U
+mean(May.June.93U)
+mean.May.June.93U<-mean(May.June.93U)
+
+JJ.93U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.93U
+mean(JJ.93U)
+mean.JJ.93U<-mean(JJ.93U)
+
+May.July.93U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.93U
+mean(May.July.93U)
+mean.May.July.93U<-mean(May.July.93U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1993<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1993.nc")
+Y<- ncvar_get(v.wind.1993,varid="vwnd")
+
+
+May.93V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.93V
+mean(May.93V)
+mean.May.93V<-mean(May.93V)
+
+June.93V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.93V
+mean(June.93V)
+mean.June.93V<-mean(June.93V)
+
+July.93V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.93V
+mean(July.93V)
+mean.July.93V<-mean(July.93V)
+
+May.June.93V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.93V
+mean(May.June.93V)
+mean.May.June.93V<-mean(May.June.93V)
+
+JJ.93V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.93V
+mean(JJ.93V)
+mean.JJ.93V<-mean(JJ.93V)
+
+May.July.93V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.93V
+mean(May.July.93V)
+mean.May.July.93V<-mean(May.July.93V)
+
+
+############################################################################################################################
+################################################### 1994 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1994<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1994.nc")
+X <- ncvar_get(u.wind.1994,varid="uwnd")
+
+
+May.94U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.94U
+mean(May.94U)
+mean.May.94U<-mean(May.94U)
+
+June.94U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.94U
+mean(June.94U)
+mean.June.94U<-mean(June.94U)
+
+July.94U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.94U
+mean(July.94U)
+mean.July.94U<-mean(July.94U)
+
+May.June.94U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.94U
+mean(May.June.94U)
+mean.May.June.94U<-mean(May.June.94U)
+
+JJ.94U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.94U
+mean(JJ.94U)
+mean.JJ.94U<-mean(JJ.94U)
+
+May.July.94U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.94U
+mean(May.July.94U)
+mean.May.July.94U<-mean(May.July.94U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1994<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1994.nc")
+Y<- ncvar_get(v.wind.1994,varid="vwnd")
+
+
+May.94V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.94V
+mean(May.94V)
+mean.May.94V<-mean(May.94V)
+
+June.94V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.94V
+mean(June.94V)
+mean.June.94V<-mean(June.94V)
+
+July.94V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.94V
+mean(July.94V)
+mean.July.94V<-mean(July.94V)
+
+May.June.94V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.94V
+mean(May.June.94V)
+mean.May.June.94V<-mean(May.June.94V)
+
+JJ.94V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.94V
+mean(JJ.94V)
+mean.JJ.94V<-mean(JJ.94V)
+
+May.July.94V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.94V
+mean(May.July.94V)
+mean.May.July.94V<-mean(May.July.94V)
+
+
+############################################################################################################################
+################################################### 1995 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1995<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1995.nc")
+X <- ncvar_get(u.wind.1995,varid="uwnd")
+
+
+May.95U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.95U
+mean(May.95U)
+mean.May.95U<-mean(May.95U)
+
+June.95U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.95U
+mean(June.95U)
+mean.June.95U<-mean(June.95U)
+
+July.95U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.95U
+mean(July.95U)
+mean.July.95U<-mean(July.95U)
+
+May.June.95U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.95U
+mean(May.June.95U)
+mean.May.June.95U<-mean(May.June.95U)
+
+JJ.95U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.95U
+mean(JJ.95U)
+mean.JJ.95U<-mean(JJ.95U)
+
+May.July.95U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.95U
+mean(May.July.95U)
+mean.May.July.95U<-mean(May.July.95U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1995<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1995.nc")
+Y<- ncvar_get(v.wind.1995,varid="vwnd")
+
+
+
+May.95V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.95V
+mean(May.95V)
+mean.May.95V<-mean(May.95V)
+
+June.95V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.95V
+mean(June.95V)
+mean.June.95V<-mean(June.95V)
+
+July.95V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.95V
+mean(July.95V)
+mean.July.95V<-mean(July.95V)
+
+May.June.95V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.95V
+mean(May.June.95V)
+mean.May.June.95V<-mean(May.June.95V)
+
+JJ.95V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.95V
+mean(JJ.95V)
+mean.JJ.95V<-mean(JJ.95V)
+
+May.July.95V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.95V
+mean(May.July.95V)
+mean.May.July.95V<-mean(May.July.95V)
+
+############################################################################################################################
+################################################### 1996 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1996<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1996.nc")
+X <- ncvar_get(u.wind.1996,varid="uwnd")
+
+
+May.96U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.96U
+mean(May.96U)
+mean.May.96U<-mean(May.96U)
+
+June.96U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.96U
+mean(June.96U)
+mean.June.96U<-mean(June.96U)
+
+July.96U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.96U
+mean(July.96U)
+mean.July.96U<-mean(July.96U)
+
+May.June.96U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.96U
+mean(May.June.96U)
+mean.May.June.96U<-mean(May.June.96U)
+
+JJ.96U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.96U
+mean(JJ.96U)
+mean.JJ.96U<-mean(JJ.96U)
+
+May.July.96U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.96U
+mean(May.July.96U)
+mean.May.July.96U<-mean(May.July.96U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1996<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1996.nc")
+Y<- ncvar_get(v.wind.1996,varid="vwnd")
+
+
+May.96V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.96V
+mean(May.96V)
+mean.May.96V<-mean(May.96V)
+
+June.96V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.96V
+mean(June.96V)
+mean.June.96V<-mean(June.96V)
+
+July.96V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.96V
+mean(July.96V)
+mean.July.96V<-mean(July.96V)
+
+May.June.96V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.96V
+mean(May.June.96V)
+mean.May.June.96V<-mean(May.June.96V)
+
+JJ.96V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.96V
+mean(JJ.96V)
+mean.JJ.96V<-mean(JJ.96V)
+
+May.July.96V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.96V
+mean(May.July.96V)
+mean.May.July.96V<-mean(May.July.96V)
+
+############################################################################################################################
+################################################### 1997 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1997<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1997.nc")
+X <- ncvar_get(u.wind.1997,varid="uwnd")
+
+
+May.97U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.97U
+mean(May.97U)
+mean.May.97U<-mean(May.97U)
+
+June.97U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.97U
+mean(June.97U)
+mean.June.97U<-mean(June.97U)
+
+July.97U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.97U
+mean(July.97U)
+mean.July.97U<-mean(July.97U)
+
+May.June.97U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.97U
+mean(May.June.97U)
+mean.May.June.97U<-mean(May.June.97U)
+
+JJ.97U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.97U
+mean(JJ.97U)
+mean.JJ.97U<-mean(JJ.97U)
+
+May.July.97U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.97U
+mean(May.July.97U)
+mean.May.July.97U<-mean(May.July.97U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1997<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1997.nc")
+Y<- ncvar_get(v.wind.1997,varid="vwnd")
+
+
+May.97V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.97V
+mean(May.97V)
+mean.May.97V<-mean(May.97V)
+
+June.97V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.97V
+mean(June.97V)
+mean.June.97V<-mean(June.97V)
+
+July.97V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.97V
+mean(July.97V)
+mean.July.97V<-mean(July.97V)
+
+May.June.97V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.97V
+mean(May.June.97V)
+mean.May.June.97V<-mean(May.June.97V)
+
+JJ.97V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.97V
+mean(JJ.97V)
+mean.JJ.97V<-mean(JJ.97V)
+
+May.July.97V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.97V
+mean(May.July.97V)
+mean.May.July.97V<-mean(May.July.97V)
+
+############################################################################################################################
+################################################### 1998 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1998<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1998.nc")
+X <- ncvar_get(u.wind.1998,varid="uwnd")
+
+
+May.98U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.98U
+mean(May.98U)
+mean.May.98U<-mean(May.98U)
+
+June.98U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.98U
+mean(June.98U)
+mean.June.98U<-mean(June.98U)
+
+July.98U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.98U
+mean(July.98U)
+mean.July.98U<-mean(July.98U)
+
+May.June.98U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.98U
+mean(May.June.98U)
+mean.May.June.98U<-mean(May.June.98U)
+
+JJ.98U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.98U
+mean(JJ.98U)
+mean.JJ.98U<-mean(JJ.98U)
+
+May.July.98U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.98U
+mean(May.July.98U)
+mean.May.July.98U<-mean(May.July.98U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+
+v.wind.1998<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1998.nc")
+Y<- ncvar_get(v.wind.1998,varid="vwnd")
+
+
+May.98V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.98V
+mean(May.98V)
+mean.May.98V<-mean(May.98V)
+
+June.98V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.98V
+mean(June.98V)
+mean.June.98V<-mean(June.98V)
+
+July.98V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.98V
+mean(July.98V)
+mean.July.98V<-mean(July.98V)
+
+May.June.98V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.98V
+mean(May.June.98V)
+mean.May.June.98V<-mean(May.June.98V)
+
+JJ.98V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.98V
+mean(JJ.98V)
+mean.JJ.98V<-mean(JJ.98V)
+
+May.July.98V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.98V
+mean(May.July.98V)
+mean.May.July.98V<-mean(May.July.98V)
+
+
+############################################################################################################################
+################################################### 1999 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.1999<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.1999.nc")
+X <- ncvar_get(u.wind.1999,varid="uwnd")
+
+
+
+May.99U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.99U
+mean(May.99U)
+mean.May.99U<-mean(May.99U)
+
+June.99U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.99U
+mean(June.99U)
+mean.June.99U<-mean(June.99U)
+
+July.99U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.99U
+mean(July.99U)
+mean.July.99U<-mean(July.99U)
+
+May.June.99U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.99U
+mean(May.June.99U)
+mean.May.June.99U<-mean(May.June.99U)
+
+JJ.99U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.99U
+mean(JJ.99U)
+mean.JJ.99U<-mean(JJ.99U)
+
+May.July.99U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.99U
+mean(May.July.99U)
+mean.May.July.99U<-mean(May.July.99U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.1999<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.1999.nc")
+Y<- ncvar_get(v.wind.1999,varid="vwnd")
+
+
+May.99V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.99V
+mean(May.99V)
+mean.May.99V<-mean(May.99V)
+
+June.99V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.99V
+mean(June.99V)
+mean.June.99V<-mean(June.99V)
+
+July.99V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.99V
+mean(July.99V)
+mean.July.99V<-mean(July.99V)
+
+May.June.99V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.99V
+mean(May.June.99V)
+mean.May.June.99V<-mean(May.June.99V)
+
+JJ.99V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.99V
+mean(JJ.99V)
+mean.JJ.99V<-mean(JJ.99V)
+
+May.July.99V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.99V
+mean(May.July.99V)
+mean.May.July.99V<-mean(May.July.99V)
+
+
+############################################################################################################################
+################################################### 2000 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2000<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2000.nc")
+X <- ncvar_get(u.wind.2000,varid="uwnd")
+
+
+May.00U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.00U
+mean(May.00U)
+mean.May.00U<-mean(May.00U)
+
+June.00U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.00U
+mean(June.00U)
+mean.June.00U<-mean(June.00U)
+
+July.00U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.00U
+mean(July.00U)
+mean.July.00U<-mean(July.00U)
+
+May.June.00U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.00U
+mean(May.June.00U)
+mean.May.June.00U<-mean(May.June.00U)
+
+JJ.00U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.00U
+mean(JJ.00U)
+mean.JJ.00U<-mean(JJ.00U)
+
+May.July.00U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.00U
+mean(May.July.00U)
+mean.May.July.00U<-mean(May.July.00U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2000<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2000.nc")
+Y<- ncvar_get(v.wind.2000,varid="vwnd")
+
+
+
+May.00V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.00V
+mean(May.00)
+mean.May.00V<-mean(May.00V)
+
+June.00V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.00V
+mean(June.00V)
+mean.June.00V<-mean(June.00V)
+
+July.00V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.00V
+mean(July.00V)
+mean.July.00V<-mean(July.00V)
+
+May.June.00V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.00V
+mean(May.June.00V)
+mean.May.June.00V<-mean(May.June.00V)
+
+JJ.00V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.00V
+mean(JJ.00V)
+mean.JJ.00V<-mean(JJ.00V)
+
+May.July.00V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.00V
+mean(May.July.00V)
+mean.May.July.00V<-mean(May.July.00V)
+
+
+
+############################################################################################################################
+################################################### 2001 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2001<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2001.nc")
+X <- ncvar_get(u.wind.2001,varid="uwnd")
+
+
+May.01U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.01U
+mean(May.01U)
+mean.May.01U<-mean(May.01U)
+
+June.01U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.01U
+mean(June.01U)
+mean.June.01U<-mean(June.01U)
+
+July.01U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.01U
+mean(July.01U)
+mean.July.01U<-mean(July.01U)
+
+May.June.01U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.01U
+mean(May.June.01U)
+mean.May.June.01U<-mean(May.June.01U)
+
+JJ.01U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.01U
+mean(JJ.01U)
+mean.JJ.01U<-mean(JJ.01U)
+
+May.July.01U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.01U
+mean(May.July.01U)
+mean.May.July.01U<-mean(May.July.01U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2001<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2001.nc")
+Y<- ncvar_get(v.wind.2001,varid="vwnd")
+
+
+May.01V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.01V
+mean(May.01V)
+mean.May.01V<-mean(May.01V)
+
+June.01V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.01V
+mean(June.01V)
+mean.June.01V<-mean(June.01V)
+
+July.01V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.01V
+mean(July.01V)
+mean.July.01V<-mean(July.01V)
+
+May.June.01V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.01V
+mean(May.June.01V)
+mean.May.June.01V<-mean(May.June.01V)
+
+JJ.01V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.01V
+mean(JJ.01V)
+mean.JJ.01V<-mean(JJ.01V)
+
+May.July.01V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.01V
+mean(May.July.01V)
+mean.May.July.01V<-mean(May.July.01V)
+
+
+############################################################################################################################
+################################################### 2002 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2002<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2002.nc")
+X <- ncvar_get(u.wind.2002,varid="uwnd")
+
+
+May.02U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.02U
+mean(May.02U)
+mean.May.02U<-mean(May.02U)
+
+June.02U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.02U
+mean(June.02U)
+mean.June.02U<-mean(June.02U)
+
+July.02U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.02U
+mean(July.02U)
+mean.July.02U<-mean(July.02U)
+
+May.June.02U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.02U
+mean(May.June.02U)
+mean.May.June.02U<-mean(May.June.02U)
+
+JJ.02U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.02U
+mean(JJ.02U)
+mean.JJ.02U<-mean(JJ.02U)
+
+May.July.02U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.02U
+mean(May.July.02U)
+mean.May.July.02U<-mean(May.July.02U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2002<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2002.nc")
+Y<- ncvar_get(v.wind.2002,varid="vwnd")
+
+
+May.02V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.02V
+mean(May.02V)
+mean.May.02V<-mean(May.02V)
+
+June.02V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.02V
+mean(June.02V)
+mean.June.02V<-mean(June.02V)
+
+July.02V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.02V
+mean(July.02V)
+mean.July.02V<-mean(July.02V)
+
+May.June.02V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.02V
+mean(May.June.02V)
+mean.May.June.02V<-mean(May.June.02V)
+
+JJ.02V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.02V
+mean(JJ.02V)
+mean.JJ.02V<-mean(JJ.02V)
+
+May.July.02V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.02V
+mean(May.July.02V)
+mean.May.July.02V<-mean(May.July.02V)
+
+
+############################################################################################################################
+################################################### 2003 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2003<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2003.nc")
+X <- ncvar_get(u.wind.2003,varid="uwnd")
+
+
+May.03U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.03U
+mean(May.03U)
+mean.May.03U<-mean(May.03U)
+
+June.03U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.03U
+mean(June.03U)
+mean.June.03U<-mean(June.03U)
+
+July.03U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.03U
+mean(July.03U)
+mean.July.03U<-mean(July.03U)
+
+May.June.03U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.03U
+mean(May.June.03U)
+mean.May.June.03U<-mean(May.June.03U)
+
+JJ.03U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.03U
+mean(JJ.03U)
+mean.JJ.03U<-mean(JJ.03U)
+
+May.July.03U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.03U
+mean(May.July.03U)
+mean.May.July.03U<-mean(May.July.03U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2003<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2003.nc")
+Y<- ncvar_get(v.wind.2003,varid="vwnd")
+
+
+May.03V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.03V
+mean(May.03V)
+mean.May.03V<-mean(May.03V)
+
+June.03V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.03V
+mean(June.03V)
+mean.June.03V<-mean(June.03V)
+
+July.03V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.03V
+mean(July.03V)
+mean.July.03V<-mean(July.03V)
+
+May.June.03V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.03V
+mean(May.June.03V)
+mean.May.June.03V<-mean(May.June.03V)
+
+JJ.03V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.03V
+mean(JJ.03V)
+mean.JJ.03V<-mean(JJ.03V)
+
+May.July.03V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.03V
+mean(May.July.03V)
+mean.May.July.03V<-mean(May.July.03V)
+
+
+############################################################################################################################
+################################################### 2004 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2004<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2004.nc")
+X <- ncvar_get(u.wind.2004,varid="uwnd")
+
+
+May.04U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.04U
+mean(May.04U)
+mean.May.04U<-mean(May.04U)
+
+June.04U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.04U
+mean(June.04U)
+mean.June.04U<-mean(June.04U)
+
+July.04U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.04U
+mean(July.04U)
+mean.July.04U<-mean(July.04U)
+
+May.June.04U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.04U
+mean(May.June.04U)
+mean.May.June.04U<-mean(May.June.04U)
+
+JJ.04U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.04U
+mean(JJ.04U)
+mean.JJ.04U<-mean(JJ.04U)
+
+May.July.04U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.04U
+mean(May.July.04U)
+mean.May.July.04U<-mean(May.July.04U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2004<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2004.nc")
+Y<- ncvar_get(v.wind.2004,varid="vwnd")
+
+
+May.04V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.04V
+mean(May.04V)
+mean.May.04V<-mean(May.04V)
+
+June.04V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.04V
+mean(June.04V)
+mean.June.04V<-mean(June.04V)
+
+July.04V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.04V
+mean(July.04V)
+mean.July.04V<-mean(July.04V)
+
+May.June.04V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.04V
+mean(May.June.04V)
+mean.May.June.04V<-mean(May.June.04V)
+
+JJ.04V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.04V
+mean(JJ.04V)
+mean.JJ.04V<-mean(JJ.04V)
+
+May.July.04V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.04V
+mean(May.July.04V)
+mean.May.July.04V<-mean(May.July.04V)
+
+
+############################################################################################################################
+################################################### 2005 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2005<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2005.nc")
+X <- ncvar_get(u.wind.2005,varid="uwnd")
+
+
+May.05U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.05U
+mean(May.05U)
+mean.May.05U<-mean(May.05U)
+
+June.05U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.05U
+mean(June.05U)
+mean.June.05U<-mean(June.05U)
+
+July.05U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.05U
+mean(July.05U)
+mean.July.05U<-mean(July.05U)
+
+May.June.05U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.05U
+mean(May.June.05U)
+mean.May.June.05U<-mean(May.June.05U)
+
+JJ.05U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.05U
+mean(JJ.05U)
+mean.JJ.05U<-mean(JJ.05U)
+
+May.July.05U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.05U
+mean(May.July.05U)
+mean.May.July.05U<-mean(May.July.05U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2005<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2005.nc")
+Y<- ncvar_get(v.wind.2005,varid="vwnd")
+
+
+May.05V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.05V
+mean(May.05V)
+mean.May.05V<-mean(May.05V)
+
+June.05V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.05V
+mean(June.05V)
+mean.June.05V<-mean(June.05V)
+
+July.05V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.05V
+mean(July.05V)
+mean.July.05V<-mean(July.05V)
+
+May.June.05V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.05V
+mean(May.June.05V)
+mean.May.June.05V<-mean(May.June.05V)
+
+JJ.05V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.05V
+mean(JJ.05V)
+mean.JJ.05V<-mean(JJ.05V)
+
+May.July.05V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.05V
+mean(May.July.05V)
+mean.May.July.05V<-mean(May.July.05V)
+
+
+
+############################################################################################################################
+################################################### 2006 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2006<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2006.nc")
+X <- ncvar_get(u.wind.2006,varid="uwnd")
+
+
+May.06U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.06U
+mean(May.06U)
+mean.May.06U<-mean(May.06U)
+
+June.06U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.06U
+mean(June.06U)
+mean.June.06U<-mean(June.05U)
+
+July.06U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.06U
+mean(July.06U)
+mean.July.06U<-mean(July.06U)
+
+May.June.06U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.06U
+mean(May.June.06U)
+mean.May.June.06U<-mean(May.June.06U)
+
+JJ.06U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.06U
+mean(JJ.06U)
+mean.JJ.06U<-mean(JJ.06U)
+
+May.July.06U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.06U
+mean(May.July.06U)
+mean.May.July.06U<-mean(May.July.06U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2006<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2006.nc")
+Y<- ncvar_get(v.wind.2006,varid="vwnd")
+
+
+May.06V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.06V
+mean(May.06V)
+mean.May.06V<-mean(May.06V)
+
+June.06V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.06V
+mean(June.06V)
+mean.June.06V<-mean(June.06V)
+
+July.06V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.06V
+mean(July.06V)
+mean.July.06V<-mean(July.06V)
+
+May.June.06V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.06V
+mean(May.June.06V)
+mean.May.June.06V<-mean(May.June.06V)
+
+JJ.06V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.06V
+mean(JJ.06V)
+mean.JJ.06V<-mean(JJ.06V)
+
+May.July.06V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.06V
+mean(May.July.06V)
+mean.May.July.06V<-mean(May.July.06V)
+
+############################################################################################################################
+################################################### 2007 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2007<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2007.nc")
+X <- ncvar_get(u.wind.2007,varid="uwnd")
+
+
+May.07U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.07U
+mean(May.07U)
+mean.May.07U<-mean(May.07U)
+
+June.07U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.07U
+mean(June.07U)
+mean.June.07U<-mean(June.07U)
+
+July.07U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.07U
+mean(July.07U)
+mean.July.07U<-mean(July.07U)
+
+May.June.07U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.07U
+mean(May.June.07U)
+mean.May.June.07U<-mean(May.June.07U)
+
+JJ.07U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.07U
+mean(JJ.07U)
+mean.JJ.07U<-mean(JJ.07U)
+
+May.July.07U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.07U
+mean(May.July.07U)
+mean.May.July.07U<-mean(May.July.07U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2007<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2007.nc")
+Y<- ncvar_get(v.wind.2007,varid="vwnd")
+
+
+May.07V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.07V
+mean(May.07V)
+mean.May.07V<-mean(May.07V)
+
+June.07V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.07V
+mean(June.07V)
+mean.June.07V<-mean(June.07V)
+
+July.07V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.07V
+mean(July.07V)
+mean.July.07V<-mean(July.07V)
+
+May.June.07V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.07V
+mean(May.June.07V)
+mean.May.June.07V<-mean(May.June.07V)
+
+JJ.07V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.07V
+mean(JJ.07V)
+mean.JJ.07V<-mean(JJ.07V)
+
+May.July.07V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.07V
+mean(May.July.07V)
+mean.May.July.07V<-mean(May.July.07V)
+
+################################################### 2008 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2008<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2008.nc")
+X <- ncvar_get(u.wind.2008,varid="uwnd")
+
+
+May.08U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.08U
+mean(May.08U)
+mean.May.08U<-mean(May.08U)
+
+June.08U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.08U
+mean(June.08U)
+mean.June.08U<-mean(June.08U)
+
+July.08U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.08U
+mean(July.08U)
+mean.July.08U<-mean(July.08U)
+
+May.June.08U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.08U
+mean(May.June.08U)
+mean.May.June.08U<-mean(May.June.08U)
+
+JJ.08U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.08U
+mean(JJ.08U)
+mean.JJ.08U<-mean(JJ.08U)
+
+May.July.08U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.08U
+mean(May.July.08U)
+mean.May.July.08U<-mean(May.July.08U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2008<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2008.nc")
+Y<- ncvar_get(v.wind.2008,varid="vwnd")
+
+
+May.08V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.08V
+mean(May.08V)
+mean.May.08V<-mean(May.08V)
+
+June.08V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.08V
+mean(June.08V)
+mean.June.08V<-mean(June.08V)
+
+July.08V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.08V
+mean(July.08V)
+mean.July.08V<-mean(July.08V)
+
+May.June.08V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.08V
+mean(May.June.08V)
+mean.May.June.08V<-mean(May.June.08V)
+
+JJ.08V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.08V
+mean(JJ.08V)
+mean.JJ.08V<-mean(JJ.08V)
+
+May.July.08V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.08V
+mean(May.July.08V)
+mean.May.July.08V<-mean(May.July.08V)
+
+
+################################################### 2009 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2009<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2009.nc")
+X <- ncvar_get(u.wind.2009,varid="uwnd")
+
+
+May.09U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.09U
+mean(May.09U)
+mean.May.09U<-mean(May.09U)
+
+June.09U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.09U
+mean(June.09U)
+mean.June.09U<-mean(June.09U)
+
+July.09U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.09U
+mean(July.09U)
+mean.July.09U<-mean(July.09U)
+
+May.June.09U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.09U
+mean(May.June.09U)
+mean.May.June.09U<-mean(May.June.09U)
+
+JJ.09U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.09U
+mean(JJ.09U)
+mean.JJ.09U<-mean(JJ.09U)
+
+May.July.09U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.09U
+mean(May.July.09U)
+mean.May.July.09U<-mean(May.July.09U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2009<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2009.nc")
+Y<- ncvar_get(v.wind.2009,varid="vwnd")
+
+
+May.09V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.09V
+mean(May.09V)
+mean.May.09V<-mean(May.09V)
+
+June.09V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.09V
+mean(June.09V)
+mean.June.09V<-mean(June.09V)
+
+July.09V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.09V
+mean(July.09V)
+mean.July.09V<-mean(July.09V)
+
+May.June.09V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.09V
+mean(May.June.09V)
+mean.May.June.09V<-mean(May.June.09V)
+
+JJ.09V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.09V
+mean(JJ.09V)
+mean.JJ.09V<-mean(JJ.09V)
+
+May.July.09V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.09V
+mean(May.July.09V)
+mean.May.July.09V<-mean(May.July.09V)
+
+
+################################################### 2010 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2010<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2010.nc")
+X <- ncvar_get(u.wind.2010,varid="uwnd")
+
+
+May.10U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.10U
+mean(May.010U)
+mean.May.10U<-mean(May.10U)
+
+June.10U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.10U
+mean(June.10U)
+mean.June.10U<-mean(June.10U)
+
+July.10U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.10U
+mean(July.10U)
+mean.July.10U<-mean(July.10U)
+
+May.June.10U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.10U
+mean(May.June.10U)
+mean.May.June.10U<-mean(May.June.10U)
+
+JJ.10U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.10U
+mean(JJ.10U)
+mean.JJ.10U<-mean(JJ.10U)
+
+May.July.10U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.10U
+mean(May.July.10U)
+mean.May.July.10U<-mean(May.July.10U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2010<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2010.nc")
+Y<- ncvar_get(v.wind.2010,varid="vwnd")
+
+
+May.10V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.10V
+mean(May.10V)
+mean.May.10V<-mean(May.10V)
+
+June.10V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.10V
+mean(June.10V)
+mean.June.10V<-mean(June.10V)
+
+July.10V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.10V
+mean(July.10V)
+mean.July.10V<-mean(July.10V)
+
+May.June.10V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.10V
+mean(May.June.10V)
+mean.May.June.10V<-mean(May.June.10V)
+
+JJ.10V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.10V
+mean(JJ.10V)
+mean.JJ.10V<-mean(JJ.10V)
+
+May.July.10V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.10V
+mean(May.July.10V)
+mean.May.July.10V<-mean(May.July.10V)
+
+################################################### 2011 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2011<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2011.nc")
+X <- ncvar_get(u.wind.2011,varid="uwnd")
+
+
+May.11U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.11U
+mean(May.11U)
+mean.May.11U<-mean(May.11U)
+
+June.11U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.11U
+mean(June.11U)
+mean.June.11U<-mean(June.11U)
+
+July.11U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.11U
+mean(July.11U)
+mean.July.11U<-mean(July.11U)
+
+May.June.11U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.11U
+mean(May.June.11U)
+mean.May.June.11U<-mean(May.June.11U)
+
+JJ.11U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.11U
+mean(JJ.11U)
+mean.JJ.11U<-mean(JJ.11U)
+
+May.July.11U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.11U
+mean(May.July.11U)
+mean.May.July.11U<-mean(May.July.11U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2011<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2011.nc")
+Y<- ncvar_get(v.wind.2011,varid="vwnd")
+
+
+May.11V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.11V
+mean(May.11V)
+mean.May.11V<-mean(May.11V)
+
+June.11V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.11V
+mean(June.11V)
+mean.June.11V<-mean(June.11V)
+
+July.11V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.11V
+mean(July.11V)
+mean.July.11V<-mean(July.11V)
+
+May.June.11V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.11V
+mean(May.June.11V)
+mean.May.June.11V<-mean(May.June.11V)
+
+JJ.11V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.11V
+mean(JJ.11V)
+mean.JJ.11V<-mean(JJ.11V)
+
+May.July.11V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.11V
+mean(May.July.11V)
+mean.May.July.11V<-mean(May.July.11V)
+
+################################################### 2012 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2012<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2012.nc")
+X <- ncvar_get(u.wind.2012,varid="uwnd")
+
+
+May.12U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.12U
+mean(May.12U)
+mean.May.12U<-mean(May.12U)
+
+June.12U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.12U
+mean(June.12U)
+mean.June.12U<-mean(June.12U)
+
+July.12U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.12U
+mean(July.12U)
+mean.July.12U<-mean(July.12U)
+
+May.June.12U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.12U
+mean(May.June.12U)
+mean.May.June.12U<-mean(May.June.12U)
+
+JJ.12U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.12U
+mean(JJ.12U)
+mean.JJ.12U<-mean(JJ.12U)
+
+May.July.12U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.12U
+mean(May.July.12U)
+mean.May.July.12U<-mean(May.July.12U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2012<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2012.nc")
+Y<- ncvar_get(v.wind.2012,varid="vwnd")
+
+
+May.12V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.12V
+mean(May.12V)
+mean.May.12V<-mean(May.12V)
+
+June.12V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.12V
+mean(June.12V)
+mean.June.12V<-mean(June.12V)
+
+July.12V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.12V
+mean(July.12V)
+mean.July.12V<-mean(July.12V)
+
+May.June.12V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.12V
+mean(May.June.12V)
+mean.May.June.12V<-mean(May.June.12V)
+
+JJ.12V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.12V
+mean(JJ.12V)
+mean.JJ.12V<-mean(JJ.12V)
+
+May.July.12V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.12V
+mean(May.July.12V)
+mean.May.July.12V<-mean(May.July.12V)
+
+################################################### 2013 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2013<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2013.nc")
+X <- ncvar_get(u.wind.2013,varid="uwnd")
+
+
+May.13U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.13U
+mean(May.13U)
+mean.May.13U<-mean(May.13U)
+
+June.13U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.13U
+mean(June.13U)
+mean.June.13U<-mean(June.13U)
+
+July.13U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.13U
+mean(July.13U)
+mean.July.13U<-mean(July.13U)
+
+May.June.13U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.13U
+mean(May.June.13U)
+mean.May.June.13U<-mean(May.June.13U)
+
+JJ.13U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.13U
+mean(JJ.13U)
+mean.JJ.13U<-mean(JJ.13U)
+
+May.July.13U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.13U
+mean(May.July.13U)
+mean.May.July.13U<-mean(May.July.13U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2013<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2013.nc")
+Y<- ncvar_get(v.wind.2013,varid="vwnd")
+
+
+May.13V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.13V
+mean(May.13V)
+mean.May.13V<-mean(May.13V)
+
+June.13V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.13V
+mean(June.13V)
+mean.June.13V<-mean(June.13V)
+
+July.13V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.13V
+mean(July.13V)
+mean.July.13V<-mean(July.13V)
+
+May.June.13V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.13V
+mean(May.June.13V)
+mean.May.June.13V<-mean(May.June.13V)
+
+JJ.13V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.13V
+mean(JJ.13V)
+mean.JJ.13V<-mean(JJ.13V)
+
+May.July.13V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.13V
+mean(May.July.13V)
+mean.May.July.13V<-mean(May.July.13V)
+
+
+################################################### 2014 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2014<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2014.nc")
+X <- ncvar_get(u.wind.2014,varid="uwnd")
+
+
+May.14U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.14U
+mean(May.14U)
+mean.May.14U<-mean(May.14U)
+
+June.14U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.14U
+mean(June.14U)
+mean.June.14U<-mean(June.14U)
+
+July.14U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.14U
+mean(July.14U)
+mean.July.14U<-mean(July.14U)
+
+May.June.14U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.14U
+mean(May.June.14U)
+mean.May.June.14U<-mean(May.June.14U)
+
+JJ.14U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.14U
+mean(JJ.14U)
+mean.JJ.14U<-mean(JJ.14U)
+
+May.July.14U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.14U
+mean(May.July.14U)
+mean.May.July.14U<-mean(May.July.14U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2014<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2014.nc")
+Y<- ncvar_get(v.wind.2014,varid="vwnd")
+
+
+May.14V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.14V
+mean(May.14V)
+mean.May.14V<-mean(May.14V)
+
+June.14V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.14V
+mean(June.14V)
+mean.June.14V<-mean(June.14V)
+
+July.14V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.14V
+mean(July.14V)
+mean.July.14V<-mean(July.14V)
+
+May.June.14V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.14V
+mean(May.June.14V)
+mean.May.June.14V<-mean(May.June.14V)
+
+JJ.14V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.14V
+mean(JJ.14V)
+mean.JJ.14V<-mean(JJ.14V)
+
+May.July.14V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.14V
+mean(May.July.14V)
+mean.May.July.14V<-mean(May.July.14V)
+
+
+################################################### 2015 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2015<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2015.nc")
+X <- ncvar_get(u.wind.2015,varid="uwnd")
+
+
+May.15U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.15U
+mean(May.15U)
+mean.May.15U<-mean(May.15U)
+
+June.15U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.15U
+mean(June.15U)
+mean.June.15U<-mean(June.15U)
+
+July.15U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.15U
+mean(July.15U)
+mean.July.15U<-mean(July.15U)
+
+May.June.15U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.15U
+mean(May.June.15U)
+mean.May.June.15U<-mean(May.June.15U)
+
+JJ.15U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.15U
+mean(JJ.15U)
+mean.JJ.15U<-mean(JJ.15U)
+
+May.July.15U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.15U
+mean(May.July.15U)
+mean.May.July.15U<-mean(May.July.15U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2015<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2015.nc")
+Y<- ncvar_get(v.wind.2015,varid="vwnd")
+
+
+May.15V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.15V
+mean(May.15V)
+mean.May.15V<-mean(May.15V)
+
+June.15V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.15V
+mean(June.15V)
+mean.June.15V<-mean(June.15V)
+
+July.15V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.15V
+mean(July.15V)
+mean.July.15V<-mean(July.15V)
+
+May.June.15V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.15V
+mean(May.June.15V)
+mean.May.June.15V<-mean(May.June.15V)
+
+JJ.15V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.15V
+mean(JJ.15V)
+mean.JJ.15V<-mean(JJ.15V)
+
+May.July.15V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.15V
+mean(May.July.15V)
+mean.May.July.15V<-mean(May.July.15V)
+
+################################################### 2016 ###################################################################
+################################################### Extract u-component and calculate means by time ########################
+
+u.wind.2016<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/u/uwnd.10m.gauss.2016.nc")
+X <- ncvar_get(u.wind.2016,varid="uwnd")
+
+
+May.16U<-X[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.16U
+mean(May.16U)
+mean.May.16U<-mean(May.16U)
+
+June.16U<-X[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.16U
+mean(June.16U)
+mean.June.16U<-mean(June.16U)
+
+July.16U<-X[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.16U
+mean(July.16U)
+mean.July.16U<-mean(July.16U)
+
+May.June.16U<-X[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.16U
+mean(May.June.16U)
+mean.May.June.16U<-mean(May.June.16U)
+
+JJ.16U<-X[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.16U
+mean(JJ.16U)
+mean.JJ.16U<-mean(JJ.16U)
+
+May.July.16U <- X[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.16U
+mean(May.July.16U)
+mean.May.July.16U<-mean(May.July.16U)
+
+
+
+#####################################################################################################################################
+###############################################Repeat above for v-component #########################################################
+
+v.wind.2016<-nc_open("C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA/wind_data/v/vwnd.10m.gauss.2016.nc")
+Y<- ncvar_get(v.wind.2016,varid="vwnd")
+
+
+May.16V<-Y[101:108,17:18, 135:150]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-May 30
+May.16V
+mean(May.16V)
+mean.May.16V<-mean(May.16V)
+
+June.16V<-Y[101:108,17:18, 151:180]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-June 30
+June.16V
+mean(June.16V)
+mean.June.16V<-mean(June.16V)
+
+July.16V<-Y[101:108,17:18, 181:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, July 1-July 15
+July.16V
+mean(July.16V)
+mean.July.16V<-mean(July.16V)
+
+May.June.16V<-Y[101:108,17:18, 135:180]		 # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-June 30
+May.June.16V
+mean(May.June.16V)
+mean.May.June.16V<-mean(May.June.16V)
+
+JJ.16V<-Y[101:108,17:18, 151:195]			 # Extracts data for 56.189-58.093N, 161.250-172.5W, June 1-July 15
+JJ.16V
+mean(JJ.16V)
+mean.JJ.16V<-mean(JJ.16V)
+
+May.July.16V <- Y[101:108,17:18, 135:195]	       # Extracts data for 56.189-58.093N, 161.250-172.5W, May 15-July 15
+May.July.16V
+mean(May.July.16V)
+mean.May.July.16V<-mean(May.July.16V)
+
+############################################################################################################################
+############################################################################################################################
+#############################################Define radian measurements as angles###########################################
+#0<-0
+#30<-pi/6
+#45<-pi/4
+#60<-pi/3
+#90<-pi/2
+#120<-2/3pi
+#150<-5/6pi
+#180<-pi
+#210<-7/6pi
+#225<-5/4pi
+#240<-4/3pi
+#270<-3/2pi
+#300<-5/3pi
+#315<-7/4pi
+#330<-11/6pi
+#360<-2pi=0
+###########################################################################################################################
+############################################# generate histograms to check distribution ###################################
+
+hist(May.July.78U)
+hist(May.July.78V)
+
+hist(May.July.79U)
+hist(May.July.79V)
+
+hist(May.July.80U)
+hist(May.July.80V)
+
+hist(May.July.81U)
+hist(May.July.81V)
+
+hist(May.July.82U)
+hist(May.July.82V)
+
+hist(May.July.83U)
+hist(May.July.83V)
+
+hist(May.July.84U)
+hist(May.July.84V)
+
+hist(May.July.85U)
+hist(May.July.85V)
+
+hist(May.July.86U)
+hist(May.July.86V)
+
+hist(May.July.87U)
+hist(May.July.87V)
+
+hist(May.July.88U)
+hist(May.July.88V)
+
+hist(May.July.89U)
+hist(May.July.89V)
+
+hist(May.July.90U)
+hist(May.July.90V)
+
+hist(May.July.91U)
+hist(May.July.91V)
+
+hist(May.July.92U)
+hist(May.July.92V)
+
+hist(May.July.93U)
+hist(May.July.93V)
+
+hist(May.July.94U)
+hist(May.July.94V)
+
+
+###########################################################################################################################
+################################################ Data vectors #############################################################
+################################################# U component #############################################################
+
+May.U<-c(mean.May.78U,mean.May.79U,mean.May.80U,mean.May.81U,mean.May.82U,mean.May.83U,mean.May.84U,mean.May.85U,mean.May.86U,mean.May.87U,
+mean.May.88U,mean.May.89U,mean.May.90U,mean.May.91U,mean.May.92U,mean.May.93U,mean.May.94U,mean.May.95U,mean.May.96U,mean.May.97U,mean.May.98U,
+mean.May.99U,mean.May.00U,mean.May.01U,mean.May.02U,mean.May.03U,mean.May.04U,mean.May.05U,mean.May.06U,mean.May.07U,mean.May.08U,mean.May.09U,
+mean.May.10U,mean.May.11U,mean.May.12U,mean.May.13U,mean.May.14U,mean.May.15U,mean.May.16U)
+
+June.U<-c(mean.June.78U,mean.June.79U,mean.June.80U,mean.June.81U,mean.June.82U,mean.June.83U,mean.June.84U,mean.June.85U,mean.June.86U,mean.June.87U,
+mean.June.88U,mean.June.89U,mean.June.90U,mean.June.91U,mean.June.92U,mean.June.93U,mean.June.94U,mean.June.95U,mean.June.96U,mean.June.97U,mean.June.98U,
+mean.June.99U,mean.June.00U,mean.June.01U,mean.June.02U,mean.June.03U,mean.June.04U,mean.June.05U,mean.June.06U,mean.June.07U,mean.June.08U,mean.June.09U,
+mean.June.10U,mean.June.11U,mean.June.12U,mean.June.13U,mean.June.14U,mean.June.15U,mean.June.16U)
+
+July.U<-c(mean.July.78U,mean.July.79U,mean.July.80U,mean.July.81U,mean.July.82U,mean.July.83U,mean.July.84U,mean.July.85U,mean.July.86U,mean.July.87U,
+mean.July.88U,mean.July.89U,mean.July.90U,mean.July.91U,mean.July.92U,mean.July.93U,mean.July.94U,mean.July.95U,mean.July.96U,mean.July.97U,mean.July.98U,
+mean.July.99U,mean.July.00U,mean.July.01U,mean.July.02U,mean.July.03U,mean.July.04U,mean.July.05U,mean.July.06U,mean.July.07U,mean.July.08U,
+mean.July.09U,mean.July.10U,mean.July.11U,mean.July.12U,mean.July.13U,mean.July.14U,mean.July.15U,mean.July.16U)
+
+May.June.U<-c(mean.May.June.78U,mean.May.June.79U,mean.May.June.80U,mean.May.June.81U,mean.May.June.82U,mean.May.June.83U,mean.May.June.84U,mean.May.June.85U,
+mean.May.June.86U,mean.May.June.87U,mean.May.June.88U,mean.May.June.89U,mean.May.June.90U,mean.May.June.91U,mean.May.June.92U,mean.May.June.93U,mean.May.June.94U,
+mean.May.June.95U,mean.May.June.96U,mean.May.June.97U,mean.May.June.98U,mean.May.June.99U,mean.May.June.00U,mean.May.June.01U,mean.May.June.02U,mean.May.June.03U,
+mean.May.June.04U,mean.May.June.05U,mean.May.June.06U,mean.May.June.07U,mean.May.June.08U,mean.May.June.09U,mean.May.June.10U,mean.May.June.11U,mean.May.June.12U,mean.May.June.13U,
+mean.May.June.14U,mean.May.June.15U,mean.May.June.16U)
+
+June.July.U<-c(mean.JJ.78U,mean.JJ.79U,mean.JJ.80U,mean.JJ.81U,mean.JJ.82U,mean.JJ.83U,mean.JJ.84U,mean.JJ.85U,mean.JJ.86U,mean.JJ.87U,mean.JJ.88U,mean.JJ.89U,
+mean.JJ.90U,mean.JJ.91U,mean.JJ.92U,mean.JJ.93U,mean.JJ.94U,mean.JJ.95U,mean.JJ.96U,mean.JJ.97U,mean.JJ.98U,mean.JJ.99U,mean.JJ.00U,mean.JJ.01U,mean.JJ.02U,
+mean.JJ.03U,mean.JJ.04U,mean.JJ.05U,mean.JJ.06U,mean.JJ.07U,mean.JJ.08U,mean.JJ.09U,mean.JJ.10U,mean.JJ.11U,mean.JJ.12U,mean.JJ.13U,mean.JJ.14U,mean.JJ.15U,mean.JJ.16U)
+
+May.July.U<-c(mean.May.July.78U,mean.May.July.79U,mean.May.July.80U,mean.May.July.81U,mean.May.July.82U,mean.May.July.83U,mean.May.July.84U,mean.May.July.85U,
+mean.May.July.86U,mean.May.July.87U,mean.May.July.88U,mean.May.July.89U,mean.May.July.90U,mean.May.July.91U,mean.May.July.92U,mean.May.July.93U,mean.May.July.94U,
+mean.May.July.95U,mean.May.July.96U,mean.May.July.97U,mean.May.July.98U,mean.May.July.99U,mean.May.July.00U,mean.May.July.01U,mean.May.July.02U,mean.May.July.03U,
+mean.May.July.04U,mean.May.July.05U,mean.May.July.06U,mean.May.July.07U,mean.May.July.08U,mean.May.July.09U,mean.May.July.10U,mean.May.July.11U,mean.May.July.12U,mean.May.July.13U,
+mean.May.July.14U,mean.May.July.15U,mean.May.July.16U)
+
+##########################################################################################################################
+############################################### V component ##############################################################
+
+May.V<- c(mean.May.78V,mean.May.79V,mean.May.80V,mean.May.81V,mean.May.82V,mean.May.83V,mean.May.84V,mean.May.85V,mean.May.86V,mean.May.87V,
+mean.May.88V,mean.May.89V,mean.May.90V,mean.May.91V,mean.May.92V,mean.May.93V,mean.May.94V,mean.May.95V,mean.May.96V,mean.May.97V,mean.May.98V,
+mean.May.99V,mean.May.00V,mean.May.01V,mean.May.02V,mean.May.03V,mean.May.04V,mean.May.05V,mean.May.06V,mean.May.07V,mean.May.08V,
+mean.May.09V,mean.May.10V,mean.May.11V,mean.May.12V,mean.May.13V,mean.May.14V,mean.May.15V,mean.May.16V)
+
+June.V<-c(mean.June.78V,mean.June.79V,mean.June.80V,mean.June.81V,mean.June.82V,mean.June.83V,mean.June.84V,mean.June.85V,mean.June.86V,mean.June.87V,
+mean.June.88V,mean.June.89V,mean.June.90V,mean.June.91V,mean.June.92V,mean.June.93V,mean.June.94V,mean.June.95V,mean.June.96V,mean.June.97V,mean.June.98V,
+mean.June.99V,mean.June.00V,mean.June.01V,mean.June.02V,mean.June.03V,mean.June.04V,mean.June.05V,mean.June.06V,mean.June.07V,mean.June.08V,
+mean.June.09V,mean.June.10V,mean.June.11V,mean.June.12V,mean.June.13V,mean.June.14V,mean.June.15V,mean.June.16V)
+
+July.V<-c(mean.July.78V,mean.July.79V,mean.July.80V,mean.July.81V,mean.July.82V,mean.July.83V,mean.July.84V,mean.July.85V,mean.July.86V,mean.July.87V,
+mean.July.88V,mean.July.89V,mean.July.90V,mean.July.91V,mean.July.92V,mean.July.93V,mean.July.94V,mean.July.95V,mean.July.96V,mean.July.97V,mean.July.98V,
+mean.July.99V,mean.July.00V,mean.July.01V,mean.July.02V,mean.July.03V,mean.July.04V,mean.July.05V,mean.July.06V,mean.July.07V,mean.July.08V,
+mean.July.09V,mean.July.10V,mean.July.11V,mean.July.12V,mean.July.13V,mean.July.14V,mean.July.15V,mean.July.16V)
+
+May.June.V<-c(mean.May.June.78V,mean.May.June.79V,mean.May.June.80V,mean.May.June.81V,mean.May.June.82V,mean.May.June.83V,mean.May.June.84V,mean.May.June.85V,
+mean.May.June.86V,mean.May.June.87V,mean.May.June.88V,mean.May.June.89V,mean.May.June.90V,mean.May.June.91V,mean.May.June.92V,mean.May.June.93V,mean.May.June.94V,
+mean.May.June.95V,mean.May.June.96V,mean.May.June.97V,mean.May.June.98V,mean.May.June.99V,mean.May.June.00V,mean.May.June.01V,mean.May.June.02V,mean.May.June.03V,
+mean.May.June.04V,mean.May.June.05V,mean.May.June.06V,mean.May.June.07V,mean.May.June.08V,mean.May.June.09V,mean.May.June.10V,mean.May.June.11V,mean.May.June.12V,
+mean.May.June.13V,mean.May.June.14V,mean.May.June.15V,mean.May.June.16V)
+
+June.July.V<-c(mean.JJ.78V,mean.JJ.79V,mean.JJ.80V,mean.JJ.81V,mean.JJ.82V,mean.JJ.83V,mean.JJ.84V,mean.JJ.85V,mean.JJ.86V,mean.JJ.87V,mean.JJ.88V,mean.JJ.89V,
+mean.JJ.90V,mean.JJ.91V,mean.JJ.92V,mean.JJ.93V,mean.JJ.94V,mean.JJ.95V,mean.JJ.96V,mean.JJ.97V,mean.JJ.98V,mean.JJ.99V,mean.JJ.00V,mean.JJ.01V,mean.JJ.02V,
+mean.JJ.03V,mean.JJ.04V,mean.JJ.05V,mean.JJ.06V,mean.JJ.07V,mean.JJ.08V,mean.JJ.09V,mean.JJ.10V,mean.JJ.11V,mean.JJ.12V,mean.JJ.13V,mean.JJ.14V,mean.JJ.15V,mean.JJ.16V)
+
+May.July.V<-c(mean.May.July.78V,mean.May.July.79V,mean.May.July.80V,mean.May.July.81V,mean.May.July.82V,mean.May.July.83V,mean.May.July.84V,mean.May.July.85V,
+mean.May.July.86V,mean.May.July.87V,mean.May.July.88V,mean.May.July.89V,mean.May.July.90V,mean.May.July.91V,mean.May.July.92V,mean.May.July.93V,mean.May.July.94V,
+mean.May.July.95V,mean.May.July.96V,mean.May.July.97V,mean.May.July.98V,mean.May.July.99V,mean.May.July.00V,mean.May.July.01V,mean.May.July.02V,mean.May.July.03V,
+mean.May.July.04V,mean.May.July.05V,mean.May.July.06V,mean.May.July.07V,mean.May.July.08V,mean.May.July.09V,mean.May.July.10V,mean.May.July.11V,mean.May.July.12V,
+mean.May.July.13V,mean.May.July.14V,mean.May.July.15V,mean.May.July.16V)
+
+
+###########################################################################################################################
+################################################ Theta vector for Rosenkranz formula#######################################
+
+theta.vector<-c(5*pi/12,4*pi/12,3*pi/12,2*pi/12,pi/12,-pi/12,-2*pi/12,-3*pi/12,-4*pi/12,-5*pi/12)
+theta.vector
+
+for(i in theta.vector[1:10]){
+D=i*180/pi
+print(D)
+}
+
+###########################################################################################################################
+############################################### Employ Rosenkranz formula to calculate directional components #############
+################################################### directional vector = x*cos(theta)+y*sin(theta)#########################
+
+############################### 90 degree component ##########################################
+for(i in May.U){
+D.90.May=May.U * cos(6*pi/12)+ May.V * sin(6*pi/12)
+}
+
+for(i in June.U){
+D.90.June=June.U * cos(6*pi/12)+ June.V * sin(6*pi/12)
+}
+
+for(i in July.U){
+D.90.July=July.U * cos(6*pi/12)+ July.V * sin(6*pi/12)
+}
+
+for(i in May.June.U){
+D.90.May.June=May.June.U * cos(6*pi/12)+ May.June.V * sin(6*pi/12)
+}
+
+for(i in June.July.U){
+D.90.JJ=June.July.U * cos(6*pi/12)+ June.July.V * sin(6*pi/12)
+}
+
+for(i in May.July.U){
+D.90.MJ=May.July.U * cos(6*pi/12)+ May.July.V * sin(6*pi/12)
+}
+############################### 75 degree component ##########################################
+
+for(i in May.U){
+D.75.May=May.U * cos(5*pi/12)+ May.V * sin(5*pi/12)
+}
+
+for(i in June.U){
+D.75.June=June.U * cos(5*pi/12)+ June.V * sin(5*pi/12)
+}
+
+for(i in July.U){
+D.75.July=July.U * cos(5*pi/12)+ July.V * sin(5*pi/12)
+}
+
+for(i in May.June.U){
+D.75.May.June=May.June.U * cos(5*pi/12)+ May.June.V * sin(5*pi/12)
+}
+
+for(i in June.July.U){
+D.75.JJ=June.July.U * cos(5*pi/12)+ June.July.V * sin(5*pi/12)
+}
+
+for(i in May.July.U){
+D.75.MJ=May.July.U * cos(5*pi/12)+ May.July.V * sin(5*pi/12)
+}
+
+############################### 60 degree component #########################################
+
+
+for(i in May.U){
+D.60.May=May.U * cos(4*pi/12)+ May.V * sin(4*pi/12)
+}
+
+for(i in June.U){
+D.60.June=June.U * cos(4*pi/12)+ June.V * sin(4*pi/12)
+}
+
+for(i in July.U){
+D.60.July=July.U * cos(4*pi/12)+ July.V * sin(4*pi/12)
+}
+
+for(i in May.June.U){
+D.60.May.June=May.June.U * cos(4*pi/12)+ May.June.V * sin(4*pi/12)
+}
+
+for(i in June.July.U){
+D.60.JJ=June.July.U * cos(4*pi/12)+ June.July.V * sin(4*pi/12)
+}
+
+for(i in May.July.U){
+D.60.MJ=May.July.U * cos(4*pi/12)+ May.July.V * sin(4*pi/12)
+}
+
+
+############################### 45 degree component ###########################################
+
+
+for(i in May.U){
+D.45.May=May.U * cos(3*pi/12)+ May.V * sin(3*pi/12)
+}
+
+for(i in June.U){
+D.45.June=June.U * cos(3*pi/12)+ June.V * sin(3*pi/12)
+}
+
+for(i in July.U){
+D.45.July=July.U * cos(3*pi/12)+ July.V * sin(3*pi/12)
+}
+
+for(i in May.June.U){
+D.45.May.June=May.June.U * cos(3*pi/12)+ May.June.V * sin(3*pi/12)
+}
+
+for(i in June.July.U){
+D.45.JJ=June.July.U * cos(3*pi/12)+ June.July.V * sin(3*pi/12)
+}
+
+for(i in May.July.U){
+D.45.MJ=May.July.U * cos(3*pi/12)+ May.July.V * sin(3*pi/12)
+}
+
+
+############################# 30 degree component ###############################################
+
+for(i in May.U){
+D.30.May=May.U * cos(2*pi/12)+ May.V * sin(2*pi/12)
+}
+
+for(i in June.U){
+D.30.June=June.U * cos(2*pi/12)+ June.V * sin(2*pi/12)
+}
+
+for(i in July.U){
+D.30.July=July.U * cos(2*pi/12)+ July.V * sin(2*pi/12)
+}
+
+for(i in May.June.U){
+D.30.May.June=May.June.U * cos(2*pi/12)+ May.June.V * sin(2*pi/12)
+}
+
+for(i in June.July.U){
+D.30.JJ=June.July.U * cos(2*pi/12)+ June.July.V * sin(2*pi/12)
+}
+
+for(i in May.July.U){
+D.30.MJ=May.July.U * cos(2*pi/12)+ May.July.V * sin(2*pi/12)
+}
+
+
+
+############################# 15 degree component ###############################################
+
+for(i in May.U){
+D.15.May=May.U * cos(pi/12)+ May.V * sin(pi/12)
+}
+
+for(i in June.U){
+D.15.June=June.U * cos(pi/12)+ June.V * sin(pi/12)
+}
+
+for(i in July.U){
+D.15.July=July.U * cos(pi/12)+ July.V * sin(pi/12)
+}
+
+for(i in May.June.U){
+D.15.May.June=May.June.U * cos(pi/12)+ May.June.V * sin(pi/12)
+}
+
+for(i in June.July.U){
+D.15.JJ=June.July.U * cos(pi/12)+ June.July.V * sin(pi/12)
+}
+
+for(i in May.July.U){
+D.15.MJ=May.July.U * cos(pi/12)+ May.July.V * sin(pi/12)
+}
+
+
+############################# 0 degree component #################################################
+for(i in May.U){
+D.0.May=May.U * cos(0*pi/12)+ May.V * sin(0*pi/12)
+}
+
+for(i in June.U){
+D.0.June=June.U * cos(0*pi/12)+ June.V * sin(0*pi/12)
+}
+
+for(i in July.U){
+D.0.July=July.U * cos(0*pi/12)+ July.V * sin(0*pi/12)
+}
+
+for(i in May.June.U){
+D.0.May.June=May.June.U * cos(0*pi/12)+ May.June.V * sin(0*pi/12)
+}
+
+for(i in June.July.U){
+D.0.JJ=June.July.U * cos(0*pi/12)+ June.July.V * sin(0*pi/12)
+}
+
+for(i in May.July.U){
+D.0.MJ=May.July.U * cos(0*pi/12)+ May.July.V * sin(0*pi/12)
+}
+
+
+############################# -15 degree component ###############################################
+
+for(i in May.U){
+D.neg.15.May=May.U * cos(-pi/12)+ May.V * sin(-pi/12)
+}
+
+for(i in June.U){
+D.neg.15.June=June.U * cos(-pi/12)+ June.V * sin(-pi/12)
+}
+
+for(i in July.U){
+D.neg.15.July=July.U * cos(-pi/12)+ July.V * sin(-pi/12)
+}
+
+for(i in May.June.U){
+D.neg.15.May.June=May.June.U * cos(-pi/12)+ May.June.V * sin(-pi/12)
+}
+
+for(i in June.July.U){
+D.neg.15.JJ=June.July.U * cos(-pi/12)+ June.July.V * sin(-pi/12)
+}
+
+for(i in May.July.U){
+D.neg.15.MJ=May.July.U * cos(-pi/12)+ May.July.V * sin(-pi/12)
+}
+
+
+############################# -30 degree component ###############################################
+
+for(i in May.U){
+D.neg.30.May=May.U * cos(-2*pi/12)+ May.V * sin(-2*pi/12)
+}
+
+for(i in June.U){
+D.neg.30.June=June.U * cos(-2*pi/12)+ June.V * sin(-2*pi/12)
+}
+
+for(i in July.U){
+D.neg.30.July=July.U * cos(-2*pi/12)+ July.V * sin(-2*pi/12)
+}
+
+for(i in May.June.U){
+D.neg.30.May.June=May.June.U * cos(-2*pi/12)+ May.June.V * sin(-2*pi/12)
+}
+
+for(i in June.July.U){
+D.neg.30.JJ=June.July.U * cos(-2*pi/12)+ June.July.V * sin(-2*pi/12)
+}
+
+for(i in May.July.U){
+D.neg.30.MJ=May.July.U * cos(-2*pi/12)+ May.July.V * sin(-2*pi/12)
+}
+
+
+############################### -45 degree component ###########################################
+
+
+for(i in May.U){
+D.neg.45.May=May.U * cos(-3*pi/12)+ May.V * sin(-3*pi/12)
+}
+
+for(i in June.U){
+D.neg.45.June=June.U * cos(-3*pi/12)+ June.V * sin(-3*pi/12)
+}
+
+for(i in July.U){
+D.neg.45.July=July.U * cos(-3*pi/12)+ July.V * sin(-3*pi/12)
+}
+
+for(i in May.June.U){
+D.neg.45.May.June=May.June.U * cos(-3*pi/12)+ May.June.V * sin(-3*pi/12)
+}
+
+for(i in June.July.U){
+D.neg.45.JJ=June.July.U * cos(-3*pi/12)+ June.July.V * sin(-3*pi/12)
+}
+
+for(i in May.July.U){
+D.neg.45.MJ=May.July.U * cos(-3*pi/12)+ May.July.V * sin(-3*pi/12)
+}
+
+
+############################### -60 degree component #########################################
+
+
+for(i in May.U){
+D.neg.60.May=May.U * cos(-4*pi/12)+ May.V * sin(-4*pi/12)
+}
+
+for(i in June.U){
+D.neg.60.June=June.U * cos(-4*pi/12)+ June.V * sin(-4*pi/12)
+}
+
+for(i in July.U){
+D.neg.60.July=July.U * cos(-4*pi/12)+ July.V * sin(-4*pi/12)
+}
+
+for(i in May.June.U){
+D.neg.60.May.June=May.June.U * cos(-4*pi/12)+ May.June.V * sin(-4*pi/12)
+}
+
+for(i in June.July.U){
+D.neg.60.JJ=June.July.U * cos(-4*pi/12)+ June.July.V * sin(-4*pi/12)
+}
+
+for(i in May.July.U){
+D.neg.60.MJ=May.July.U * cos(-4*pi/12)+ May.July.V * sin(-4*pi/12)
+}
+
+############################### -75 degree component ##########################################
+
+for(i in May.U){
+D.neg.75.May=May.U * cos(-5*pi/12)+ May.V * sin(-5*pi/12)
+}
+
+for(i in June.U){
+D.neg.75.June=June.U * cos(-5*pi/12)+ June.V * sin(-5*pi/12)
+}
+
+for(i in July.U){
+D.neg.75.July=July.U * cos(-5*pi/12)+ July.V * sin(-5*pi/12)
+}
+
+for(i in May.June.U){
+D.neg.75.May.June=May.June.U * cos(-5*pi/12)+ May.June.V * sin(-5*pi/12)
+}
+
+for(i in June.July.U){
+D.neg.75.JJ=June.July.U * cos(-5*pi/12)+ June.July.V * sin(-5*pi/12)
+}
+
+for(i in May.July.U){
+D.neg.75.MJ=May.July.U * cos(-5*pi/12)+ May.July.V * sin(-5*pi/12)
+}
+
+
+################################ -90 degree component #########################################
+for(i in May.U){
+D.neg.90.May=May.U * cos(-6*pi/12)+ May.V * sin(-6*pi/12)
+}
+
+for(i in June.U){
+D.neg.90.June=June.U * cos(-6*pi/12)+ June.V * sin(-6*pi/12)
+}
+
+for(i in July.U){
+D.neg.90.July=July.U * cos(-6*pi/12)+ July.V * sin(-6*pi/12)
+}
+
+for(i in May.June.U){
+D.neg.90.May.June=May.June.U * cos(-6*pi/12)+ May.June.V * sin(-6*pi/12)
+}
+
+for(i in June.July.U){
+D.neg.90.JJ=June.July.U * cos(-6*pi/12)+ June.July.V * sin(-6*pi/12)
+}
+
+for(i in May.July.U){
+D.neg.90.MJ=May.July.U * cos(-6*pi/12)+ May.July.V * sin(-6*pi/12)
+}
+
+
+###############################################################################################################
+########################################### output directional component time series ##########################
+year<-c(1978:2016)
+
+wind.dat<-cbind(year,D.90.May,D.90.June,D.90.July,D.90.May.June,D.90.JJ,D.90.MJ,
+D.75.May,D.75.June,D.75.July,D.75.May.June,D.75.JJ,D.75.MJ,
+D.60.May,D.60.June,D.60.July,D.60.May.June,D.60.JJ,D.60.MJ,
+D.45.May,D.45.June,D.45.July,D.45.May.June,D.45.JJ,D.45.MJ,
+D.30.May,D.30.June,D.30.July,D.30.May.June,D.30.JJ,D.30.MJ,
+D.15.May,D.15.June,D.15.July,D.15.May.June,D.15.JJ,D.15.MJ,
+D.0.May,D.0.June,D.0.July,D.0.May.June,D.0.JJ,D.0.MJ,
+D.neg.15.May,D.neg.15.June,D.neg.15.July,D.neg.15.May.June,D.neg.15.JJ,D.neg.15.MJ,
+D.neg.30.May,D.neg.30.June,D.neg.30.July,D.neg.30.May.June,D.neg.30.JJ,D.neg.30.MJ,
+D.neg.45.May,D.neg.45.June,D.neg.45.July,D.neg.45.May.June,D.neg.45.JJ,D.neg.45.MJ,
+D.neg.60.May,D.neg.60.June,D.neg.60.July,D.neg.60.May.June,D.neg.60.JJ,D.neg.60.MJ,
+D.neg.75.May,D.neg.75.June,D.neg.75.July,D.neg.75.May.June,D.neg.75.JJ,D.neg.75.MJ,
+D.neg.90.May,D.neg.90.June,D.neg.90.July,D.neg.90.May.June,D.neg.90.JJ,D.neg.90.MJ)
+
+setwd('C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA')
+write.csv(wind.dat,"wind_vector_data.csv")
+###############################################################################################################
+########################################### generate editted series ###############################################
+
+D.90.May.ed<-D.90.May[-5]
+D.90.June.ed<-D.90.June[-5]
+D.90.July.ed<-D.90.July[-5]
+D.90.May.June.ed<-D.90.May.June[-5]
+D.90.JJ.ed<-D.90.JJ[-5]
+D.90.MJ.ed<-D.90.MJ[-5]
+
+D.75.May.ed<-D.75.May[-5]
+D.75.June.ed<-D.75.June[-5]
+D.75.July.ed<-D.75.July[-5]
+D.75.May.June.ed<-D.75.May.June[-5]
+D.75.JJ.ed<-D.75.JJ[-5]
+D.75.MJ.ed<-D.75.MJ[-5]
+
+
+D.60.May.ed<-D.60.May[-5]
+D.60.June.ed<-D.60.June[-5]
+D.60.July.ed<-D.60.July[-5]
+D.60.May.June.ed<-D.60.May.June[-5]
+D.60.JJ.ed<-D.60.JJ[-5]
+D.60.MJ.ed<-D.60.MJ[-5]
+
+D.45.May.ed<-D.45.May[-5]
+D.45.June.ed<-D.45.June[-5]
+D.45.July.ed<-D.45.July[-5]
+D.45.May.June.ed<-D.45.May.June[-5]
+D.45.JJ.ed<-D.45.JJ[-5]
+D.45.MJ.ed<-D.45.MJ[-5]
+
+D.30.May.ed<-D.30.May[-5]
+D.30.June.ed<-D.30.June[-5]
+D.30.July.ed<-D.30.July[-5]
+D.30.May.June.ed<-D.30.May.June[-5]
+D.30.JJ.ed<-D.30.JJ[-5]
+D.30.MJ.ed<-D.30.MJ[-5]
+
+D.15.May.ed<-D.15.May[-5]
+D.15.June.ed<-D.15.June[-5]
+D.15.July.ed<-D.15.July[-5]
+D.15.May.June.ed<-D.15.May.June[-5]
+D.15.JJ.ed<-D.15.JJ[-5]
+D.15.MJ.ed<-D.15.MJ[-5]
+
+D.0.May.ed<-D.0.May[-5]
+D.0.June.ed<-D.0.June[-5]
+D.0.July.ed<-D.0.July[-5]
+D.0.May.June.ed<-D.0.May.June[-5]
+D.0.JJ.ed<-D.0.JJ[-5]
+D.0.MJ.ed<-D.0.MJ[-5]
+
+D.neg.15.May.ed<-D.neg.15.May[-5]
+D.neg.15.June.ed<-D.neg.15.June[-5]
+D.neg.15.July.ed<-D.neg.15.July[-5]
+D.neg.15.May.June.ed<-D.neg.15.May.June[-5]
+D.neg.15.JJ.ed<-D.neg.15.JJ[-5]
+D.neg.15.MJ.ed<-D.neg.15.MJ[-5]
+
+D.neg.30.May.ed<-D.neg.30.May[-5]
+D.neg.30.June.ed<-D.neg.30.June[-5]
+D.neg.30.July.ed<-D.neg.30.July[-5]
+D.neg.30.May.June.ed<-D.neg.30.May.June[-5]
+D.neg.30.JJ.ed<-D.neg.30.JJ[-5]
+D.neg.30.MJ.ed<-D.neg.30.MJ[-5]
+
+
+D.neg.45.May.ed<-D.neg.45.May[-5]
+D.neg.45.June.ed<-D.neg.45.June[-5]
+D.neg.45.July.ed<-D.neg.45.July[-5]
+D.neg.45.May.June.ed<-D.neg.45.May.June[-5]
+D.neg.45.JJ.ed<-D.neg.45.JJ[-5]
+D.neg.45.MJ.ed<-D.neg.45.MJ[-5]
+
+D.neg.60.May.ed<-D.neg.60.May[-5]
+D.neg.60.June.ed<-D.neg.60.June[-5]
+D.neg.60.July.ed<-D.neg.60.July[-5]
+D.neg.60.May.June.ed<-D.neg.60.May.June[-5]
+D.neg.60.JJ.ed<-D.neg.60.JJ[-5]
+D.neg.60.MJ.ed<-D.neg.60.MJ[-5]
+
+
+D.neg.75.May.ed<-D.neg.75.May[-5]
+D.neg.75.June.ed<-D.neg.75.June[-5]
+D.neg.75.July.ed<-D.neg.75.July[-5]
+D.neg.75.May.June.ed<-D.neg.75.May.June[-5]
+D.neg.75.JJ.ed<-D.neg.75.JJ[-5]
+D.neg.75.MJ.ed<-D.neg.75.MJ[-5]
+
+D.neg.90.May.ed<-D.neg.90.May[-5]
+D.neg.90.June.ed<-D.neg.90.June[-5]
+D.neg.90.July.ed<-D.neg.90.July[-5]
+D.neg.90.May.June.ed<-D.neg.90.May.June[-5]
+D.neg.90.JJ.ed<-D.neg.90.JJ[-5]
+D.neg.90.MJ.ed<-D.neg.90.MJ[-5]

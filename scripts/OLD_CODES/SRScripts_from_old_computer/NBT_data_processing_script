@@ -1,0 +1,154 @@
+########################### Set work directory ############################
+rm(list=ls())
+setwd('//AKC0KS-N220/KOD_Users/jon.richar/Desktop/NBT/DataForAnalysis')
+setwd('C:/Users/Jon.Richar/Work/Projects/Opilio_interegional_variation_size_at_maturity/DATA')
+############################## load libraries ##################################
+library(ade4)
+library(stats)
+library(chron)
+library(plyr)
+library(ggplot2)
+library(MASS)
+library(car)
+library(dplyr)
+library(pander)
+library(magrittr)
+library(tables)
+library(HSAUR)
+library(graphics)
+library(plotrix)
+
+#############################################################################
+cruise<-seq(from = 197501, to = 201901, by = 100)
+cruise<-as.matrix(as.numeric(cruise))
+year<-c(1975:2019)
+Year<-as.matrix(as.numeric(year))
+
+nbt.1<-read.csv("haul_bairdi_stations.csv")
+
+nbt.1<-read.csv("haul_newtimeseries.csv")
+names(nbt.1)
+nbt<-nbt.1
+bt<-nbt$GEAR_TEMPERATURE
+y<-nbt$SURVEY_YEAR
+
+temp<-cbind(y,bt)
+t<-as.data.frame(temp)
+names(t)
+#######################################################################
+out<-matrix(0,nrow=nrow(Year), ncol = 2) 
+out
+nrow(Year)
+for(i in 1:nrow(Year)){
+	mat<-subset(t, t$y == Year[i,])
+	b<-as.data.frame(mat)
+	x<-na.omit(b$bt)
+	x.std<-std.error(x)
+	x2<-mean(x)
+	out[i,1]<-x2
+	out[i,2]<-x.std
+}
+
+out
+
+s<-cbind(Year,out)
+s
+colnames(s)<-c("Year","Mean_NBT","Std_Error")
+ebs<-s
+
+setwd('C:/Users/Jon.Richar/Work/Projects/Bairdi_and_Opilio_SR_and SC_CS_dynamics/SR/DATA')
+write.csv(s,"Mean_EBS_NBT.csv")
+
+#############################################################################
+################################ 166W ######################################
+
+nbt<-subset(nbt.1,MID_LONGITUDE <= -166)
+bt<-nbt$GEAR_TEMPERATURE
+y<-nbt$SURVEY_YEAR
+
+temp<-cbind(y,bt)
+t<-as.data.frame(temp)
+names(t)
+#######################################################################
+out<-matrix(0,nrow=nrow(Year), ncol = 2) 
+out
+nrow(Year)
+for(i in 1:nrow(Year)){
+	mat<-subset(t, t$y == Year[i,])
+	b<-as.data.frame(mat)
+	x<-na.omit(b$bt)
+	x.std<-std.error(x)
+	x2<-mean(x)
+	out[i,1]<-x2
+	out[i,2]<-x.std
+}
+
+out
+
+s<-cbind(Year,out)
+colnames(s)<-c("Year","Mean_NBT","Std_Error")
+w166<-s
+w166
+#write.csv(s,"Mean_W166_NBT.csv")
+
+#############################################################################
+################################ E166 ######################################
+
+nbt<-subset(nbt.1,MID_LONGITUDE > -166)
+bt<-nbt$GEAR_TEMPERATURE
+y<-nbt$SURVEY_YEAR
+
+temp<-cbind(y,bt)
+t<-as.data.frame(temp)
+names(t)
+#######################################################################
+out<-matrix(0,nrow=nrow(Year), ncol = 2) 
+out
+nrow(Year)
+for(i in 1:nrow(Year)){
+	mat<-subset(t, t$y == Year[i,])
+	b<-as.data.frame(mat)
+	x<-na.omit(b$bt)
+	x.std<-std.error(x)
+	x2<-mean(x)
+	out[i,1]<-x2
+	out[i,2]<-x.std
+	
+}
+
+out
+
+s<-cbind(Year,out)
+s
+colnames(s)<-c("Year","Mean_NBT","Std_Error")
+e166<-s
+
+#write.csv(s,"Mean_E166_NBT.csv")
+
+ebs<-as.data.frame(ebs)
+ebs
+e166<-as.data.frame(e166)
+
+############################################
+e<-e166$Mean_NBT
+e.std<-e166$Std_Error
+
+e1<-as.matrix(cbind(e,e.std))
+e1
+##############################################
+w166<-as.data.frame(w166)
+w <- w166$Mean_NBT
+w.std <- w166$Std_Error
+w1<-as.matrix(cbind(w,w.std))
+w1
+##################################################
+NBT<-cbind(ebs,e1,w1)
+
+NBT
+
+colnames(NBT)<-c("Year","EBS_mean_NBT","EBS_Std_Error","E166_mean_NBT","E166_Std_Error","W166_mean_NBT","W166_Std_Error")
+NBT
+write.csv(NBT,"MeanNBT_TS.csv")
+
+
+

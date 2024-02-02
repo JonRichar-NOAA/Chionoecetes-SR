@@ -14,6 +14,9 @@ library(MuMIn)
 library(tidyverse)
 library(corrplot)
 library(ggpubr)
+library(magick)
+library(here)
+library(magrittr)
 ########## Import data and define variables####
 
 Recruits<-read.csv("data/cb_ebs_pop_juvenile.csv")
@@ -26,7 +29,9 @@ E166Spawners<-read.csv("data/cb_e166_pop_sc_cs.csv")
 W166Recruits<-read.csv("data/cb_w166_pop_juvenile.csv")
 W166Spawners<-read.csv("data/cb_w166_pop_sc_cs.csv")
 
-
+all_dat <- read.csv("data/EBS_Crab_and_envar_data_full_extent_for_analysis.csv", row.names = 1) #Has 1982 female bairdi and corresponding juvenile and environmental data removed
+head(all_dat)
+View(all_dat)
 #########################################################################################################
 ########################### Create recruitment time series for analysis #################################
 #########################################################################################################
@@ -90,32 +95,37 @@ S3<-S[1:31]  #1978-2008
 
 
 #########################################################################################################################
-################################## Plot all juveniles together ##########################################################
+################################## Plot all juveniles together--Note, now incorporates lags ##########################################################
 EBS.juv.a<-rec_30to50$EBS_Abun_30to50
-EBS.juv<-EBS.juv.a[4:length(EBS.juv.a)]
-year<-rec_30to50$Year[4:length(rec_30to50$Year)]
-EBS.fem<-Spawners_SC3$EBS_SC3[4:length(Spawners_SC3$EBS_SC3)]
+year<-rec_30to50$Year[7:(length(rec_30to50$Year))]
+EBS.juv<-EBS.juv.a[7:length(EBS.juv.a)]
+
 juv.dat<-data.frame(Year=year, abundance = EBS.juv, name ="Juvenile")
 
+year<-rec_30to50$Year[4:(length(rec_30to50$Year)-3)]
+EBS.fem<-Spawners_SC3$EBS_SC3[4:(length(Spawners_SC3$EBS_SC3)-3)]
 fem.dat<-data.frame(Year=year, abundance = EBS.fem, name ="SC3 female")
 
-plot_dat <-data.frame(rbind(juv.dat,fem.dat))
+LogRS<-all_dat$logRS
+Year=year[-5]
+prod_dat<-data.frame(Year=Year,abundance = LogRS, name ="Productivity")
+
+
+######### Combine data sets ############
+plot_dat <-data.frame(rbind(juv.dat,fem.dat,prod_dat))
 
 theme_set(theme_bw())
 
+
+######## Plot
 ggplot(plot_dat, aes(Year, abundance)) +
   geom_line() +
   geom_point() +
-  facet_wrap(~name, scales = "free_y", ncol = 1) +
+  facet_wrap(~factor(name, c("Juvenile","SC3 female","Productivity")), scales = "free_y", ncol = 1) +
   theme(axis.title.x = element_blank()) +
-  ylab("Abundance (millions)")
+  ylab("Ln(R/S)                                                       Abundance (millions)                            Abundance (millions)")
 
-ggsave("./figs/juvenile_female_abundance.png",
-        width = 6,
-        height = 6,
-        units = 'in')
-getwd()
-
+###### first attempt to create arranged plot--did not work well#######
 plot_cb<-ggplot(plot_dat, aes(Year, abundance)) +
   geom_line() +
   geom_point() +
@@ -124,5 +134,32 @@ plot_cb<-ggplot(plot_dat, aes(Year, abundance)) +
   ylab("Abundance (millions)")
 
 ggarrange(plot_cb +rremove("x.text"),
-          labels = c("a.)", "b.)"))
-         
+          labels = c("a.)", "b.)", "c.)"))
+######################################################
+
+########## create graphic object #####################
+crab_plot<-ggplot(plot_dat, aes(Year, abundance)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~factor(name, c("Juvenile","SC3 female","Productivity")), scales = "free_y", ncol = 1) +
+  theme(axis.title.x = element_blank()) +
+  ylab("Ln(R/S)                                               Abundance (millions)                                         Abundance (millions)")
+
+ggsave(plot = crab_plot,"./figs/juvenile_female_abundance_logRS.png",
+        width = 550,
+        height = 14,
+        units = 'in')
+getwd()
+
+
+
+crab_plot<- image_read("./figs/May2023/Juveniles_females_LogRS_550px.jpeg")
+map_plot <- image_read("./figs/EBS_BaseMap_forpaper_nowhitespace_resize25pct.jpg") 
+
+plots<-c(map_plot, crab_plot)
+final_plot <- image_append(plots, stack = TRUE)
+
+dev.new()
+plot(final_plot)
+
+ggsave(plot = final_plot,"./figs/Figure1_update.jpg", width = 10, height = 8, units = 'in')
