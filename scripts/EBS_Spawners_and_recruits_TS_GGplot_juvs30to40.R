@@ -39,11 +39,10 @@ names(Recruits)
 
 ########################### EBS ####################################################################################
 
-rec_30to50<-as.data.frame(as.matrix(cbind(Recruits$SURVEY_YEAR,(Recruits$NUM_MALE_30TO50 + Recruits$NUM_FEMALE_30TO50),(E166Recruits$NUM_MALE_30TO50 + E166Recruits$NUM_FEMALE_30TO50),(W166Recruits$NUM_MALE_30TO50 + W166Recruits$NUM_FEMALE_30TO50))))
+rec_30to40<-as.data.frame(as.matrix(cbind(Recruits$SURVEY_YEAR,(Recruits$NUM_MALE_30TO40 + Recruits$NUM_FEMALE_30TO40),(E166Recruits$NUM_MALE_30TO40 + E166Recruits$NUM_FEMALE_30TO40),(W166Recruits$NUM_MALE_30TO40 + W166Recruits$NUM_FEMALE_30TO40))))
 
 
-colnames(rec_30to50)<-c("Year", "EBS_Abun_30to50","E166_Abun_30to50","W166_Abun_30to50")
-
+colnames(rec_30to40)<-c("Year", "EBS_Abun_30to40","E166_Abun_30to40","W166_Abun_30to40")
 
 #########################################################################################################
 ########################### Create spawner series #######################################################
@@ -72,10 +71,10 @@ colnames(w166_sp_os)<-c("Year", "W166_OSfem_abun")
 Spawners_OS<-as.data.frame(as.matrix(cbind(Spawners$SURVEY_YEAR,(Spawners$NUM_FEMALE_SC3+Spawners$NUM_FEMALE_SC4),(E166Spawners$NUM_FEMALE_SC3+E166Spawners$NUM_FEMALE_SC4),(W166Spawners$NUM_FEMALE_SC3+W166Spawners$NUM_FEMALE_SC4))))
 colnames(Spawners_OS)<-c("Year","EBS_os","E166_os","W166_os")
 ######################################### juvenile indices ####################################################
-rec_30to50$Year[4:45] #check years
+rec_30to40$Year[4:45] #check years
 par(mfrow=c(2,2),cex.lab=1.25,cex.axis=1.25,cex=1.25) #configure axis labels)
 
-R<-rec_30to50$EBS_Abun_30to50[4:45]
+R<-rec_30to40$EBS_Abun_30to50[4:45]
 
 
 ########################################## Divide into two equal stanzas and Original (1978 to 2008)##############################################
@@ -91,8 +90,8 @@ R3<-R[1:31]  #1978-2008
 
 ###############################################################################################################################
 ########################################## Shell condition 3 #################################################################
-Spawners_SC3$Year
-S<-Spawners_SC3$EBS_SC3[4:45]
+Spawners_OS$Year
+S<-Spawners_OS$EBS_os[4:45]
 ########################################## Full Timeseries #############################################################
 
 
@@ -104,24 +103,25 @@ S3<-S[1:31]  #1978-2008
 
 #########################################################################################################################
 ################################## Plot all juveniles together--Note, now incorporates lags ##########################################################
-EBS.juv.a<-rec_30to50$EBS_Abun_30to50
-year<-rec_30to50$Year[7:(length(rec_30to50$Year))]
+year<-rec_30to40$Year[7:(length(rec_30to40$Year))] 
+
+EBS.juv.a<-rec_30to40$EBS_Abun_30to40
 EBS.juv<-EBS.juv.a[7:length(EBS.juv.a)]
 
-juv.dat<-data.frame(Year=year, abundance = EBS.juv, name ="Juvenile")
+juv.dat<-data.frame(Year=year, abundance = EBS.juv, name ="Juveniles")
 
-year<-rec_30to50$Year[4:(length(rec_30to50$Year)-3)]
-EBS.fem<-Spawners_SC3$EBS_SC3[4:(length(Spawners_SC3$EBS_SC3)-3)]
-fem.dat<-data.frame(Year=year, abundance = EBS.fem, name ="SC3 female")
+year<-rec_30to40$Year[4:(length(rec_30to40$Year)-3)]
+EBS.fem<-Spawners_OS$EBS_os[4:(length(Spawners_OS$EBS_os)-3)]
+fem.dat<-data.frame(Year=year, abundance = EBS.fem, name ="SC3 and SC4 females")
 
-LogRS<-all_dat$logRS
-Year=year[-5]
+LogRS<-all_dat$SC3_SC4_logRS_30to40
+Year=all_dat$releaseyear
 prod_dat<-data.frame(Year=Year,abundance = LogRS, name ="Productivity")
 
 
 ######### Combine data sets ############
 plot_dat <-data.frame(rbind(juv.dat,fem.dat,prod_dat))
-
+plot_dat
 theme_set(theme_bw())
 
 
@@ -129,9 +129,9 @@ theme_set(theme_bw())
 ggplot(plot_dat, aes(Year, abundance)) +
   geom_line() +
   geom_point() +
-  facet_wrap(~factor(name, c("Juvenile","SC3 female","Productivity")), scales = "free_y", ncol = 1) +
+  facet_wrap(~factor(name, c("Juveniles","SC3 and SC4 females","Productivity")), scales = "free_y", ncol = 1) +
   theme(axis.title.x = element_blank()) +
-  ylab("Ln(R/S)                                                       Abundance (millions)                            Abundance (millions)")
+  ylab("Ln(R/S))                                                       Abundance (millions)                            Abundance (millions)")
 
 ###### first attempt to create arranged plot--did not work well#######
 plot_cb<-ggplot(plot_dat, aes(Year, abundance)) +
@@ -149,7 +149,7 @@ ggarrange(plot_cb +rremove("x.text"),
 crab_plot<-ggplot(plot_dat, aes(Year, abundance)) +
   geom_line() +
   geom_point() +
-  facet_wrap(~factor(name, c("Juvenile","SC3 female","Productivity")), scales = "free_y", ncol = 1) +
+  facet_wrap(~factor(name, c("Juveniles","SC3 and SC4 females","Productivity")), scales = "free_y", ncol = 1) +
   theme(axis.title.x = element_blank()) +
   ylab("Ln(R/S)                                               Abundance (millions)                                         Abundance (millions)")
 
@@ -183,13 +183,13 @@ ggsave(plot = final_plot,"./figs/Figure1_update.jpg", width = 10, height = 8, un
 
 #########################################################################################################################
 ################################## Plot all juveniles together--Note, now incorporates lags ##########################################################
-EBS.juv.a<-rec_30to50$EBS_Abun_30to50
-year<-rec_30to50$Year[7:(length(rec_30to50$Year))-3]
+EBS.juv.a<-rec_30to40$EBS_Abun_30to40
+year<-rec_30to40$Year[7:(length(rec_30to40$Year))-3]
 EBS.juv<-EBS.juv.a[7:length(EBS.juv.a)-3]
 
 juv.dat<-data.frame(Year=year, abundance = EBS.juv, name ="Juvenile")
 juv.dat
-year<-rec_30to50$Year[4:(length(rec_30to50$Year)-6)]
+year<-rec_30to40$Year[4:(length(rec_30to40$Year)-6)]
 EBS.fem<-Spawners_OS$EBS_os[4:(length(Spawners_OS$EBS_os)-6)]
 fem.dat<-data.frame(Year=year, abundance = EBS.fem, name ="SC3+SC4 female")
 

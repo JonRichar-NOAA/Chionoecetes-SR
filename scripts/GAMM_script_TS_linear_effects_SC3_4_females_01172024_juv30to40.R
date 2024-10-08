@@ -25,28 +25,30 @@ head(dat)
 ###################################################### Run models#########################################################
 
 ###################################################### S-R effect only ##################################################
-mod1 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4),
+mod1 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3),
             data = dat, correlation=corAR1())
 #Model summaries
 summary(mod1)
 summary(mod1$gam)
 summary(mod1$lme)
-
+#summary(mod1)$dev.expl
+#mod1$dev.expl
 #Inspect model object
 mod1
-
+mod1$gam
+mod1$lme
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod1$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 plot(mod1$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
-
+MuMIn::AICc(mod1)
 
 ###################################################### Add ovigerous female opilio for competitive effect amongst juveniles ###
 ################################################### Non-linear #########################################
-mod2a <- gam(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + s(Ovig_female_CO,k=4),
+mod2a <- gam(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + s(Ovig_female_CO,k=3),
              data = dat)
 #Model summaries
 summary(mod2a)
@@ -57,7 +59,7 @@ summary(mod2a$lme)
 mod2a
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod2a, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -65,7 +67,7 @@ plot(mod2a, resid=T, pch=19, rug=F, se=F, pages=1)
 
 MuMIn::AICc(mod2a)
 ################################################### Linear ######################################
-mod2 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + Ovig_female_CO,
+mod2 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + Ovig_female_CO,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod2)
@@ -76,7 +78,7 @@ summary(mod2$lme)
 mod2
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod2$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -90,7 +92,7 @@ MuMIn::AICc(mod2)
 ###################################################### Add Pcod lag1 only ##################################################
 
 ################################################### Non-linear ############################################
-mod3a <- gam(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + s(Pcod_lag1,k=4),
+mod3a <- gam(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + s(Pcod_lag1,k=3),
              data = dat)
 #Model summaries
 summary(mod3a)
@@ -101,14 +103,14 @@ summary(mod3a$lme)
 mod3a
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod3a, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod3$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ################################################### linear ############################################
-mod3 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + Pcod_lag1,
+mod3 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + Pcod_lag1,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod3)
@@ -119,7 +121,7 @@ summary(mod3$lme)
 mod3
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod3$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -127,7 +129,7 @@ plot(mod3$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 ###################################################### Add PCod_RA2 only ##################################################
 
 ################################### non-linear ##############################################
-mod4a <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + s(PCod_RA2,k=4),
+mod4a <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + s(PCod_RA2,k=3),
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod4a)
@@ -138,14 +140,14 @@ summary(mod4a$lme)
 mod4a
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod4a$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod4$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ############################## linear #############################################
-mod4 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + PCod_RA2,
+mod4 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + PCod_RA2,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod4)
@@ -156,7 +158,7 @@ summary(mod4$lme)
 mod4
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod4$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -164,7 +166,7 @@ plot(mod4$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 
 ###################################################### Add PCod_RA3 only ##################################################
-mod5 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + PCod_RA3,
+mod5 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + PCod_RA3,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod5)
@@ -175,14 +177,14 @@ summary(mod5$lme)
 mod5
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod5$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod5$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Add FHS lag 2 only ##################################################
-mod6 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2,
+mod6 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod6)
@@ -193,15 +195,50 @@ summary(mod6$lme)
 mod6
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod6$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod6$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+###################################################### rerun using nonlinear terms for graphic ############################################
+###################################################### Add FHS lag 2 only ##################################################
+mod6aa <- gam(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + s(FHS_lag2,k=3),
+             data = dat, correlation=corAR1())
+#Model summaries
+summary(mod6aa)
+summary(mod6aa$gam)
+#summary(mod6$lme)
 
+#Inspect model object
+mod6aa
+
+#plot,
+dev.new()
+par(mfrow=c(2,1))
+
+plot(mod6aa, resid=T, pch=19, rug=F, se=F,pages=1)
+#plot(mod6$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+
+###################################################### Add FHS lag 2 only as nonlinear term ##################################################
+mod6a <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + s(FHS_lag2, k=3),
+             data = dat, correlation=corAR1())
+#Model summaries
+summary(mod6a)
+summary(mod6a$gam)
+summary(mod6a$lme)
+
+#Inspect model object
+mod6a
+
+#plot,
+##dev.new()
+par(mfrow=c(2,1))
+
+plot(mod6a$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+#plot(mod6$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Add FHS RA2 only ###################################################
-mod7 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_RA2,
+mod7 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_RA2,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod7)
@@ -212,7 +249,7 @@ summary(mod7$lme)
 mod7
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod7$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -220,7 +257,7 @@ plot(mod7$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### Combine Pcod_lag1 and FHS lag 2 #####################################
 
-mod8 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + Pcod_lag1 + FHS_lag2,
+mod8 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + Pcod_lag1 + FHS_lag2,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod8)
@@ -231,7 +268,7 @@ summary(mod8$lme)
 mod8
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod8$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -239,7 +276,7 @@ plot(mod8$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### Combine PCod_RA2 and FHS_RA2 #####################################
 
-mod9 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + PCod_RA2 + FHS_RA2,
+mod9 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + PCod_RA2 + FHS_RA2,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod9)
@@ -250,7 +287,7 @@ summary(mod9$lme)
 mod9
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod9$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -261,7 +298,7 @@ plot(mod9$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### NBT 3 yr rolling average #########################################
 
-mod10 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + NBT_3RA,
+mod10 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + NBT_3RA,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod10)
@@ -272,7 +309,7 @@ summary(mod10$lme)
 mod10
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod10$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -280,7 +317,7 @@ plot(mod10$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### NBT 3 yr min temperature #########################################
 
-mod11 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + NBT_3yr_minTemp,
+mod11 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + NBT_3yr_minTemp,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod11)
@@ -291,7 +328,7 @@ summary(mod11$lme)
 mod11
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod11$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -301,7 +338,7 @@ plot(mod11$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### AO_RA2 #########################################
 
-mod12 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + AO_RA2,
+mod12 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + AO_RA2,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod12)
@@ -312,7 +349,7 @@ summary(mod12$lme)
 mod12
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod12$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -321,7 +358,7 @@ plot(mod12$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### AO_RA3 #########################################
 
-mod13 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + AO_RA3,
+mod13 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + AO_RA3,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod13)
@@ -332,7 +369,7 @@ summary(mod13$lme)
 mod13
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod13$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -342,7 +379,7 @@ plot(mod13$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### PDO_RA2 #########################################
 
-mod14 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + PDO_RA2,
+mod14 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + PDO_RA2,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod14)
@@ -353,7 +390,7 @@ summary(mod14$lme)
 mod14
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod14$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -363,7 +400,7 @@ plot(mod14$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### PDO_RA3 #########################################
 
-mod15 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + PDO_RA3,
+mod15 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + PDO_RA3,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod15)
@@ -374,7 +411,7 @@ summary(mod15$lme)
 mod15
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod15$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -382,7 +419,7 @@ plot(mod15$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### SST_May_July #########################################
 
-mod16 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + SST_May_July,
+mod16 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + SST_May_July,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod16)
@@ -393,7 +430,7 @@ summary(mod16$lme)
 mod16
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod16$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -401,7 +438,7 @@ plot(mod16$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### SE.wind #########################################
 
-mod17 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + SE.wind,
+mod17 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + SE.wind,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod17)
@@ -412,7 +449,7 @@ summary(mod17$lme)
 mod17
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod17$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -421,7 +458,7 @@ plot(mod17$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ##################################################### NW.wind #########################################
 
-mod18 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + NW.wind,
+mod18 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + NW.wind,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod18)
@@ -432,7 +469,7 @@ summary(mod18$lme)
 mod18
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod18$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -448,7 +485,7 @@ MuMIn::AICc(mod1,mod2,mod3,mod4, mod5,mod6,mod7,mod8,mod9,mod10,mod11,mod12,mod1
 
 
 ###################################################### Combine FHS lag 2 and ovigerous female opilio  #########################################################
-mod19 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + Ovig_female_CO,
+mod19 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + Ovig_female_CO,
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod19)
@@ -459,14 +496,14 @@ summary(mod19$lme)
 mod19
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod19$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod19$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2, ovigerous female opilio + PDO_RA3 #####################################################
-mod20 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + Ovig_female_CO + PDO_RA3,
+mod20 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + Ovig_female_CO + PDO_RA3,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod20)
@@ -477,14 +514,14 @@ summary(mod20$lme)
 mod20
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod20$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod20$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2, ovigerous female opilio + AO_RA3 #####################################################
-mod21 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + Ovig_female_CO + AO_RA3,
+mod21 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + Ovig_female_CO + AO_RA3,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod21)
@@ -495,13 +532,13 @@ summary(mod21$lme)
 mod21
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod21$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod21$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 ###################################################### Combine FHS lag 2, AO_RA2 + PDO_RA2 #####################################################
-mod22 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + Ovig_female_CO + PDO_RA2,
+mod22 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + Ovig_female_CO + PDO_RA2,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod22)
@@ -512,14 +549,14 @@ summary(mod22$lme)
 mod22
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod22$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod22$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2, AO_RA2  #####################################################
-mod23 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + Ovig_female_CO + AO_RA2,
+mod23 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + Ovig_female_CO + AO_RA2,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod23)
@@ -530,13 +567,13 @@ summary(mod23$lme)
 mod23
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod23$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod23$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 ###################################################### Combine FHS lag 2, ovigerous female opilio + SST_May_July ################################################
-mod24 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + Ovig_female_CO + SST_May_July,
+mod24 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + Ovig_female_CO + SST_May_July,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod24)
@@ -547,14 +584,14 @@ summary(mod24$lme)
 mod24
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod24$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod24$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2, ovigerous female opilio + SE wind ################################################
-mod25 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + Ovig_female_CO + SE.wind,
+mod25 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + Ovig_female_CO + SE.wind,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod25)
@@ -565,14 +602,14 @@ summary(mod25$lme)
 mod25
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod25$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod25$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2, ovigerous female opilio + NE wind ################################################
-mod26 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + Ovig_female_CO + NW.wind,
+mod26 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + Ovig_female_CO + NW.wind,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod26)
@@ -583,7 +620,7 @@ summary(mod26$lme)
 mod26
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod26$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -597,7 +634,7 @@ MuMIn::AICc(mod1,mod2,mod3,mod4, mod5,mod6,mod7,mod8,mod9,mod10,mod11,mod12,mod1
 ##################################################### Combine multiple variables in combined pred-prey + environmental factor##################################
 
 ###################################################### Combine FHS lag 2 + PDO_RA3 #####################################################
-mod27 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + PDO_RA3,
+mod27 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + PDO_RA3,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod27)
@@ -608,14 +645,14 @@ summary(mod27$lme)
 mod27
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod27$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod27$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2 + AO_RA3 #####################################################
-mod28 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + AO_RA3,
+mod28 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + AO_RA3,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod28)
@@ -626,14 +663,14 @@ summary(mod28$lme)
 mod28
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod28$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod28$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2 + PDO_RA2 #####################################################
-mod29 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + PDO_RA2,
+mod29 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + PDO_RA2,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod29)
@@ -644,26 +681,28 @@ summary(mod29$lme)
 mod29
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod29$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 MuMIn::AICc(mod29)
 #plot(mod29$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 ################################ non-linear ######################################################
-mod29a <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(PDO_RA2,k=4),
+mod29a <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + s(FHS_lag2, k=3) + s(PDO_RA2,k=3),
               data = dat, correlation=corAR1())
 
-summary(mod29a)
+summary(mod29)
+summary(mod29$gam)
+summary(mod29$lme)
 #summary(mod29a)$dev.expl
 
-dev.new()
+#dev.new()
 par(mfrow=c(2,2))
 
 plot(mod29a$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 MuMIn::AICc(mod29a)
 ###################################################### Combine FHS lag 2, AO_RA2  #####################################################
-mod30 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + AO_RA2,
+mod30 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + AO_RA2,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod30)
@@ -674,14 +713,14 @@ summary(mod30$lme)
 mod30
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod30$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod30$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2 + SST_May_July ################################################
-mod31 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + SST_May_July,
+mod31 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + SST_May_July,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod31)
@@ -692,14 +731,14 @@ summary(mod31$lme)
 mod31
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod31$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod31$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2 + SE wind-NONLINEAR ################################################
-mod32a <- gam(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + s(FHS_lag2,k=4) + s(SE.wind,k=4),
+mod32a <- gam(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + s(FHS_lag2,k=3) + s(SE.wind,k=3),
               data = dat)
 #Model summaries
 summary(mod32a)
@@ -710,13 +749,13 @@ summary(mod32a$lme)
 mod32a
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod32a, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod32$lme, resid=T, pch=19, rug=F, se=F, pages=1)
-
-mod32 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + SE.wind,
+###################################################### Combine FHS lag 2 + SE wind-LINEAR ####################################################
+mod32 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + SE.wind,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod32)
@@ -727,7 +766,7 @@ summary(mod32$lme)
 mod32
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod32$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -739,7 +778,7 @@ MuMIn::AICc(mod1,mod2,mod3,mod4, mod5,mod6,mod7,mod8,mod9,mod10,mod11,mod12,mod1
 ##################################################### Combine multiple variables in combined pred-prey + multiple environmental factors ##################################
 
 ###################################################### Combine FHS lag 2, AO_RA3 + PDO_RA3 #####################################################
-mod33 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + PDO_RA3 + AO_RA3,
+mod33 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + PDO_RA3 + AO_RA3,
               data = dat, correlation=corAR1())
 #Model summaries
 summary(mod33)
@@ -750,14 +789,14 @@ summary(mod33$lme)
 mod33
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod33$gam, resid=T, pch=19, rug=F, se=F, pages=1)
 #plot(mod33$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 
 ###################################################### Combine FHS lag 2, AO_RA2 + PDO_RA2 #####################################################
-mod34 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + PDO_RA2 + AO_RA2,
+mod34 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + PDO_RA2 + AO_RA2,
               data = dat, correlation=corAR1())
 
 #Model summaries
@@ -769,7 +808,7 @@ summary(mod34$lme)
 mod34
 
 #plot,
-dev.new()
+##dev.new()
 par(mfrow=c(2,1))
 
 plot(mod34$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -779,7 +818,7 @@ MuMIn::AICc(mod34)
 
 
 ###################################################### nonlinear #####################################################
-mod34a <- gam(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + s(FHS_lag2, k=4) + s(PDO_RA2, k = 4) + s(AO_RA2,k=4),
+mod34a <- gam(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + s(FHS_lag2, k=3) + s(PDO_RA2, k=3) + s(AO_RA2,k=3),
               data = dat)
 
 #Model summaries
@@ -791,7 +830,7 @@ summary(mod34a$lme)
 mod34a
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,2))
 
 plot(mod34a, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -801,7 +840,7 @@ MuMIn::AICc(mod34a)
 
 ###################################################### Exploratory models #####################################################################
 ###################################################### Combine FHS lag 2 + SE wind ################################################
-mod35 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2+ SE.wind,
+mod35 <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2+ SE.wind,
                data = dat, correlation=corAR1())
 #Model summaries
 summary(mod35)
@@ -812,7 +851,7 @@ summary(mod35$lme)
 mod35
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod35$gam, resid=T, pch=19, rug=F, se=F, pages=1)
@@ -826,7 +865,7 @@ write.csv(AICc_linear, "output/Mixed_GAM_linear_model_AICc_values_SC3_SC4_juvs30
 
 
 ###################################################### Combine FHS lag 2, AO_RA2 + PDO_RA2 #####################################################
-mod_test <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=4) + FHS_lag2 + PDO_RA2 + AO_RA2+ SST_May_July,
+mod_test <- gamm(SC3_SC4_logRS_30to40 ~ s(SC3_SC4_ReproductiveFemales, k=3) + FHS_lag2 + PDO_RA2 + AO_RA2+ SST_May_July,
                  data = dat, correlation=corAR1())
 #Model summaries
 summary(mod_test)
@@ -837,7 +876,7 @@ summary(mod_test$lme)
 mod_test
 
 #plot,
-dev.new()
+#dev.new()
 par(mfrow=c(2,1))
 
 plot(mod_test$gam, resid=T, pch=19, rug=F, se=F, pages=1)

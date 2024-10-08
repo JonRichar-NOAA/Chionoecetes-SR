@@ -1,3 +1,6 @@
+##################### Clear environment ############################################################
+rm(list=ls())
+##################### Load packages  ###############################################################
 
 ##### Note for Valkyrie: above should read: setwd('C:/Users/Jon Richar/Desktop/Project/Datasets for Analysis')
 ##### Note: for Paladin, above should read: setwd('C:/Documents and Settings/Jon/Desktop/Project/Datasets for analysis')
@@ -14,7 +17,9 @@ library(lattice)
 library(nlstools)
 library(tidyverse)
 #?nlstools
+########## Citation for packages
 
+citation("mgcv")
 ########## Import data and define variables####
 
 Recruits<-read.csv("./data/cb_ebs_pop_juvenile.csv")
@@ -61,29 +66,6 @@ shapiro.test(x)
 }
 
 
-#########################################################################################################
-################################### Define baseline Ricker model ########################################
-#Ricker <- function(S,a,b){
-#a*S*exp(-b*S)
-#}
-#START <- list(a=1, b=0.01)
-
-#########################################################################################################
-############################ Define linearized Ricker model--note log(R/S)= #############################
-
-Ricker <- function(S,a,b){
-a+b*S
-}
-START<-list(a=1,b=0.1)
-
-
-#########################################################################################################
-###########################Define experimental inverse model#############################################
-################################# Note: Model disabled ##################################################
-#Inverse <- function(S,a){
-#a+(1/S)
-#}
-#START<-list(a=4)
 
 #########################################################################################################
 ########################### Create recruitment time series for analysis #################################
@@ -203,52 +185,7 @@ colnames(Spawners_analysis)<-c("Year","EBS_SC0","E166_SC0","W166_SC0",
 
 #Spawners_analysis
 #write.csv(Spawners_analysis,"./data/Female_Tanner_Crab_Series_for_analysis.csv")
-write.csv(rec_30to40,"./data/JuvenileTannerAbun_30to40mmBin.csv")
-#########################################################################################################
-#########################################################################################################
-par(mfrow=c(2,2),cex.lab=1.25,cex.axis=1.25,cex=1.25) #configure axis labels)
-#Graphically evaluate reproductive female data
-for(i in names(Spawners_OS)) {		# cycle through all names in data frame
-	x <- Spawners_OS$Year			# convert to numeric variable
-	y <- Spawners_OS[,i]
-	# Plot time series for variable i using both points and lines. 
-	# Suppress default axis labels and add variable name as title:
-	plot(x, y, type = "b", xlab="", ylab="", main = i,pch=16)
-	# Fit linear time trend and add line to plot:
-	abline(lm(y ~ x), col=4)
-	# Fit a LOWESS (or LOESS) smooth trend and add to plot:
-	fit <- loess(y ~ x)	
-	lines(x, fitted(fit), col=2)	# Add fitted line
-}
-
-
-########################################################################################################################
-####################################### Plot all females  ######################################################
-
-
-y.range<-range(0,4e+08)
-par(mfrow=c(1,1),cex.main=1.5, cex.lab=1.5,cex.axis=1.25,cex=1.25) #configure axis labels
-names(Spawners_OS)
-Spawners_OS
-W166.fem<-Spawners_OS$W166_os
-EBS.fem<-Spawners_OS$EBS_os
-E166.fem<-Spawners_OS$E166_os
-plot(EBS.fem)
-W166.fem
-
-plot(EBS.fem,type="b",ylim=y.range, pch=16,col=4,axes=FALSE,ann=FALSE)
-lines(W166.fem,type="b",pch=16,col=1)
-lines(E166.fem,type="b",pch=22,col=2)
-
-axis(1, at=1:45,lab=Spawners_os$Year,tck=0.03)
-axis(2, las=1, at=1e+08*0:4)
-legend(25,4e+08,c("EBS female estimate", "Western group female estimate", "Eastern group female estimate"),cex=1,col=c(4,1,2),pch=c(16,20,22))
-abline(h=0)
-box()
-
-title(xlab="Year")
-#title(ylab="Reproductive female abundance")
-title(main=" Reproductive female abundance by year")
+#write.csv(rec_30to40,"./data/JuvenileTannerAbun_30to40mmBin.csv")
 
 
 #########################################################################################################################
@@ -276,40 +213,22 @@ xyear.k<-xyear[1:(n-lag)]   # Select corresponding years
 xyear.k
 S<-xi.k 
 yi.k <- yi[(lag+1):n]       # Select Juvenile recruitment estimates'lag' years later
-R<-yi.k
+R<-yi.k/0.3
 yyear.k<-yyear[(lag+1):n]   # Select years corresponding to juvenile recruitment estimates
 yyear.k
 plot(yi.k~xi.k,xlab="Reproductive female abundance", ylab="Lag 2 juvenile recruitment", pch=16,col=4)
 
 xi.k
 max(xi.k)
-###################################EDA.norm analysis of log(R/S)########################
+
+logRS<-log(R/S)
+dat<-as.data.frame(cbind(as.matrix(R),as.matrix(S)))
+##############################################EDA.norm analyses of log(R/S)#############################
+eda.norm(R)
 log.RS<-log(R/S)
 eda.norm(log.RS)
-
-########################################Fit Ricker model#########################################
-
-Rick.fit<-nls(log(R/S) ~ Ricker(S,a,b),start=START, na.action=na.omit)
-summary(Rick.fit)
-
-plot(log(R/S)~S, xlab="Reproductive female abundance",ylab="lag 2 log(Recruits/Repfem)",pch=16)
-abline(Rick.fit)
-
-
-
-
-####################################Fit gls models with 1st and 2nd order autocorrelation######################
-
-Fit3<-gls(log(R/S)~S,correlation=corAR1(), na.action=na.omit)
- summary(Fit3)
-plot(log(R/S)~S, xlab="Reproductive female abundance",ylab="lag 2 log(Recruits/Repfem)",pch=16)
-abline(Fit3)
-plot(Fit3)
-
-
-
 ################################## Fit GAMM mode #######################################
-mod1 <- gamm(log(R/S) ~ s(S, k=4),
+mod1 <- gamm(log(R/S) ~ s(S, k=3),
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod1)
@@ -324,9 +243,33 @@ dev.new()
 par(mfrow=c(2,1))
 
 plot(mod1$gam, resid=T, pch=19, rug=F, se=F, pages=1)
-plot(mod1$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+#plot(mod1$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 MuMIn::AICc(mod1)
 lag2aicc<-MuMIn::AICc(mod1)
+
+
+############################### create simulated data ####
+#set.seed(100) 
+newdat <- data.frame(S=seq(from=min(S), to=max(S), length.out=100)) 
+lag<-as.matrix(rep("Lag 2 yr",times=nrow(as.matrix(newdat))))
+predictions = predict(mod1$gam, newdata=newdat, se.fit = TRUE)
+
+# Consolidating new data and predictions
+dat2 = as.data.frame(cbind(lag, newdat, predictions))
+dat2<- within(dat2, {
+  lower = fit-1.96*se.fit
+  upper = fit+1.96*se.fit
+})
+
+view(dat2)
+
+lag_point<-as.matrix(rep("Lag 2 yr",times=nrow(as.matrix(R))))
+logRS_2<-log(R/S)
+p_dat2<-as.data.frame(cbind(lag_point,S,logRS_2))
+
+
+colnames(p_dat2)<-c("lag","S","logRS")
+view(p_dat2)
 #########################################################################################################################
 ############################################### Drop data point #5  #####################################################
 par(mfrow=c(1,1),cex.main=1.25, cex.lab=1.25,cex.axis=1.25,cex=1.25)
@@ -335,27 +278,10 @@ R2
 R
 S2<-S[-5]
 
-plot(R2~S2,xlab= "Reproductive female abundance", ylab="Juvenile abundance",main= "EBS juveniles vs OS females",pch=16)
-Fit3<-gls(log(R2/S2)~S2,correlation=corAR1(), na.action=na.omit)
-summary(Fit3)
-plot(log(R2/S2)~S2, xlab="Reproductive female abundance",ylab="LN(Recruits/Repfem)",main="EBS log-survival vs. abundance of SC3 and SC4 females",pch=16)
-abline(Fit3)
-#plot(Fit3)
-
-
-par(mfrow=c(1,1))
-r6<-resid(Fit3)
-xyear<-xyear.k[-5]
-#plot(r6,pch=16)
-r.fit3<-loess(r6~xyear,span=0.45)
-plot(r.fit3,pch=16,xlab="Hatch year", ylab=" S/R residuals", main=" EBS lag 3 S/R residuals vs. hatch year")
-lines(xyear,fitted(r.fit3),col=4)
-
-cor(R2,S2)
-###############################################################################################################
+dat<-as.data.frame(cbind(as.matrix(R2),as.matrix(S2)))
 ############################################## GAMM model ###################################################
-mod2 <- gamm(log(R2/S2) ~ s(S2, k=4),
-             data = dat, correlation=corAR1())
+mod2 <- gamm(log(R2/S2) ~ s(S2, k=3),
+              correlation=corAR1())
 #Model summaries
 summary(mod2)
 summary(mod2$gam)
@@ -369,7 +295,7 @@ dev.new()
 par(mfrow=c(2,1))
 
 plot(mod2$gam, resid=T, pch=19, rug=F, se=F, pages=1)
-plot(mod2$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+#plot(mod2$lme, resid=T, pch=19, rug=F, se=F, pages=1)
 MuMIn::AICc(mod2)
 
 ########################################################################################################
@@ -392,7 +318,10 @@ xyear.k<-xyear[1:(n-lag)]   # Select corresponding years
 xyear.k
 S<-xi.k 
 yi.k <- yi[(lag+1):n]       # Select Juvenile recruitment estimates'lag' years later
-R<-yi.k
+
+R<-yi.k/0.3
+R
+yi.k
 yyear.k<-yyear[(lag+1):n]   # Select years corresponding to juvenile recruitment estimates
 yyear.k
 plot(yi.k~xi.k,xlab="Reproductive female abundance", ylab="Lag 2 juvenile recruitment", pch=16,col=4)
@@ -402,73 +331,58 @@ plot(R~S)
 plot((R/S)~S)
 xi.k
 max(xi.k)
+
+
+logRS<-log(R/S)
+dat<-as.data.frame(cbind(as.matrix(R),as.matrix(S)))
 ##############################################EDA.norm analyses of log(R/S)#############################
 eda.norm(R)
 log.RS<-log(R/S)
+dev.new()
 eda.norm(log.RS)
 
-##############################################Fit Ricker model##########################################
 
-Rick.fit2<-nls(log(R/S) ~ Ricker(S,a,b),start=START)
-summary(Rick.fit2)
-plot(log(R/S)~S, xlab="Reproductive female abundance",ylab="lag 3 log(Recruits/Repfem)",main="EBS lag 3 Ricker model",pch=16)
-
-plot(log(R/S)~S, xlab="Reproductive female abundance",ylab="lag 3 log(Recruits/Repfem)",main="EBS lag 3 S/R",pch=16)
-
-abline(Rick.fit2)
-
-
-r2<-resid(Rick.fit2)
-r.fit2<-loess(r2~xyear.k)
-plot(r.fit2,xlab="Hatch year",ylab="EBS lag 3 S/R residuals",pch=16)
-lines(xyear.k,fitted(r.fit2))
-
-par(mfrow=c(1,1),cex.main=1.25, cex.lab=1.25,cex.axis=1.25,cex=1.25) #configure axis labels
-plot(r.fit2,xlab="Hatch year",ylab="EBS lag 3 S/R residuals",pch=16)
-lines(xyear.k,fitted(r.fit2))
-par(mfrow=c(2,2))
-
-
-#################################Fit gls model with 1st order autocorrelation#######################################################
-
-Fit3<-gls(log(R/S)~S,correlation=corAR1(), na.action=na.omit)
-summary(Fit3)
-plot(log(R/S)~S, xlab="Reproductive female abundance",ylab="lag 3 log(Recruits/Repfem)",main="EBS group lag 3 Ricker model with ovigerous females",pch=16)
-abline(Fit3)
-#plot(Fit3)
-
-par(mfrow=c(1,1),cex.main=1.5, cex.lab=1.25,cex.axis=1.25,cex=1.25) #configure axis labels
-r3<-resid(Fit3)
-#plot(r3,pch=16)
-r.fit3<-loess(r3~xyear.k,span=0.25)
-plot(r.fit3,pch=16,xlab="Hatch year", ylab="Lag 3 S/R residuals",main="Interdecadal trend in EBS group S/R residuals")
-lines(xyear.k,fitted(r.fit3),col=4)
-
-
-Fit4<-gls(log(R/S)~S,correlation=corARMA(p=2))
-summary(Fit4)
-
-Lm.Fit<-lm(log(R/S)~S, na.action=na.omit)
-dwtest(Lm.Fit)
 ################################## Run GAMM model ############################################
-mod2 <- gamm(log(R/S) ~ s(S, k=4),
+mod3 <- gamm(log(R/S) ~ s(S, k=3),
               correlation=corAR1())
 #Model summaries
-summary(mod2)
-summary(mod2$gam)
-summary(mod2$lme)
+summary(mod3)
+summary(mod3$gam)
+summary(mod3$lme)
 
 #Inspect model object
-mod2
+mod3
 
 #plot,
 dev.new()
 par(mfrow=c(2,1))
 
-plot(mod2$gam, resid=T, pch=19, rug=F, se=F, pages=1)
-plot(mod2$lme, resid=T, pch=19, rug=F, se=F, pages=1)
-MuMIn::AICc(mod2)
-lag3aicc<-MuMIn::AICc(mod2)
+plot(mod3$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+#plot(mod2$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+
+MuMIn::AICc(mod3)
+lag3aicc<-MuMIn::AICc(mod3)
+
+################################ create simulated data ##################################################
+#set.seed(100) 
+newdat <- data.frame(S=seq(from=min(S), to=max(S), length.out=100)) 
+lag<-as.matrix(rep("Lag 3 yr",times=nrow(as.matrix(newdat))))
+predictions = predict(mod3$gam, newdata=newdat, se.fit = TRUE)
+
+# Consolidating new data and predictions
+dat3 = as.data.frame(cbind(lag, newdat, predictions))
+dat3<- within(dat3, {
+  lower = fit-1.96*se.fit
+  upper = fit+1.96*se.fit
+})
+
+lag_point<-as.matrix(rep("Lag 3 yr",times=nrow(as.matrix(R))))
+logRS_3<-log(R/S)
+p_dat3<-as.data.frame(cbind(lag_point,S,logRS_3))
+
+
+colnames(p_dat3)<-c("lag","S","logRS")
+view(p_dat3)
 #########################################################################################################################
 ############################################### Drop data point #5  #####################################################
 par(mfrow=c(1,1),cex.main=1.25, cex.lab=1.25,cex.axis=1.25,cex=1.25)
@@ -477,76 +391,26 @@ R2
 R
 S2<-S[-5]
 
-plot(R2~S2,xlab= "Reproductive female abundance", ylab="Juvenile abundance",main= "EBS juveniles vs OS females",pch=16)
-Fit3<-gls(log(R2/S2)~S2,correlation=corAR1(), na.action=na.omit)
-summary(Fit3)
-plot(log(R2/S2)~S2, xlab="Reproductive female abundance",ylab="LN(Recruits/Repfem)",main="EBS log-survival vs. abundance of SC3 and SC4 females",pch=16)
-abline(Fit3)
-#plot(Fit3)
-
-cor(R2,S2)
-###############################################################################################################
 ############################################## GAMM model ###################################################
-mod2 <- gamm(log(R2/S2) ~ s(S2, k=4),
+mod4 <- gamm(log(R2/S2) ~ s(S2, k=3),
              correlation=corAR1())
 #Model summaries
-summary(mod2)
-summary(mod2$gam)
-summary(mod2$lme)
+summary(mod4)
+summary(mod4$gam)
+summary(mod4$lme)
 
 #Inspect model object
-mod2
+mod4
 
 #plot,
 dev.new()
 par(mfrow=c(2,1))
 
-plot(mod2$gam, resid=T, pch=19, rug=F, se=F, pages=1)
-plot(mod2$lme, resid=T, pch=19, rug=F, se=F, pages=1)
-MuMIn::AICc(mod2)
-
-##################################################################################################################################
-################################################## Plot above for MEPS #########################################################
-#,mai=c(1,1.25,1,1)#add to below to format margins if necessary--in inches, for in lines, use mar()
-
-par(mfrow=c(1,1),cex.lab=1.55,cex.axis=1.25,cex=1.25) #configure axis labels
-y.range<-range(0,9e+08)
-plot(R2~S2,ylim=y.range, pch=16,col=1,axes=FALSE,ann=FALSE)
+plot(mod4$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+#plot(mod2$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+MuMIn::AICc(mod4)
 
 
-axis(1, at=1e+07*c(0,5,10,15,20),labels=c("0","50","100","150","200"),tck=0.02)
-axis(2, las=1, at=2e+08*c(0,1,2,3,4,5),labels=c("0","200","400","600","800","1000"),tck=0.02)
-box()
-
-title(xlab="EBS female abundance (Millions)")
-title(ylab="EBS juvenile abundance (Millions)")
-#title(main=" Juvenile abundance by year")
-
-
-plot(log(R2/S2)~S2,pch=16,col=1,axes=FALSE,ann=FALSE)
-abline(Fit3)
-axis(1, at=1e+07*c(0,5,10,15,20),labels=c("0","50","100","150","200"),tck=0.02)
-axis(2, las=1, at=c(-1,0,1,2,3,4,5),labels=c("-1","0","1","2","3","4","5"),tck=0.02)
-box()
-title(xlab="Female abundance (Millions)")
-title(ylab="EBS log-survival")
-
-r6<-resid(Fit3)
-xyear<-xyear.k[-5]
-#plot(r6,pch=16)
-r.fit3<-loess(r6~xyear,span=0.45)
-plot(r.fit3,pch=16,xlab="Hatch year", ylab=" S-R residuals")
-lines(xyear,fitted(r.fit3),col=1)
-
-r.fit3<-loess(r6~xyear,span=0.5)
-plot(r.fit3,pch=16,col=1,axes=FALSE,ann=FALSE)
-lines(xyear,fitted(r.fit3),col=1)
-axis(1, at=c(1980,1985,1990,1995,2000,2005),labels=c("1980","1985","1990","1995","2000","2005"),tck=0.02)
-axis(2, las=1,at=c(-3,-2,-1,0,1,2,3),labels=c("-3","-2","-1","0","1","2","3"),tck=0.02)
-box()
-
-title(xlab="Hatch year")
-title(ylab="EBS S-R residuals")
 
 ##############################################################################################################################
 ################################################# Lag=4 ######################################################################
@@ -565,92 +429,21 @@ S<-xi.k
 xyear.k<-xyear[1:(n-lag)]   # Select corresponding years
 xyear.k
 yi.k <- yi[(lag+1):n]       # Select Juvenile recruitment estimates'lag' years later
-R<-yi.k 
+R<-yi.k/0.3 
 yyear.k<-yyear[(lag+1):n]   # Select years corresponding to juvenile recruitment estimates
 yyear.k
 plot(yi.k~xi.k,xlab="Reproductive female abundance", ylab="Lag 4 juvenile recruitment",pch=16,col=4)
 
-
+logRS<-log(R/S)
+dat<-as.data.frame(cbind(as.matrix(R),as.matrix(S)))
 ############################################## EDA.norm analyses of log(R/S)#############################
+dev.new()
 eda.norm(R)
 log.RS<-log(R/S)
 eda.norm(log.RS)
 
-##################################################################################################################################
-################################################### Fit Ricker model##############################################################
-
-Rick.fit3<-gnls(log(R/S) ~ Ricker(S,a,b),start=START)
-summary(Rick.fit3)
-plot(log(R/S)~S, xlab="Reproductive female abundance",ylab="lag 4 log(Recruits/Repfem)",pch=16)
-abline(Rick.fit2)
-
-
-r4<-resid(Rick.fit3)
-r.fit4<-loess(r4~xyear.k)
-plot(r.fit3,xlab="Hatch year",ylab="Lag 4 S/R residuals",pch=16)
-lines(xyear.k,fitted(r.fit4))
-
-####################################################################################################################################
-############################################## Fit gls model with 1st order autocorrelation ########################################
-
-Fit5<-gls(log(R/S)~S,correlation=corAR1(), na.action=na.omit)
-summary(Fit5)
-
-plot(log(R/S)~S, xlab="Reproductive female abundance",ylab="lag 4 log(Recruits/Repfem)",pch=16)
-abline(Fit5)
-#plot(Fit3)
-
-par(mfrow=c(1,1))
-r5<-resid(Fit5)
-#plot(r5,pch=16)
-r.fit5<-loess(r5~xyear.k)
-plot(r.fit5,pch=16,xlab="Hatch year", ylab="Lag 4 S/R residuals")
-lines(xyear.k,fitted(r.fit5),col=4)
-
-
-Fit6<-gls(log(R/S)~S,correlation=corARMA(p=2))
-summary(Fit6)
-
 ################################## Run GAMM model ############################################
-mod4 <- gamm(log(R/S) ~ s(S, k=4),
-             data = dat, correlation=corAR1())
-#Model summaries
-summary(mod4)
-summary(mod4$gam)
-summary(mod4$lme)
-
-#Inspect model object
-mod4
-
-#plot,
-dev.new()
-par(mfrow=c(2,1))
-
-plot(mod4$gam, resid=T, pch=19, rug=F, se=F, pages=1)
-
-plot(mod4$lme, resid=T, pch=19, rug=F, se=F, pages=1)
-MuMIn::AICc(mod4)
-lag4aicc<-MuMIn::AICc(mod4)
-#########################################################################################################################
-############################################### Drop data point #5  #####################################################
-par(mfrow=c(1,1),cex.main=1.25, cex.lab=1.25,cex.axis=1.25,cex=1.25)
-R2<-R[-5]
-R2
-R
-S2<-S[-5]
-
-plot(R2~S2,xlab= "Reproductive female abundance", ylab="Juvenile abundance",main= "EBS juveniles vs OS females",pch=16)
-Fit3<-gls(log(R2/S2)~S2,correlation=corAR1(), na.action=na.omit)
-summary(Fit3)
-plot(log(R2/S2)~S2, xlab="Reproductive female abundance",ylab="LN(Recruits/Repfem)",main="EBS log-survival vs. abundance of SC3 and SC4 females",pch=16)
-abline(Fit3)
-#plot(Fit3)
-
-
-cor(R2,S2)
-###############################################################################################################
-############################################## GAMM model ###################################################
-mod5 <- gamm(log(R2/S2) ~ s(S2, k=4),
+mod5 <- gamm(log(R/S) ~ s(S, k=3),
              data = dat, correlation=corAR1())
 #Model summaries
 summary(mod5)
@@ -665,11 +458,97 @@ dev.new()
 par(mfrow=c(2,1))
 
 plot(mod5$gam, resid=T, pch=19, rug=F, se=F, pages=1)
-plot(mod5$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+#plot(mod5$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+
 MuMIn::AICc(mod5)
+lag4aicc<-MuMIn::AICc(mod5)
+
+# create simulated data ####
+#set.seed(100) 
+
+newdat <- data.frame(S=seq(from=min(S), to=max(S), length.out=100)) 
+lag<-as.matrix(rep("Lag 4 yr",times=nrow(as.matrix(newdat))))
+predictions = predict(mod5$gam, newdata=newdat, se.fit = TRUE)
+
+# Consolidating new data and predictions
+dat4 = as.data.frame(cbind(lag, newdat, predictions))
+dat4<- within(dat4, {
+  lower = fit-1.96*se.fit
+  upper = fit+1.96*se.fit
+})
+
+lag_point<-as.matrix(rep("Lag 4 yr",times=nrow(as.matrix(R))))
+logRS_4<-log(R/S)
+p_dat4<-as.data.frame(cbind(lag_point,S,logRS_4))
+
+
+colnames(p_dat4)<-c("lag","S","logRS")
+view(p_dat4)
+
+#########################################################################################################################
+############################################### Drop data point #5  #####################################################
+par(mfrow=c(1,1),cex.main=1.25, cex.lab=1.25,cex.axis=1.25,cex=1.25)
+R2<-R[-5]
+R2
+R
+S2<-S[-5]
+
+############################################## GAMM model ###################################################
+mod6 <- gamm(log(R2/S2) ~ s(S2, k=3),
+             data = dat, correlation=corAR1())
+#Model summaries
+summary(mod6)
+summary(mod6$gam)
+summary(mod6$lme)
+
+#Inspect model object
+mod6
+
+#plot,
+dev.new()
+par(mfrow=c(2,1))
+
+plot(mod6$gam, resid=T, pch=19, rug=F, se=F, pages=1)
+#plot(mod6$lme, resid=T, pch=19, rug=F, se=F, pages=1)
+MuMIn::AICc(mod6)
 
 ############################################# AICc for SR models ##########################################
 
 lag2aicc
 lag3aicc
 lag4aicc
+MuMIn::AICc(mod1,mod3,mod5)
+
+dat<-as.data.frame(rbind(dat2,dat3,dat4))
+
+view(dat2)
+
+p_dat<-as.data.frame(rbind(p_dat2,p_dat3,p_dat4))
+str(p_dat2)
+str(p_dat)
+
+view(p_dat)
+#################### TEST PLOT #################################################
+view(dat)
+
+view(logRS)
+
+ggplot(dat, aes(S,  fit)) +
+  geom_smooth() +
+  geom_point(data=p_dat,aes(x=as.numeric(S), y= as.numeric(logRS))) +
+  geom_ribbon(aes(ymin=lower, ymax=upper, x=S, fill = "band"), alpha = 0.3)+
+  facet_wrap(~factor(lag, c("Lag 2 yr","Lag 3 yr","Lag 4 yr")), scales = "free_y", ncol = 1) +
+  theme(axis.title.x = element_blank()) +
+  theme_bw()+
+  theme(legend.position="none")+
+  ylab("Ln(R/S)") 
+## NOTE: GEOM_POINT currently adds all data points to each of the plots, rather than only the appropriate data set
+##############################################################################
+
+p<-ggplot(dat, aes(S,  fit)) +
+  geom_smooth() +
+  geom_ribbon(aes(ymin=lower, ymax=upper, x=S, fill = "band"), alpha = 0.3)+
+  facet_wrap(~factor(lag, c("Lag 2 yr","Lag 3 yr","Lag 4 yr")), scales = "free_y", ncol = 1) +
+  theme(axis.title.x = element_blank()) +
+  ylab("Ln(R/S)") 
+p
